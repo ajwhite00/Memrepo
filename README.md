@@ -62,12 +62,12 @@ Then I should have a popup to ask if the user would like to delete user informat
 ### Roles
 
 Product Owner / Scrum Master - Aj White<br>
-UI Developer - Javohir Jalolitdinov<br>
-Backend Developer / PM Support - Nicholas Lawson<br>
+Frontend Developer - Javohir Jalolitdinov<br>
+Integration Developer / PM Support - Nicholas Lawson<br>
 Developer Support - Pruthvi Patel<br>
 Developer Support - Ravi Patel<br>
 
-### Meetings
+### Weekly Meetings
 
 Standups: Mondays 11:00am - 11:15am | Thursdays 9:30am - 9:40am<br>
 Development Work-Time: Tuesdays 11:00am-12:00pm | Thursdays 12:30pm - 1:30pm
