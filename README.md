@@ -3,9 +3,10 @@
 ## Introduction
 Do you need to study and hate using flash cards? Do you need to memorize your line for a play?<br>
 MemRepo can help with that:<br>
-- Enter the subject you wanna study<br>
+- Create and store multiple memory snippets<br>
+- Enter the text you wanna memorize/study<br>
 - Use your voice to test yourself<br>
-- Understand exactly where your having a problem<br>
+- See exactly where you're having problems<br>
 
 MemRepo can help you practice and memorize: <br>
 - Scriptures
@@ -16,8 +17,6 @@ MemRepo can help you practice and memorize: <br>
 - Math
 - Quotes
 - History and Geography
-
-
 
 ## Storyboard
 
