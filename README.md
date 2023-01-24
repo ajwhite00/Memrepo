@@ -5,7 +5,7 @@
 
 ## Storyboard
 
-![Wireframe for MemRepo](MemRepo.png)
+![Wireframe for Memrepo](Memrepo.png)
 
 ## Functional Requirements
 
