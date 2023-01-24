@@ -1,33 +1,33 @@
 # MemRepo
 
-##Introduction
+## Introduction
 --Insert intro paragraph here--
 
-##Storyboard
+## Storyboard
 
 --Insert wireframe here--
 
-##Functional Requirements
+## Functional Requirements
 
-##Class Diagrams
+## Class Diagrams
 
 --Insert class diagram--
 
-##Description
+## Description
 
 --Insert class diagram description here--
 
-##Responsibilities
+## Responsibilities
 
-###Roles
+### Roles
 
-Product Owner/Scrum Master - Aj White
-UI Developer - Javohir Jalolitdinov
-Backend Developer / PM Support - Nicholas Lawson
-Developer Support - Pruthvi Patel
-Developer Support - Ravi Patel
+Product Owner / Scrum Master - Aj White<br>
+UI Developer - Javohir Jalolitdinov<br>
+Backend Developer / PM Support - Nicholas Lawson<br>
+Developer Support - Pruthvi Patel<br>
+Developer Support - Ravi Patel<br>
 
-###Meetings
+### Meetings
 
-Standups: Mondays 11:00am - 11:15am | Thursdays 9:30am-9:40am
-Development Work-time: Thursdays 12:30pm-1:30pm
+Standups: Mondays 11:00am - 11:15am | Thursdays 9:30am-9:40am<br>
+Development Work-Time: Thursdays 12:30pm-1:30pm
