@@ -1,15 +1,29 @@
 # MemRepo
 
 ## Introduction
---Insert intro paragraph here--
+Do you need to study and hate using flash cards? Do you need to memorize your line for a play?<br>
+MemRepo can help with that:<br>
+- Enter the subject you wanna study<br>
+- Use your voice to test yourself<br>
+- Understand exactly where your having a problem<br>
+
+MemRepo can help you practice and memorize: <br>
+- Scriptures
+- Science Facts
+- Poetry
+- Documents
+- Speeches
+- Math
+- Quotes
+- History and Geography
+
+
 
 ## Storyboard
 
 ![Wireframe for Memrepo](MemRepoWireFrame.png)
 
 ## Functional Requirements
-
-## Requirement 100.0: Practice Memory Snippit
 
 ### SCENARIO
 As a user interested in memorizing snippets, I want to be able to practice the snippets I wrote, using the microphone,<br>
@@ -37,28 +51,15 @@ Given a memory snippet is available<br>
 When I click microphone and don’t speak<br>
 Then I should receive and error message:<br>
 	Error could not recognize voice
-
-## Requirement 101.0: Create/Edit/Delete Memory Snippet
-
-### SCENARIO
-As a user interested in memory snippets, I want to be able to create a memory snippet, edit my memory snippet, and,<br> 
-delete my memory snippet. 
-
-### DEPENDENCIES
-Memory snippet data is available and accessible. 
-
-### ASUMPTIONS
-The snippet text matches user’s default language.
-
-#### 1.1 
+#### 1.4 
 Given a memory snippet is available<br>
 When I click on the add button<br>
 Then I should have a screen to show user input for title and description.
-#### 1.2 
+#### 1.5 
 Given a memory snippet is available<br>
 When I click on the more options button<br>
 Then I should have a modal to edit user input for title and description.
-#### 1.3
+#### 1.6
 Given a memory snippet is available<br>
 When I click on the more options button<br>
 Then I should have a popup to ask if the user would like to delete user information.
