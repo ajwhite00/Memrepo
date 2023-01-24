@@ -69,5 +69,5 @@ Developer Support - Ravi Patel<br>
 
 ### Meetings
 
-Standups: Mondays 11:00am - 11:15am | Thursdays 9:30am-9:40am<br>
-Development Work-Time: Thursdays 12:30pm-1:30pm
+Standups: Mondays 11:00am - 11:15am | Thursdays 9:30am - 9:40am<br>
+Development Work-Time: Tuesdays 11:00am-12:00pm | Thursdays 12:30pm - 1:30pm
