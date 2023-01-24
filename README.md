@@ -9,6 +9,8 @@
 
 ## Functional Requirements
 
+## Requirement 100.0: Practice Memory Snippit
+
 ### SCENARIO
 As a user interested in memorizing snippets, I want to be able to practice the snippets I wrote, using the microphone,<br>
 and seeing feedback on how accurately I can recite the snippet.
@@ -35,15 +37,28 @@ Given a memory snippet is available<br>
 When I click microphone and don’t speak<br>
 Then I should receive and error message:<br>
 	Error could not recognize voice
-#### 1.4 
+
+## Requirement 101.0: Create/Edit/Delete Memory Snippet
+
+### SCENARIO
+As a user interested in memory snippets, I want to be able to create a memory snippet, edit my memory snippet, and,<br> 
+delete my memory snippet. 
+
+### DEPENDENCIES
+Memory snippet data is available and accessible. 
+
+### ASUMPTIONS
+The snippet text matches user’s default language.
+
+#### 1.1 
 Given a memory snippet is available<br>
 When I click on the add button<br>
 Then I should have a screen to show user input for title and description.
-#### 1.5 
+#### 1.2 
 Given a memory snippet is available<br>
 When I click on the more options button<br>
 Then I should have a modal to edit user input for title and description.
-#### 1.6
+#### 1.3
 Given a memory snippet is available<br>
 When I click on the more options button<br>
 Then I should have a popup to ask if the user would like to delete user information.
