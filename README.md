@@ -125,7 +125,13 @@ The snippet text matches user’s default language.
 
 ## Description
 
---Insert class diagram description here--
+**Main**: The main screen that the user sees when entering the app. Allows user to create, delete, and update a memory snippet.<br>
+
+**SpeechRecognizer**: External API that will be used for speech recognition. The API will be integrated to recognize the user's input to check if an answer matches with the memory snippet.<br>
+
+**Notecard**: Object class that represents all data for a specific memory snippet for a user. Includes title for question, description for memory snippet, and an ID to accurately track in the database.<br>
+
+**ICardDAO**: Interface for the ICardService to fetch correct data by searching by ID.<br>
 
 ## Responsibilities
 
