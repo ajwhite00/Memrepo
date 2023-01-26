@@ -81,7 +81,7 @@ Then I should have a popup to ask if the user would like to delete user informat
 
 ## Class Diagrams
 
---Insert class diagram
+https://lucid.app/lucidchart/68c319c4-ecac-4979-8a11-3d3460b8f15b/edit?viewport_loc=-1335%2C-19%2C1746%2C871%2C0_0&invitationId=inv_d5ea5283-5d9c-4e46-ae25-18ece577e6b3
 
 ## Description
 
