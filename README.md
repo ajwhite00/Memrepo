@@ -40,29 +40,34 @@ The snippet text matches with the user’s default language.
 ### EXAMPLES
 #### 1.1
 **Given** a memory snippet is available <br>
+**When** I click the more options button and click practice <br>
+**Then** I should be taken to the practice screen
+
+#### 1.2
+**Given** a memory snippet is available and user is on practice screen <br>
 **When** I click the microphone button <br>
 **Then** the text above the microphone should change to listening and capture my voice as I speak
 
-#### 1.2
-**Given** a memory snippet is available <br>
+#### 1.3
+**Given** a memory snippet is available and user is on practice screen <br>
 **When** I click microphone and don’t speak <br>
 **Then** I should receive and error message: <br>
 Error could not recognize voice
 
-#### 1.3 
+#### 1.4 
 **Given** the order of the planets’ memory snippet is available <br>
 **Given** the microphone is active <br>
 **When** I speak the order: Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune <br>
 **Then** all of my answer’s snippet text should appear green.
 
-#### 1.4 
+#### 1.5 
 **Given** the order of the planets’ memory snippet is available <br>
 **Given** the microphone is active <br>
 **When** I speak the order: Mercury, Venus, Mars, Earth, Jupiter, Saturn, Uranus, Neptune <br>
 **Then** the answer text of Mercury, Venus, Jupiter, Saturn, Uranus, and Neptune <br>
 should appear green, and the answer text of Earth and Mars should appear red. 
 
-#### 1.5
+#### 1.6
 **Given** the order of the planets’ memory snippet is available <br>
 **Given** the microphone is active <br>
 **When** I speak the order: Earth, Mercury, Venus, Uranus, Neptune, Mars, Jupiter, Saturn <br>
@@ -89,7 +94,7 @@ The snippet text matches user’s default language.
 #### 1.2 
 **Given** the planet order memory snippet is available <br>
 **When** I click on the more options button <br>
-**Then** I should see an option to edit or delete the notecard. 
+**Then** I should see an option to edit, delete, or practice the notecard. 
 
 #### 1.3  
 **Given** the planet order memory snippet is available <br>
