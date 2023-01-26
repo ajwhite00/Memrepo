@@ -66,7 +66,7 @@ Then I should have a popup to ask if the user would like to delete user informat
 
 ## Class Diagrams
 
---Insert class diagram--
+--Insert class diagram
 
 ## Description
 
