@@ -119,11 +119,11 @@ The snippet text matches user’s default language.
 - I hit the save button <br>
 **Then** when I navigate to the Earth’s layers’ notecard, I should see the saved changes I made. 
 
-## Class Diagrams
+## Class Diagram
 
 ![Class Diagram for MemRepo](MemRepoClassDiagram.png)
 
-## Description
+## Class Diagram Description
 
 **Main**: The main screen that the user sees when entering the app. Allows user to create, delete, and update a memory snippet.<br>
 
