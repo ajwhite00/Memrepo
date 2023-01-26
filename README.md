@@ -62,7 +62,7 @@ delete my memory snippet.
 ### DEPENDENCIES
 Memory snippet data is available and accessible. 
 
-### ASUMPTIONS
+### ASSUMPTIONS
 The snippet text matches user’s default language.
 
 #### 1.1  
@@ -81,7 +81,7 @@ Then I should have a popup to ask if the user would like to delete user informat
 
 ## Class Diagrams
 
-![Class Diagram for MemRepo](MemoRepoClassDiagram.png)
+![Class Diagram for MemRepo](MemRepoClassDiagram.png)
 
 ## Description
 
