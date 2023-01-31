@@ -4,7 +4,7 @@
 Do you need to study and hate using flash cards? Do you need to memorize your line for a play? <br>
 MemRepo can help with that: <br>
 - Create and store multiple memory snippets <br>
-- Enter the text you wanna memorize/study <br>
+- Enter the text you want to memorize/study <br>
 - Use your voice to test yourself <br>
 - See exactly where you're having problems <br>
 
