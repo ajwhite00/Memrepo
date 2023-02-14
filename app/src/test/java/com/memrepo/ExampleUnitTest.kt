@@ -44,4 +44,16 @@ class ExampleUnitTest {
         assertEquals("creed", iHaveADream.snippetDisplayList[20])
         assertEquals("truths", iHaveADream.snippetDisplayList[24])
     }
+
+    @Test
+    fun threePlusThree_EqualsSix()
+    {
+        assertEquals(6, 3 + 3)
+    }
+
+    @Test
+    fun threePlusFour_EqualsSeven()
+    {
+        assertEquals(7, 3 + 4)
+    }
 }
