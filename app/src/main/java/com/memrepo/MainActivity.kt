@@ -1,5 +1,6 @@
 package com.memrepo
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.graphics.Outline
@@ -14,6 +15,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,51 +43,44 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun MemRepo() {
     Scaffold(
         topBar = {TopAppBar(
             title = {Text(
-                "MemRepo",
-                color = androidx.compose.ui.graphics.Color.White)},
-            backgroundColor = Color(0xff0f9d58)
+                "MemRepo")},
         ) },
-        content = {}
+        bottomBar = { BottomAppBar {
+            Button(onClick = {}){
+                Text("Add")
+            }
+        }},
+        content = {
+            MyContent()
+        }
     )
+
 }
 @Composable
 fun MyContent(){
-    var title by remember { mutableStateOf("") }
-    var snippet by remember { mutableStateOf("") }
-    val mContext = LocalContext.current
+    var title by rememberSaveable{ mutableStateOf("") }
+    var snippet by rememberSaveable { mutableStateOf("") }
 
-    Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+    //TextField(value = title,
+         //     onValueChange = {title = it},
+          //    label = Text(text = "This will be the question to remember"))
+    
 
-        // Creating an Outlined Button and setting
-        // the shape attribute to CircleShape
-        // When the Button is clicked, a Toast
-        // message would be displayed
-        OutlinedButton(onClick = { Toast.makeText(mContext, "This is a Circular Button with a + Icon", Toast.LENGTH_LONG).show()},
-            modifier= Modifier.size(100.dp),
-            shape = CircleShape,
-            border= BorderStroke(5.dp, Color(0XFF0F9D58)),
-            contentPadding = PaddingValues(0.dp),
-            colors = ButtonDefaults.outlinedButtonColors(contentColor =  Color.Blue)
-        ) {
-            // Adding an Icon "Add" inside the Button
-            Icon(Icons.Default.Add ,contentDescription = "content description", tint=Color(0XFF0F9D58))
-        }
-
-    }
 }
-
 @Preview(showBackground = false)
 @Composable
 fun DefaultPreview() {
     MemrepoTheme {
         Column {
             MemRepo()
+
+
         }
     }
 }
