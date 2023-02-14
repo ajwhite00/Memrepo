@@ -17,13 +17,13 @@ class ExampleUnitTest {
     }
 
     @Test
-    fun toString_NoteCard(){
+    fun `given an object with title=Planets" and a snippet of the order of the planets, when I toString the object, then the toString should return the title, Planets, and snippet, order of planets`(){
         val planets = NoteCard(0, "Planets", "Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune")
         assertEquals("NoteCard(cardID=0, title=Planets, snippet=Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune)", planets.toString())
     }
 
     @Test
-    fun stringListFormat_NoteCardSnippetDisplay(){
+    fun `given an object with a title, Planet, and a snippet, the order of the planets, when I ask for the snippetDisplay and snippetDisplayList, then the object should return the snippetDisplay as a string without punctuation, then the object should return a list with each planet in its own index at the proper position`(){
         val planets = NoteCard(0, "Planets", "Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune")
         assertEquals("Mercury Venus Earth Mars Jupiter Saturn Uranus Neptune", planets.snippetDisplay)
         assertEquals("[Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune]", planets.snippetDisplayList.toString())
@@ -34,7 +34,7 @@ class ExampleUnitTest {
 
     //may need to move everything to lowercase, string and user input from mic to compare
     @Test
-    fun stringSentenceFormat_NoteCardSnippetDisplay(){
+    fun `given an object with title, I Have A Dream Speech, and a snippet, 2 sentences from MLK's speech, when I ask for the snippetDisplay and snippetDisplayList, then the object should return the snippetDisplay as a string without punctuation, then the object should return a list with each word from the speech in its own index at the proper position`(){
         val iHaveADream = NoteCard(0, "I Have A Dream Speech",
             "I have a dream that one day this nation will rise up and live out the true meaning of its creed: " +
                     "We hold these truths to be self-evident, that all men are created equal.")
@@ -44,4 +44,5 @@ class ExampleUnitTest {
         assertEquals("creed", iHaveADream.snippetDisplayList[20])
         assertEquals("truths", iHaveADream.snippetDisplayList[24])
     }
+
 }

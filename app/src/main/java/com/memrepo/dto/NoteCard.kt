@@ -1,6 +1,8 @@
 package com.memrepo.dto
 
-data class NoteCard(var cardID : Int, var title : String, var snippet : String){
+import androidx.room.PrimaryKey
+
+data class NoteCard(var cardID : Int, var title : String, var snippet : String,){
 
         var snippetDisplay = this.snippet //has three rounds of replacement
                 .replace("-".toRegex(), " ") //replace hyphens with space because of two cases: split words with hyphen in between and remove hyphen in the middle of a sentence
