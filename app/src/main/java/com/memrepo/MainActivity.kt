@@ -10,7 +10,6 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -36,62 +35,10 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@ExperimentalMaterialApi
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun MainScreen() {
-    Scaffold(
-        topBar = {TopAppBar(
-            title = {Text(
-                "MemRepo")},
-        ) },
-
-        bottomBar = { BottomAppBar {
-            Box(Modifier.fillMaxWidth()) {
-                Button(
-                    onClick = {},
-                    modifier = Modifier.align(Alignment.Center).fillMaxWidth().fillMaxHeight()
-                ) {
-                    (Text(text = "Add"))
-                }
-            }
-
-        }},
-        content = {
-            MyContent()
-        }
-    )
-
-}
-@Composable
-fun MyContent() {
-    var title by rememberSaveable { mutableStateOf("") }
-    var snippet by rememberSaveable { mutableStateOf("") }
-    val paddingModifier = Modifier.padding(10.dp)
-
-    Box(Modifier.fillMaxSize()) {
-        Card(
-            shape = RoundedCornerShape(20.dp),
-            elevation = 10.dp,
-            modifier = Modifier.padding(10.dp)
-
-        ) {
-            Column(paddingModifier) {
-                Text(text = "Title", Modifier.fillMaxWidth())
-                Text(text = "Snippet", Modifier.fillMaxWidth())
-            }
-            Button(modifier = Modifier.align(Alignment.TopEnd), onClick = {}){
-
-                Text("...")
-
-            }
-        }
-    }
-}
-
-@ExperimentalMaterialApi
-@Preview
-@Composable
-fun BottomSheet() {
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = BottomSheetState(BottomSheetValue.Collapsed))
     val coroutineScope = rememberCoroutineScope()
@@ -110,21 +57,69 @@ fun BottomSheet() {
             }
         }, sheetPeekHeight = 0.dp
     ) {
-        Column(
-            Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Button(onClick = {
-                coroutineScope.launch {
-                    if (bottomSheetScaffoldState.bottomSheetState.isCollapsed){
-                        bottomSheetScaffoldState.bottomSheetState.expand()
-                    } else {
-                        bottomSheetScaffoldState.bottomSheetState.collapse()
+
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = {
+                        Text(
+                            "MemRepo"
+                        )
+                    },
+                )
+            },
+
+            bottomBar = {
+                BottomAppBar {
+                    Box(Modifier.fillMaxWidth()) {
+                        Button(
+                            onClick = {
+                                coroutineScope.launch {
+                                    if (bottomSheetScaffoldState.bottomSheetState.isCollapsed) {
+                                        bottomSheetScaffoldState.bottomSheetState.expand()
+                                    } else {
+                                        bottomSheetScaffoldState.bottomSheetState.collapse()
+                                    }
+                                }
+                            },
+                            modifier = Modifier
+                                .align(Alignment.Center)
+                                .fillMaxWidth()
+                                .fillMaxHeight()
+                        ) {
+                            (Text(text = "Add"))
+                        }
                     }
+
                 }
-            }) {
-                Text(text = "Click Me")
+            },
+            content = {
+                MyContent()
+            }
+        )
+    }
+}
+@Composable
+fun MyContent() {
+//    var title by rememberSaveable { mutableStateOf("") }
+//    var snippet by rememberSaveable { mutableStateOf("") }
+    val paddingModifier = Modifier.padding(10.dp)
+
+    Box(Modifier.fillMaxSize()) {
+        Card(
+            shape = RoundedCornerShape(20.dp),
+            elevation = 10.dp,
+            modifier = Modifier.padding(10.dp)
+
+        ) {
+            Column(paddingModifier) {
+                Text(text = "Title", Modifier.fillMaxWidth())
+                Text(text = "Snippet", Modifier.fillMaxWidth())
+            }
+            Button(modifier = Modifier.align(Alignment.TopEnd), onClick = {}){
+
+                Text("...")
+
             }
         }
     }
@@ -156,14 +151,18 @@ fun AddSnippet(bottomSheetScaffoldState: BottomSheetScaffoldState) {
                 value = title,
                 onValueChange = { title = it },
                 label = { Text("Title") },
-                modifier = Modifier.padding(bottom = 10.dp).widthIn(max = 300.dp),
+                modifier = Modifier
+                    .padding(bottom = 10.dp)
+                    .widthIn(max = 300.dp),
                 singleLine = true
             )
             OutlinedTextField(
                 value = text,
                 onValueChange = { text = it },
                 label = { Text("Snippet Text") },
-                modifier = Modifier.height(300.dp).widthIn(max = 300.dp)
+                modifier = Modifier
+                    .height(300.dp)
+                    .widthIn(max = 300.dp)
 
             )
         }
@@ -180,6 +179,7 @@ fun AddSnippet(bottomSheetScaffoldState: BottomSheetScaffoldState) {
     }
 }
 
+@ExperimentalMaterialApi
 @Preview(showBackground = false)
 @Composable
 fun DefaultPreview() {
