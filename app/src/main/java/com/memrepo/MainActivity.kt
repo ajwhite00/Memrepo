@@ -3,6 +3,7 @@ package com.memrepo
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.content.pm.ModuleInfo
 import android.graphics.Outline
 import android.os.Bundle
 import android.widget.Toast
@@ -11,6 +12,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -20,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.colorspace.WhitePoint
+import androidx.compose.ui.layout.AlignmentLine
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -51,10 +54,9 @@ fun MemRepo() {
             title = {Text(
                 "MemRepo")},
         ) },
-        bottomBar = { BottomAppBar {
-            Button(onClick = {}){
-                Text("Add")
-            }
+        
+        bottomBar = { BottomAppBar (){
+
         }},
         content = {
             MyContent()
@@ -63,16 +65,30 @@ fun MemRepo() {
 
 }
 @Composable
-fun MyContent(){
-    var title by rememberSaveable{ mutableStateOf("") }
+fun MyContent() {
+    var title by rememberSaveable { mutableStateOf("") }
     var snippet by rememberSaveable { mutableStateOf("") }
+    val paddingModifier = Modifier.padding(10.dp)
 
-    //TextField(value = title,
-         //     onValueChange = {title = it},
-          //    label = Text(text = "This will be the question to remember"))
-    
+    Box(Modifier.fillMaxSize()) {
+        Card(
+            shape = RoundedCornerShape(20.dp),
+            elevation = 10.dp,
+            modifier = Modifier.padding(10.dp)
 
-}
+        ) {
+            Column(paddingModifier) {
+                Text(text = "Title", Modifier.fillMaxWidth())
+                Text(text = "Snippet", Modifier.fillMaxWidth())
+            }
+            Button(modifier = Modifier.align(Alignment.TopEnd), onClick = {}){
+
+                Text("...")
+
+            }
+            }
+        }
+    }
 @Preview(showBackground = false)
 @Composable
 fun DefaultPreview() {
