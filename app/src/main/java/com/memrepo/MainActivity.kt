@@ -1,33 +1,18 @@
 package com.memrepo
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
-import android.content.DialogInterface
-import android.content.pm.ModuleInfo
-import android.graphics.Outline
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.colorspace.WhitePoint
-import androidx.compose.ui.layout.AlignmentLine
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Popup
 import com.memrepo.ui.theme.MemrepoTheme
 
 class MainActivity : ComponentActivity() {
@@ -40,7 +25,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    MemRepo()
+                    MainScreen()
                 }
             }
         }
@@ -48,14 +33,22 @@ class MainActivity : ComponentActivity() {
 }
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun MemRepo() {
+fun MainScreen() {
     Scaffold(
         topBar = {TopAppBar(
             title = {Text(
                 "MemRepo")},
         ) },
         
-        bottomBar = { BottomAppBar (){
+        bottomBar = { BottomAppBar {
+            Box(Modifier.fillMaxWidth()) {
+                Button(
+                    onClick = {},
+                    modifier = Modifier.align(Alignment.Center).fillMaxWidth().fillMaxHeight()
+                ) {
+                    (Text(text = "Add"))
+                }
+            }
 
         }},
         content = {
@@ -94,9 +87,7 @@ fun MyContent() {
 fun DefaultPreview() {
     MemrepoTheme {
         Column {
-            MemRepo()
-
-
+            MainScreen()
         }
     }
 }
