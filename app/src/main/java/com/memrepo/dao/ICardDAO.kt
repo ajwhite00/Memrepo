@@ -1,24 +1,11 @@
 package com.memrepo.dao
 
-import androidx.room.*
-import androidx.lifecycle.LiveData
 import com.memrepo.dto.NoteCard
+import retrofit2.Call
+import retrofit2.http.GET
 
-@Dao
 interface ICardDAO {
 
-    @Query("SELECT * FROM NoteCard")
-    fun getAllNoteCards(): LiveData<List<NoteCard>>
-
-    //@Query("SELECT * FROM user WHERE cardID IN (:userIDs)")
-    //fun loadAllByIds(userIds: IntArray): List<NoteCard>
-
-    @Update
-    fun updateNoteCard(vararg noteCard: NoteCard)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(noteCard: ArrayList<NoteCard>)
-
-    @Delete
-    fun deleteNoteCard(noteCard: NoteCard)
+    @GET("")
+    fun getAllNoteCards() : Call<ArrayList<NoteCard>>
 }
