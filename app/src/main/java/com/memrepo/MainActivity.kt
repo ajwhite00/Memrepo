@@ -10,8 +10,11 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.room.Room
@@ -73,7 +76,6 @@ fun MainScreen() {
                 Modifier
                     .fillMaxWidth()
                     .fillMaxHeight()
-                    .background(Color.Gray)
             ) {
                 Column() {
                     AddSnippet(bottomSheetScaffoldState)
@@ -149,16 +151,19 @@ fun MyContent() {
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @ExperimentalMaterialApi
 @Composable
 fun AddSnippet(bottomSheetScaffoldState: BottomSheetScaffoldState) {
     var title by remember { mutableStateOf("") }
     var text by remember { mutableStateOf("") }
     val coroutineScope = rememberCoroutineScope()
+    val keyBoardController = LocalSoftwareKeyboardController.current
     Box (modifier = Modifier.fillMaxWidth()) {
         Button(
             onClick = {
                 coroutineScope.launch { bottomSheetScaffoldState.bottomSheetState.collapse() }
+                keyBoardController?.hide()
                 title = ""
                 text = ""
             },
@@ -195,7 +200,10 @@ fun AddSnippet(bottomSheetScaffoldState: BottomSheetScaffoldState) {
         Button (
             // Logic to save snippet
             /* TODO */
-            onClick = { coroutineScope.launch { bottomSheetScaffoldState.bottomSheetState.collapse() } },
+            onClick = {
+                coroutineScope.launch { bottomSheetScaffoldState.bottomSheetState.collapse() }
+                keyBoardController?.hide()
+                      },
             modifier = Modifier.align(Alignment.Center)
         ) {
             Text("Save")
