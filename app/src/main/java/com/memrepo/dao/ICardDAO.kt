@@ -1,10 +1,6 @@
 package com.memrepo.dao
 
-import androidx.room.Dao
-import androidx.room.Query
-import androidx.room.Insert
-import androidx.room.Update
-import androidx.room.Delete
+import androidx.room.*
 import com.memrepo.dto.NoteCard
 
 @Dao
@@ -14,10 +10,10 @@ interface ICardDAO {
     fun getAllNoteCards() : List<NoteCard>
 
     @Insert
-    fun insertAll(vararg notecards: NoteCard)
+    fun saveNoteCard(vararg notecards: NoteCard)
 
-    @Update
-    fun updateNoteCards(vararg notecards: NoteCard)
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    fun updateNoteCard(vararg notecards: NoteCard)
 
     @Delete
     fun delete(notecards: NoteCard)
