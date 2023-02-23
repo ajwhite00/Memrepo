@@ -17,8 +17,10 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.room.Database
 import androidx.room.Room
 import com.memrepo.database.NoteCardDatabase
+import com.memrepo.dto.NoteCard
 import com.memrepo.ui.theme.MemrepoTheme
 import kotlinx.coroutines.launch
 
@@ -53,7 +55,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    MainScreen()
+                    MainScreen(db)
                 }
 
             }
@@ -64,7 +66,7 @@ class MainActivity : ComponentActivity() {
 @ExperimentalMaterialApi
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun MainScreen() {
+fun MainScreen(db: NoteCardDatabase) {
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = BottomSheetState(BottomSheetValue.Collapsed))
     val coroutineScope = rememberCoroutineScope()
@@ -119,15 +121,17 @@ fun MainScreen() {
                 }
             },
             content = {
-                MyContent()
+                for (noteCard in db.cardDAO().getAllNoteCards()) {
+                    MyContent(noteCard = noteCard)
+                }
             }
         )
     }
 }
 @Composable
-fun MyContent() {
-//    var title by rememberSaveable { mutableStateOf("") }
-//    var snippet by rememberSaveable { mutableStateOf("") }
+fun MyContent(noteCard: NoteCard) {
+
+    val id = noteCard.cardID
     val paddingModifier = Modifier.padding(10.dp)
 
     Box(Modifier.fillMaxSize()) {
@@ -138,8 +142,8 @@ fun MyContent() {
 
         ) {
             Column(paddingModifier) {
-                Text(text = "Title", Modifier.fillMaxWidth())
-                Text(text = "Snippet", Modifier.fillMaxWidth())
+                Text(text = noteCard.title, Modifier.fillMaxWidth())
+                Text(text = noteCard.snippet, Modifier.fillMaxWidth())
             }
             Button(modifier = Modifier.align(Alignment.TopEnd), onClick = {}){
 
@@ -216,7 +220,6 @@ fun AddSnippet(bottomSheetScaffoldState: BottomSheetScaffoldState) {
 fun DefaultPreview() {
     MemrepoTheme {
         Column {
-            MainScreen()
         }
     }
 }
