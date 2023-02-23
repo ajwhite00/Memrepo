@@ -31,6 +31,7 @@ class MainActivity : ComponentActivity() {
          * CURRENT DAO FUNCTIONS
          *
          * getAllNoteCards()
+         * editNoteCard()
          * insertAll()
          * delete()
          *

@@ -1,9 +1,10 @@
 package com.memrepo.dao
 
 import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Insert
+import androidx.room.Update
+import androidx.room.Delete
 import com.memrepo.dto.NoteCard
 
 @Dao
@@ -14,6 +15,9 @@ interface ICardDAO {
 
     @Insert
     fun insertAll(vararg notecards: NoteCard)
+
+    @Update
+    fun updateNoteCards(vararg notecards: NoteCard)
 
     @Delete
     fun delete(notecards: NoteCard)
