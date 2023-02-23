@@ -1,11 +1,11 @@
-package com.memrepo.database
+package com.memrepo.dto
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class NoteCard(@PrimaryKey(autoGenerate = true) val cardID : Int?,@ColumnInfo("title") val title : String,@ColumnInfo("snippet") val snippet : String){
+data class NoteCard(@PrimaryKey(autoGenerate = true) val cardID : Int,@ColumnInfo("title") val title : String,@ColumnInfo("snippet") val snippet : String){
 
         var snippetDisplay = this.snippet //has three rounds of replacement
                 .replace("-".toRegex(), " ") //replace hyphens with space because of two cases: split words with hyphen in between and remove hyphen in the middle of a sentence
