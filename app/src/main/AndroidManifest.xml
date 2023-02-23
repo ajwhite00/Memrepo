@@ -1,12 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <font-family>
+
+        <!-- fontWeight
+       100 Thin
+       200 Extra Light
+       300 Light
+       400 Normal
+       500 Medium
+       600 Semi Bold
+       700 Bold
+       800 Extra Bold
+       900 Ultra Bold -->
+
+        <font
+            android:font="@font/bebas_neue_thin"
+            android:fontStyle="normal"
+            android:fontWeight="100" />
+
+        <font
+            android:font="@font/Lato-Black.tff"
+            android:fontStyle="normal"
+            android:fontWeight="400" />
+
+        <font
+            android:font="@font/Lato-black.tff"
+            android:fontStyle="normal"
+            android:fontWeight="700" />
+
+
+    </font-family>
 
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_launcher_background"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.Memrepo"
@@ -23,5 +53,4 @@
             </intent-filter>
         </activity>
     </application>
-
 </manifest>

@@ -1,6 +1,8 @@
 package com.memrepo
 
 import android.os.Bundle
+import android.util.TypedValue
+import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,6 +17,11 @@ import com.memrepo.ui.theme.MemrepoTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        findViewById<TextView>(R.id.my_text_view).typeface = Res.Font(this, R.font.best)
+        findViewById<TextView>(R.id.my_text_view).setTextSize(TypedValue.COMPLEX_UNIT_SP, 50.toFloat())
+
         setContent {
             MemrepoTheme {
                 // A surface container using the 'background' color from the theme
@@ -28,11 +35,17 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+/*val fontPath = "fonts/myfont.ttf"
+val typeface = Typeface.createFromAsset(context.assets, fontPath)
+textView.typeface = typeface*/
+
+
 
 @Composable
 fun Greeting(name: String) {
     Text(text = "Hello $name!")
 }
+
 
 @Preview(showBackground = true)
 @Composable
