@@ -14,6 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.room.Room
+import com.memrepo.database.NoteCardDatabase
 import com.memrepo.ui.theme.MemrepoTheme
 import kotlinx.coroutines.launch
 
@@ -21,6 +23,25 @@ class MainActivity : ComponentActivity() {
     @ExperimentalMaterialApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        /**
+         * Sets up instance of room database.
+         * To use functions for front end, please reference functions from DAO.
+         *
+         * CURRENT DAO FUNCTIONS
+         *
+         * getAllNoteCards()
+         * insertAll()
+         * delete()
+         *
+         * Example: var cards = db.ICardDAO.getAllNoteCards()
+         * This will successfully store all notecards into the variable cards.
+         */
+        val db = Room.databaseBuilder(
+            applicationContext,
+            NoteCardDatabase::class.java,
+            "NoteCard-database"
+        ).build()
 
         setContent {
             MemrepoTheme {

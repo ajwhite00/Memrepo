@@ -1,6 +1,6 @@
 package com.memrepo
 
-import com.memrepo.dto.NoteCard
+import com.memrepo.database.NoteCard
 import org.junit.Test
 
 import org.junit.Assert.*
