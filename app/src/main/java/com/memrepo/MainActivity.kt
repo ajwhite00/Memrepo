@@ -39,10 +39,13 @@ class MainActivity : ComponentActivity() {
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     @Composable
     fun MainScreen() {
+
+        // Bottom Sheet is used to create a 'Modal' but for android apps
         val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
             bottomSheetState = BottomSheetState(BottomSheetValue.Collapsed)
         )
         val coroutineScope = rememberCoroutineScope()
+
         BottomSheetScaffold(
             scaffoldState = bottomSheetScaffoldState,
             sheetContent = {
@@ -51,13 +54,15 @@ class MainActivity : ComponentActivity() {
                         .fillMaxWidth()
                         .fillMaxHeight()
                 ) {
-                    Column() {
+                    Column {
+                        // Contents of the Bottom Sheet come from this component
                         AddSnippet(bottomSheetScaffoldState)
                     }
                 }
             }, sheetPeekHeight = 0.dp
         ) {
             Scaffold(
+                // Bar across top of screen
                 topBar = {
                     TopAppBar(
                         title = {
@@ -67,11 +72,13 @@ class MainActivity : ComponentActivity() {
                         },
                     )
                 },
+                // Bar across bottom of screen
                 bottomBar = {
                     BottomAppBar {
                         Box(Modifier.fillMaxWidth()) {
                             Button(
                                 onClick = {
+                                    // When the button is clicked the bottom sheet will expand or collapse
                                     coroutineScope.launch {
                                         if (bottomSheetScaffoldState.bottomSheetState.isCollapsed) {
                                             bottomSheetScaffoldState.bottomSheetState.expand()
@@ -90,6 +97,7 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 },
+                // The content in between the top bar and bottom bar
                 content = {
                     MyContent()
                 }
@@ -98,8 +106,6 @@ class MainActivity : ComponentActivity() {
     }
     @Composable
     fun MyContent() {
-//    var title by rememberSaveable { mutableStateOf("") }
-//    var snippet by rememberSaveable { mutableStateOf("") }
         val paddingModifier = Modifier.padding(10.dp)
         Box(Modifier.fillMaxSize()) {
             Card(
@@ -108,15 +114,18 @@ class MainActivity : ComponentActivity() {
                 modifier = Modifier.padding(10.dp)
             ) {
                 Column(paddingModifier) {
+                    // Title and Snippet are placeholders for now, eventually these will be injected values from the database
                     Text(text = "Title", Modifier.fillMaxWidth())
                     Text(text = "Snippet", Modifier.fillMaxWidth())
                 }
+                // Button will have the options to Edit or delete the note card
                 Button(modifier = Modifier.align(Alignment.TopEnd), onClick = {}){
                     Text("...")
                 }
             }
         }
     }
+
     @OptIn(ExperimentalComposeUiApi::class)
     @ExperimentalMaterialApi
     @Composable
@@ -126,6 +135,7 @@ class MainActivity : ComponentActivity() {
         val coroutineScope = rememberCoroutineScope()
         val keyBoardController = LocalSoftwareKeyboardController.current
         Box (modifier = Modifier.fillMaxWidth()) {
+            // When Exit button is clicked collapse the bottom sheet, hide the key board, and set the text fields to empty
             Button(
                 onClick = {
                     coroutineScope.launch { bottomSheetScaffoldState.bottomSheetState.collapse() }
@@ -162,6 +172,7 @@ class MainActivity : ComponentActivity() {
             }
         }
         Box ( modifier = Modifier.fillMaxWidth() ){
+            // When the Save button is clicked collapse the bottom sheet, hide the keyboard, save the fields to database
             Button (
                 // Logic to save snippet
                 /* TODO */
