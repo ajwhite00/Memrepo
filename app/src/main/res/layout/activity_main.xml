@@ -4,19 +4,4 @@
     android:id="@+id/Main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="104dp"
-        android:layout_height="wrap_content"
-        android:rotationX="0"
-        android:text="Button" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        app:srcCompat="@android:drawable/ic_btn_speak_now" />
-</LinearLayout>
+    android:orientation="vertical"/>
