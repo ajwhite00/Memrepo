@@ -22,7 +22,7 @@
         android:fontWeight="400" />
 
     <font
-        android:font="@font/bebas_neue_bold"
+        android:font="@font/RobotoCondensedRegular"
         android:fontStyle="normal"
         android:fontWeight="700" />
 
