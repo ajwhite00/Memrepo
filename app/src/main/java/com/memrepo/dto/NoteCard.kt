@@ -4,6 +4,12 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+/**
+ * @constructor creates a dto for what values should be stored in a NoteCard.
+ *
+ * cardId is a primary key that autogenerates for every newly created NoteCard.
+ * title and snippet are both components of a NoteCard that is a stored string for the User.
+ */
 @Entity
 data class NoteCard(@PrimaryKey(autoGenerate = true) val cardID : Int,@ColumnInfo("title") val title : String,@ColumnInfo("snippet") val snippet : String){
 
@@ -15,6 +21,9 @@ data class NoteCard(@PrimaryKey(autoGenerate = true) val cardID : Int,@ColumnInf
         //var snippetDisplayList = snippetDisplay.split(" ").toList() create a list by splitting string on space
         //var snippetDisplayList : List<String> = listOf<String>(this.snippetDisplay.split(" ").toString())
 
+        /**
+         * Function that can change snippet into snippetDisplay with toString() implementation.
+         */
         override fun toString(): String {
                 return snippetDisplay
         }
