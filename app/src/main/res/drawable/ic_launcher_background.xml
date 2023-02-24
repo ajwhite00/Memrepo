@@ -167,4 +167,11 @@
         android:pathData="M79,19L79,89"
         android:strokeWidth="0.8"
         android:strokeColor="#33FFFFFF" />
+    <Button
+        android:id="@+id/bSearch"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="Search"
+        android:textSize="24sp" />
 </vector>
