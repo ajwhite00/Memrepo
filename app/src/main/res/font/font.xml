@@ -17,7 +17,7 @@
         android:fontWeight="100" />
 
     <font
-        android:font="@font/bebas_neue_regular"
+        android:font="@font/RobotoRegular"
         android:fontStyle="normal"
         android:fontWeight="400" />
 
