@@ -28,7 +28,7 @@ MemRepo can help you practice and memorize: <br>
 
 ### SCENARIO
 As a user interested in memorizing snippets, I want to be able to practice the snippets I wrote, using the microphone, <br>
-and seeing feedback on how accurately I can recite the snippet.
+so that I can see feedback on how accurately I can recite this snippet.
 
 ### DEPENDENCIES
 User written snippets are available and accessible. <br>
@@ -76,8 +76,7 @@ should appear green, and the answer text of Earth and Mars should appear red.
 ## Requirement 101.0: Modify Memory Snippet
 
 ### SCENARIO
-As a user interested in memory snippets, I want to be able to create a memory snippet, edit my memory snippet, and,<br> 
-delete my memory snippet. 
+As a user interested in memory snippets, I want to make modifications so that i can create, modify, and delete snippets
 
 ### DEPENDENCIES
 Memory snippet data is available and accessible. 
