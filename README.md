@@ -146,6 +146,7 @@ Frontend Developer - Javohir Jalolitdinov<br>
 Integration Developer / PM Support - Nicholas Lawson<br>
 Developer Support - Pruthvi Patel<br>
 Developer Support - Ravi Patel<br>
+Developer Support - Monil Patel<br>
 
 ### Weekly Meetings
 
