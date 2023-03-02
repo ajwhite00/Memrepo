@@ -1,4 +1,4 @@
-package com.memrepo.database
+package com.memrepo.dao
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
