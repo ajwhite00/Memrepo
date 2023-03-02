@@ -163,8 +163,6 @@ class MainActivity : ComponentActivity() {
         }
         Box ( modifier = Modifier.fillMaxWidth() ){
             Button (
-                // Logic to save snippet
-                /* TODO */
                 onClick = {
                     coroutineScope.launch { bottomSheetScaffoldState.bottomSheetState.collapse() }
                     keyBoardController?.hide()
