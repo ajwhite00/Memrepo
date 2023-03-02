@@ -12,9 +12,6 @@ data class NoteCard(@PrimaryKey(autoGenerate = true) val cardID : Int,@ColumnInf
                 .replace("  ".toRegex(), " ") //replace any double spaces caused by hyphen replacement with a single space
                 .replace("[!\"#$%&'()*+,-./:;<=>?@\\[\\]^_`{|}~]".toRegex(), "") //remove punctuation and other non-letter chars
 
-        //var snippetDisplayList = snippetDisplay.split(" ").toList() create a list by splitting string on space
-        //var snippetDisplayList : List<String> = listOf<String>(this.snippetDisplay.split(" ").toString())
-
         override fun toString(): String {
                 return snippetDisplay
         }
