@@ -16,5 +16,5 @@ interface ICardDAO {
     fun updateNoteCard(vararg noteCards: NoteCard)
 
     @Delete
-    fun delete(notecards: NoteCard)
+    fun delete(noteCards: NoteCard)
 }
