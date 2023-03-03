@@ -7,14 +7,14 @@ import com.memrepo.dto.NoteCard
 interface ICardDAO {
 
     @Query("SELECT * FROM NoteCard")
-    fun getAllNoteCards() : List<NoteCard>
+    suspend fun getAllNoteCards() : List<NoteCard>
 
     @Insert
-    fun saveNoteCard(vararg notecards: NoteCard)
+    suspend fun saveNoteCard(vararg notecards: NoteCard)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun updateNoteCard(vararg notecards: NoteCard)
+    suspend fun updateNoteCard(vararg notecards: NoteCard)
 
     @Delete
-    fun delete(notecards: NoteCard)
+    suspend fun delete(notecards: NoteCard)
 }
