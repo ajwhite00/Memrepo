@@ -9,7 +9,7 @@ interface ICardDAO {
     @Query("SELECT * FROM NoteCard")
     suspend fun getAllNoteCards() : List<NoteCard>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun saveNoteCard(vararg notecards: NoteCard)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
