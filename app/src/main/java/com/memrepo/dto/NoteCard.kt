@@ -16,6 +16,6 @@ data class NoteCard(@PrimaryKey(autoGenerate = true) val cardID : Int,@ColumnInf
         //var snippetDisplayList : List<String> = listOf<String>(this.snippetDisplay.split(" ").toString())
 
         override fun toString(): String {
-                return snippetDisplay
+                return this.snippetDisplay
         }
 }
