@@ -11,11 +11,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.memrepo.ui.theme.MemrepoTheme
 import kotlinx.coroutines.launch
+import java.util.*
 
 class MainActivity : ComponentActivity() {
     @ExperimentalMaterialApi
@@ -29,7 +31,8 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.fillMaxSize(),
                         color = MaterialTheme.colors.background
                     ) {
-                        MainScreen()
+                        //MainScreen()
+                        SpeechToText()
                     }
                 }
             }
@@ -186,14 +189,26 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+    @Composable
+    fun SpeechToText() {
+
+        val context = LocalContext.current
+
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            SpeechRecognizerComponent(context = context, activity = this@MainActivity)
+        }
+
+    }
+
     @ExperimentalMaterialApi
-    @Preview(showBackground = false)
+    @Preview(showBackground = true)
     @Composable
     fun DefaultPreview() {
-        MemrepoTheme {
-            Column {
-                MainScreen()
-            }
-        }
+            SpeechToText()
     }
 }
