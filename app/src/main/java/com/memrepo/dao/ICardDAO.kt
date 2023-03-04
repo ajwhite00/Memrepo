@@ -5,7 +5,7 @@ import com.memrepo.dto.NoteCard
 
 @Dao
 interface ICardDAO {
-
+    
     @Query("SELECT * FROM NoteCard")
     fun getAllNoteCards() : List<NoteCard>
 
@@ -16,5 +16,5 @@ interface ICardDAO {
     fun updateNoteCard(vararg notecards: NoteCard)
 
     @Delete
-    fun delete(notecards: NoteCard)
+    fun deleteNoteCard(notecards: NoteCard)
 }
