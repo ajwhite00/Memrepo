@@ -16,5 +16,5 @@ interface ICardDAO {
     suspend fun updateNoteCard(vararg notecards: NoteCard)
 
     @Delete
-    suspend fun deleteNoteCard(notecards: NoteCard)
+    suspend fun deleteNoteCard(vararg notecards: NoteCard)
 }
