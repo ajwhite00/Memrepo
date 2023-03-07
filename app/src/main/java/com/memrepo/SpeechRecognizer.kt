@@ -23,10 +23,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.memrepo.dto.NoteCard
 import java.util.*
 
 @Composable
-fun SpeechRecognizerComponent(context: Context, activity: Activity) {
+fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: NoteCard) {
 
     if (ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
         ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.RECORD_AUDIO), 1)
@@ -45,6 +46,9 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity) {
 
     var status by remember { mutableStateOf("") }
     var isListening by remember { mutableStateOf(false) }
+
+    val snippetText = noteCard.createSnippetDisplayList()
+    var correctIndexCounter by remember { mutableStateOf(0) }
 
     speechRecognizer.setRecognitionListener(object : RecognitionListener {
         override fun onReadyForSpeech(p0: Bundle?) {
@@ -71,6 +75,18 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity) {
 
         override fun onResults(bundle: Bundle?) {
             val data = bundle!!.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
+            for (word in data!![0].split(" ")) {
+                if (word == (snippetText[correctIndexCounter])) {
+                    // Change color to green
+                    println("Right")
+                } else {
+                    // Change color to red
+                    println("Wrong")
+                    break
+                }
+                correctIndexCounter++
+            }
+
             Toast.makeText(context, data!![0], Toast.LENGTH_LONG).show()
         }
 

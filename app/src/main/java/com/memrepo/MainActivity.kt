@@ -15,6 +15,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.memrepo.dto.NoteCard
 import com.memrepo.ui.theme.MemrepoTheme
 import kotlinx.coroutines.launch
 import java.util.*
@@ -194,13 +195,14 @@ class MainActivity : ComponentActivity() {
     fun SpeechToText() {
 
         val context = LocalContext.current
+        val noteCard = NoteCard(cardID = 0, title = "Test", snippet = "This is a test")
 
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            SpeechRecognizerComponent(context = context, activity = this@MainActivity)
+            SpeechRecognizerComponent(context = context, activity = this@MainActivity, noteCard = noteCard)
         }
 
     }
