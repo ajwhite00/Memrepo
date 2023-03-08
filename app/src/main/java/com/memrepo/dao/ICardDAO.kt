@@ -10,7 +10,7 @@ interface ICardDAO {
     fun getAllNoteCards() : List<NoteCard>
 
     @Insert
-    fun saveNoteCard(vararg notecards: NoteCard)
+    fun saveNoteCard(vararg noteCards: NoteCard)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun updateNoteCard(vararg notecards: NoteCard)
