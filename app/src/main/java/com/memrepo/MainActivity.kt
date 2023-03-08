@@ -24,7 +24,6 @@ class MainActivity : ComponentActivity() {
     @ExperimentalMaterialApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
             setContent {
                 MemrepoTheme {
                     // A surface container using the 'background' color from the theme
@@ -36,8 +35,7 @@ class MainActivity : ComponentActivity() {
                         SpeechToText()
                     }
                 }
-            }
-        }
+            }  
     }
     @ExperimentalMaterialApi
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
