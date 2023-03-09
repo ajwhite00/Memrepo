@@ -10,8 +10,8 @@ import androidx.room.PrimaryKey
  * cardId is a primary key that autogenerates for every newly created NoteCard.
  * title and snippet are both components of a NoteCard that is a stored string for the User.
  */
-@Entity
-data class NoteCard(@PrimaryKey(autoGenerate = true) val cardID : Int,@ColumnInfo("title") val title : String,@ColumnInfo("snippet") val snippet : String){
+@Entity(tableName = "note_card_table")
+data class NoteCard(@PrimaryKey(autoGenerate = true) val cardID : Int = 0,@ColumnInfo("title") val title : String,@ColumnInfo("snippet") val snippet : String){
 
         fun createSnippetDisplayList(): List<String> {
                 return this.snippet //has three rounds of replacement
