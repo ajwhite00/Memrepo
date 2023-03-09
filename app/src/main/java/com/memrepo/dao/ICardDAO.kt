@@ -19,7 +19,7 @@ interface ICardDAO {
      * saveNoteCard inserts a new instance of a NoteCard into the database.
      */
     @Insert
-    fun saveNoteCard(vararg notecards: NoteCard)
+    fun saveNoteCard(vararg noteCards: NoteCard)
 
     /**
      * updateNoteCard updates the NoteCard by replacing the information into the database.
