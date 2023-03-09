@@ -13,13 +13,13 @@ import androidx.room.PrimaryKey
 @Entity
 data class NoteCard(@PrimaryKey(autoGenerate = true) val cardID : Int,@ColumnInfo("title") val title : String,@ColumnInfo("snippet") val snippet : String){
 
-        fun createSnippetDisplayList(): List<String> {
+        fun createSnippetDisplayList(): MutableList<String> {
                 return this.snippet //has three rounds of replacement
                         .replace("-".toRegex(), " ") //replace hyphens with space because of two cases: split words with hyphen in between and remove hyphen in the middle of a sentence
                         .replace("  ".toRegex(), " ") //replace any double spaces caused by hyphen replacement with a single space
                         .replace("[!\"#$%&'()*+,-./:;<=>?@\\[\\]^_`{|}~]".toRegex(), "") //remove punctuation and other non-letter chars
                         .lowercase() //change everything to lowercase to be used later for mic input comparison
                         .split(" ") //separates words as space
-                        .toList() //creates a list individual words to be used later for mic input comparison
+                        .toMutableList() //creates a list individual words to be used later for mic input comparison
         }
 }

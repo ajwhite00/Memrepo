@@ -12,6 +12,11 @@ import org.junit.Assert.*
  */
 class ExampleUnitTest {
     @Test
+    fun addition_isCorrect() {
+        assertEquals(4, 2 + 2)
+    }
+
+    @Test
     fun `Given a NoteCard about the order of the planets, When I toString the object, the ID, title, Then snippet attributes should be returned`(){
         val planets = NoteCard(0, "Planets", "Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune")
         assertEquals("NoteCard(cardID=0, title=Planets, snippet=Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune)", planets.toString())

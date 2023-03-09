@@ -54,9 +54,11 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
     val snippetText = noteCard.createSnippetDisplayList()
     var correctIndexCounter by remember { mutableStateOf(0) }
     var remainingWords by remember { mutableStateOf(noteCard.createSnippetDisplayList()) }
-    var emptyList : List<String> = emptyList()
+    var emptyList : MutableList<String> = mutableListOf()
     var correctWords by remember { mutableStateOf(emptyList) }
-    var incorrectWord by remember { mutableStateOf(String) }
+    var incorrectWord by remember { mutableStateOf("") }
+
+    var data : ArrayList<String>?
 
     speechRecognizer.setRecognitionListener(object : RecognitionListener {
         override fun onReadyForSpeech(p0: Bundle?) {
@@ -82,15 +84,16 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
         }
 
         override fun onResults(bundle: Bundle?) {
-            val data = bundle!!.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
+            data = bundle!!.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
+            remainingWords = data!![0].split(" ") as MutableList<String>
             for (word in data!![0].split(" ")) {
                 if (word == (snippetText[correctIndexCounter])) {
-                    // Change color to green
-
+                    // Add to correct word list and remove remaining list
+                    correctWords.add(remainingWords.removeFirst())
                     println("Right")
                 } else {
-                    // Change color to red
-
+                    // add to incorrect word list and remove from remaining
+                    incorrectWord = remainingWords.removeFirst()
                     println("Wrong")
                     break
                 }
