@@ -9,6 +9,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -73,31 +75,22 @@ class MainActivity : ComponentActivity() {
                         },
                     )
                 },
-                // Bar across bottom of screen
-                bottomBar = {
-                    BottomAppBar {
-                        Box(Modifier.fillMaxWidth()) {
-                            Button(
-                                onClick = {
-                                    // When the button is clicked the bottom sheet will expand or collapse
-                                    coroutineScope.launch {
-                                        if (bottomSheetScaffoldState.bottomSheetState.isCollapsed) {
-                                            bottomSheetScaffoldState.bottomSheetState.expand()
-                                        } else {
-                                            bottomSheetScaffoldState.bottomSheetState.collapse()
-                                        }
-                                    }
-                                },
-                                modifier = Modifier
-                                    .align(Alignment.Center)
-                                    .fillMaxWidth()
-                                    .fillMaxHeight()
-                            ) {
-                                (Text(text = "Add"))
+                floatingActionButton = {
+                    FloatingActionButton(onClick =
+                    {
+                        coroutineScope.launch {
+                            if (bottomSheetScaffoldState.bottomSheetState.isCollapsed) {
+                                bottomSheetScaffoldState.bottomSheetState.expand()
+                            } else {
+                                bottomSheetScaffoldState.bottomSheetState.collapse()
                             }
                         }
+                    }) {
+                        /* FAB content */
                     }
                 },
+                floatingActionButtonPosition = FabPosition.Center,
+
                 // The content in between the top bar and bottom bar
                 content = {
                     MyContent()
@@ -113,9 +106,11 @@ class MainActivity : ComponentActivity() {
             Card(
                 shape = RoundedCornerShape(20.dp),
                 elevation = 10.dp,
-                modifier = Modifier.padding(10.dp).clickable {
-                    mContext.startActivity(Intent(mContext, PracticeActivity::class.java))
-                }
+                modifier = Modifier
+                    .padding(10.dp)
+                    .clickable {
+                        mContext.startActivity(Intent(mContext, PracticeActivity::class.java))
+                    }
             ) {
                 Column(paddingModifier) {
                     // Title and Snippet are placeholders for now, eventually these will be injected values from the database
