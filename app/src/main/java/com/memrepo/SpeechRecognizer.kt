@@ -19,7 +19,11 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -49,6 +53,10 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
 
     val snippetText = noteCard.createSnippetDisplayList()
     var correctIndexCounter by remember { mutableStateOf(0) }
+    var remainingWords by remember { mutableStateOf(noteCard.createSnippetDisplayList()) }
+    var emptyList : List<String> = emptyList()
+    var correctWords by remember { mutableStateOf(emptyList) }
+    var incorrectWord by remember { mutableStateOf(String) }
 
     speechRecognizer.setRecognitionListener(object : RecognitionListener {
         override fun onReadyForSpeech(p0: Bundle?) {
@@ -78,9 +86,11 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
             for (word in data!![0].split(" ")) {
                 if (word == (snippetText[correctIndexCounter])) {
                     // Change color to green
+
                     println("Right")
                 } else {
                     // Change color to red
+
                     println("Wrong")
                     break
                 }
@@ -118,6 +128,20 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
 fun DefaultPreview() {
     Box(modifier = Modifier.fillMaxWidth()) {
         Column( modifier = Modifier.align(Alignment.Center) ) {
+            Text(
+                text = buildAnnotatedString {
+                    withStyle(style = SpanStyle(color = Color.Green)) {
+                        append("This is a test")
+                    }
+                    withStyle(style = SpanStyle(color = Color.Red)) {
+                        append(" This is a test")
+                    }
+                    withStyle(style = SpanStyle(color = Color.Gray)) {
+                        append(" This is a test")
+                    }
+                },
+                modifier = Modifier.align(Alignment.CenterHorizontally))
+
             Button(
                 onClick = {},
             ){
