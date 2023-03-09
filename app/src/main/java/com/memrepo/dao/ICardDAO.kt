@@ -1,7 +1,9 @@
 package com.memrepo.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.memrepo.dto.NoteCard
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Interface that implements CRUD functions from the DAO.
@@ -12,24 +14,21 @@ interface ICardDAO {
     /**
      * getAllNoteCards makes a basic SQLLite statement that grabs all NoteCards from the database.
      */
-    @Query("SELECT * FROM NoteCard")
-    fun getAllNoteCards() : List<NoteCard>
+    @Query("SELECT * FROM note_card_table")
+    fun getAllNoteCards() : LiveData<List<NoteCard>>
 
     /**
-     * saveNoteCard inserts a new instance of a NoteCard into the database.
+     * insertNoteCards inserts all note-card data into the database.
      */
-    @Insert
-    fun saveNoteCard(vararg noteCards: NoteCard)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertNoteCard(notecards: NoteCard)
 
-    /**
-     * updateNoteCard updates the NoteCard by replacing the information into the database.
-     */
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun updateNoteCard(vararg notecards: NoteCard)
+    @Update
+    fun updateNoteCard(notecards: NoteCard)
 
     /**
      * delete removes selected NoteCard from the database.
      */
     @Delete
-    fun delete(notecards: NoteCard)
+    fun deleteNoteCard(notecards: NoteCard)
 }
