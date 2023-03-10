@@ -1,20 +1,21 @@
 package com.memrepo.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.memrepo.dto.NoteCard
 
 @Dao
 interface ICardDAO {
 
-    @Query("SELECT * FROM NoteCard")
-    fun getAllNoteCards() : List<NoteCard>
+    @Query("SELECT * FROM NoteCards")
+    fun getAllNoteCards() : LiveData<List<NoteCard>>
 
-    @Insert
-    fun saveNoteCard(vararg noteCards: NoteCard)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun saveNoteCard(noteCard: NoteCard)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun updateNoteCard(vararg notecards: NoteCard)
+    suspend fun updateNoteCard(noteCard: NoteCard)
 
     @Delete
-    fun delete(notecards: NoteCard)
+    suspend fun delete(noteCard: NoteCard)
 }

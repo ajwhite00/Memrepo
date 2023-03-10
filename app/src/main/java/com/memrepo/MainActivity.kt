@@ -1,34 +1,47 @@
 package com.memrepo
 
 import android.annotation.SuppressLint
+import android.content.ContentValues.TAG
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.memrepo.dto.NoteCard
 import com.memrepo.ui.theme.MemrepoTheme
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
+
+    private val viewModel : MainViewModel by viewModel<MainViewModel>()
+
     @ExperimentalMaterialApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
             setContent {
+
+                val noteCards by viewModel.noteCards.observeAsState(initial = emptyList())
+
                 MemrepoTheme {
                     // A surface container using the 'background' color from the theme
                     Surface(
                         modifier = Modifier.fillMaxSize(),
                         color = MaterialTheme.colors.background
                     ) {
-                        MainScreen()
+                        MainScreen(noteCards)
                     }
                 }
             }  
@@ -36,7 +49,9 @@ class MainActivity : ComponentActivity() {
     @ExperimentalMaterialApi
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     @Composable
-    fun MainScreen() {
+    fun MainScreen(noteCard: List<NoteCard>) {
+
+        var noteCards by remember { mutableStateOf(noteCard) }
 
         // Bottom Sheet is used to create a 'Modal' but for android apps
         val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
@@ -97,13 +112,34 @@ class MainActivity : ComponentActivity() {
                 },
                 // The content in between the top bar and bottom bar
                 content = {
-                    MyContent()
+                    LazyColumn(
+                        Modifier.fillMaxWidth(),
+                        contentPadding = PaddingValues(16.dp)
+                    ) {
+                        item {
+                            Row(
+                                modifier = Modifier.fillMaxWidth()
+                                    .wrapContentHeight()
+                                    .padding(vertical = 25.dp),
+                                horizontalArrangement = Arrangement.Center,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = "My List"
+                                )
+                            }
+                        }
+                        items(noteCards){ noteCard ->
+                            MyContent(noteCard)
+                        }
+                    }
+
                 }
             )
         }
     }
     @Composable
-    fun MyContent() {
+    fun MyContent(noteCard: NoteCard) {
         val paddingModifier = Modifier.padding(10.dp)
         Box(Modifier.fillMaxSize()) {
             Card(
@@ -113,8 +149,8 @@ class MainActivity : ComponentActivity() {
             ) {
                 Column(paddingModifier) {
                     // Title and Snippet are placeholders for now, eventually these will be injected values from the database
-                    Text(text = "Title", Modifier.fillMaxWidth())
-                    Text(text = "Snippet", Modifier.fillMaxWidth())
+                    Text(text = noteCard.title, Modifier.fillMaxWidth())
+                    Text(text = noteCard.snippet, Modifier.fillMaxWidth())
                 }
                 // Button will have the options to Edit or delete the note card
                 Button(modifier = Modifier.align(Alignment.TopEnd), onClick = {}){
@@ -129,7 +165,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun AddSnippet(bottomSheetScaffoldState: BottomSheetScaffoldState) {
         var title by remember { mutableStateOf("") }
-        var text by remember { mutableStateOf("") }
+        var snippetText by remember { mutableStateOf("") }
         val coroutineScope = rememberCoroutineScope()
         val keyBoardController = LocalSoftwareKeyboardController.current
         Box (modifier = Modifier.fillMaxWidth()) {
@@ -139,7 +175,7 @@ class MainActivity : ComponentActivity() {
                     coroutineScope.launch { bottomSheetScaffoldState.bottomSheetState.collapse() }
                     keyBoardController?.hide()
                     title = ""
-                    text = ""
+                    snippetText = ""
                 },
                 modifier = Modifier
                     .align(Alignment.TopEnd)
@@ -160,8 +196,8 @@ class MainActivity : ComponentActivity() {
                     singleLine = true
                 )
                 OutlinedTextField(
-                    value = text,
-                    onValueChange = { text = it },
+                    value = snippetText,
+                    onValueChange = { snippetText = it },
                     label = { Text("Snippet Text") },
                     modifier = Modifier
                         .height(300.dp)
@@ -175,6 +211,9 @@ class MainActivity : ComponentActivity() {
                 // Logic to save snippet
                 /* TODO */
                 onClick = {
+                    if (title.isNotEmpty() && title != null && snippetText.isNotEmpty() && snippetText != null){
+                        viewModel.saveNoteCard(NoteCard(0, title, snippetText))
+                    }
                     coroutineScope.launch { bottomSheetScaffoldState.bottomSheetState.collapse() }
                     keyBoardController?.hide()
                 },
@@ -190,7 +229,7 @@ class MainActivity : ComponentActivity() {
     fun DefaultPreview() {
         MemrepoTheme {
             Column {
-                MainScreen()
+                //MainScreen()
             }
         }
     }
