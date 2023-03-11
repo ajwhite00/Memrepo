@@ -1,9 +1,7 @@
 package com.memrepo
 
 import android.annotation.SuppressLint
-import android.content.ContentValues.TAG
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -26,7 +24,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
 
-    private val viewModel : MainViewModel by viewModel<MainViewModel>()
+    private val viewModel : MainViewModel by viewModel()
 
     @ExperimentalMaterialApi
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,9 +47,7 @@ class MainActivity : ComponentActivity() {
     @ExperimentalMaterialApi
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     @Composable
-    fun MainScreen(noteCard: List<NoteCard>) {
-
-        var noteCards by remember { mutableStateOf(noteCard) }
+    fun MainScreen(noteCards: List<NoteCard>) {
 
         // Bottom Sheet is used to create a 'Modal' but for android apps
         val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
@@ -129,9 +125,7 @@ class MainActivity : ComponentActivity() {
                                 )
                             }
                         }
-                        items(noteCards){ noteCard ->
-                            MyContent(noteCard)
-                        }
+                        items(noteCards){ noteCard -> Card(noteCard) }
                     }
 
                 }
@@ -139,7 +133,7 @@ class MainActivity : ComponentActivity() {
         }
     }
     @Composable
-    fun MyContent(noteCard: NoteCard) {
+    fun Card(noteCard: NoteCard) {
         val paddingModifier = Modifier.padding(10.dp)
         Box(Modifier.fillMaxSize()) {
             Card(
@@ -211,11 +205,13 @@ class MainActivity : ComponentActivity() {
                 // Logic to save snippet
                 /* TODO */
                 onClick = {
-                    if (title.isNotEmpty() && title != null && snippetText.isNotEmpty() && snippetText != null){
+                    if (title.isNotEmpty() && snippetText.isNotEmpty()){
                         viewModel.saveNoteCard(NoteCard(0, title, snippetText))
                     }
                     coroutineScope.launch { bottomSheetScaffoldState.bottomSheetState.collapse() }
                     keyBoardController?.hide()
+                    title = ""
+                    snippetText = ""
                 },
                 modifier = Modifier.align(Alignment.Center)
             ) {
