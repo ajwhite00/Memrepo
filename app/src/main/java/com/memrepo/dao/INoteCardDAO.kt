@@ -8,7 +8,7 @@ import com.memrepo.dto.NoteCard
  * Interface that implements CRUD functions from the DAO.
  */
 @Dao
-interface ICardDAO {
+interface INoteCardDAO {
 
     /**
      * getAllNoteCards makes a basic SQLLite statement that grabs all NoteCards from the database.

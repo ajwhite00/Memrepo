@@ -1,4 +1,4 @@
-package com.memrepo
+package com.memrepo.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

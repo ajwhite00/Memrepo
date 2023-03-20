@@ -13,12 +13,12 @@
         android:theme="@style/Theme.Memrepo"
         tools:targetApi="31">
         <activity
-            android:name=".PracticeActivity"
+            android:name=".ui.PracticeActivity"
             android:exported="false"
             android:label="@string/title_activity_practice"
             android:theme="@style/Theme.Memrepo" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.Memrepo">

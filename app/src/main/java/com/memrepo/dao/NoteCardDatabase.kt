@@ -6,5 +6,5 @@ import com.memrepo.dto.NoteCard
 
 @Database(entities=[NoteCard::class], version = 1)
 abstract class NoteCardDatabase : RoomDatabase() {
-    abstract fun noteCardDAO() : ICardDAO
+    abstract fun noteCardDAO() : INoteCardDAO
 }

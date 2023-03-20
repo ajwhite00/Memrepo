@@ -4,19 +4,19 @@ import android.app.Application
 import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.room.Room
-import com.memrepo.dao.ICardDAO
+import com.memrepo.dao.INoteCardDAO
 import com.memrepo.dao.NoteCardDatabase
 import com.memrepo.dto.NoteCard
 
 interface INoteCardService {
-    fun getNoteCardDAO() : ICardDAO
+    fun getNoteCardDAO() : INoteCardDAO
 }
 
 class NoteCardService(val application: Application) : INoteCardService {
 
     lateinit var db: NoteCardDatabase
 
-    override fun getNoteCardDAO() : ICardDAO {
+    override fun getNoteCardDAO() : INoteCardDAO {
         if (!this::db.isInitialized) {
             db = Room.databaseBuilder(application, NoteCardDatabase::class.java, "Memrepo").build()
         }
