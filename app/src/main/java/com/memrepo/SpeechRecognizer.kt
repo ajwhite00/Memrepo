@@ -43,7 +43,6 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
 
     val speechRecognizer = SpeechRecognizer.createSpeechRecognizer(context)
 
-
     val speechRecognizerIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
     speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
     speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
@@ -51,12 +50,12 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
     var status by remember { mutableStateOf("") }
     var isListening by remember { mutableStateOf(false) }
 
-    val snippetText = noteCard.createSnippetDisplayList()
-    var correctIndexCounter by remember { mutableStateOf(0) }
     var remainingWords by remember { mutableStateOf(noteCard.createSnippetDisplayList()) }
     var emptyList : MutableList<String> = mutableListOf()
     var correctWords by remember { mutableStateOf(emptyList) }
     var incorrectWord by remember { mutableStateOf("") }
+
+    fun updateList() = correctWords.add(remainingWords.removeFirst())
 
     var data : ArrayList<String>?
 
@@ -85,19 +84,23 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
 
         override fun onResults(bundle: Bundle?) {
             data = bundle!!.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
-            remainingWords = data!![0].split(" ") as MutableList<String>
             for (word in data!![0].split(" ")) {
-                if (word == (snippetText[correctIndexCounter])) {
+                if (word == (remainingWords[0])) {
+                    if (incorrectWord.isNotEmpty()) {
+                        incorrectWord = ""
+                    }
+
                     // Add to correct word list and remove remaining list
-                    correctWords.add(remainingWords.removeFirst())
+                    updateList()
+
                     println("Right")
                 } else {
                     // add to incorrect word list and remove from remaining
-                    incorrectWord = remainingWords.removeFirst()
+                    incorrectWord = word
+                    
                     println("Wrong")
                     break
                 }
-                correctIndexCounter++
             }
 
             Toast.makeText(context, data!![0], Toast.LENGTH_LONG).show()
@@ -111,7 +114,22 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
 
     Box(modifier = Modifier.fillMaxWidth()) {
         Column(modifier = Modifier.align(Alignment.Center)) {
+            Text(
+                text = buildAnnotatedString {
+                    withStyle(style = SpanStyle(color = Color.Green)) {
+                        append(correctWords.toString().replace("[,\\[\\]]".toRegex(), ""))
+                    }
+                    withStyle(style = SpanStyle(color = Color.Red)) {
+                        append(" $incorrectWord")
+                    }
+                    withStyle(style = SpanStyle(color = Color.Gray)) {
+                        append(" ${remainingWords.toString().replace("[,\\[\\]]".toRegex(), "")}")
+                    }
+                },
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
             Button(
+                modifier = Modifier.align(Alignment.CenterHorizontally),
                 onClick = {
                      if (!isListening) speechRecognizer.startListening(speechRecognizerIntent) else speechRecognizer.stopListening()
                 },
@@ -143,9 +161,10 @@ fun DefaultPreview() {
                         append(" This is a test")
                     }
                 },
-                modifier = Modifier.align(Alignment.CenterHorizontally))
-
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
             Button(
+                modifier = Modifier.align(Alignment.CenterHorizontally),
                 onClick = {},
             ){
                 Icon(painter = painterResource(id = R.drawable.ic_microphone_foreground), contentDescription = "Microphone")
