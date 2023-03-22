@@ -97,7 +97,7 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
                 } else {
                     // add to incorrect word list and remove from remaining
                     incorrectWord = word
-                    
+
                     println("Wrong")
                     break
                 }
@@ -122,8 +122,11 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
                     withStyle(style = SpanStyle(color = Color.Red)) {
                         append(" $incorrectWord")
                     }
-                    withStyle(style = SpanStyle(color = Color.Gray)) {
-                        append(" ${remainingWords.toString().replace("[,\\[\\]]".toRegex(), "")}")
+                    remainingWords.forEach { word ->
+                        withStyle(style = SpanStyle(color = Color.Gray, background = Color.Gray)) {
+                            append(word)
+                        }
+                        append(" ")
                     }
                 },
                 modifier = Modifier.align(Alignment.CenterHorizontally)
