@@ -43,6 +43,8 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
         Toast.makeText(context, "Speech recognition is not available", Toast.LENGTH_LONG).show()
     }
 
+    val speechRecognizer = SpeechRecognizer.createSpeechRecognizer(context)
+
     val speechRecognizerIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
     speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true)
     speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
@@ -73,7 +75,6 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
     var data : ArrayList<String>?
 
     speechRecognizer.setRecognitionListener(object : RecognitionListener {
-
         override fun onReadyForSpeech(p0: Bundle?) {
             isListening = true
             status = "Ready"
@@ -99,7 +100,6 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
         }
 
         override fun onResults(bundle: Bundle?) {
-
             data = bundle!!.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
 
             var i = 0
@@ -210,7 +210,7 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
             Button(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 onClick = {
-                     if (!isListening) speechRecognizer.startListening(speechRecognizerIntent)
+                     if (!isListening && remainingWords.isNotEmpty()) speechRecognizer.startListening(speechRecognizerIntent)
                           },
             ) {
                 Icon(

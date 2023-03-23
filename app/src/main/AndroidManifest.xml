@@ -12,6 +12,7 @@
     </queries>
 
     <application
+        android:name=".MemrepoApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -21,7 +22,12 @@
         android:theme="@style/Theme.Memrepo"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.PracticeActivity"
+            android:exported="false"
+            android:label="@string/title_activity_practice"
+            android:theme="@style/Theme.Memrepo" />
+        <activity
+            android:name=".ui.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.Memrepo">
             <intent-filter>
