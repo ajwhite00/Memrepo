@@ -3,6 +3,7 @@ package com.memrepo.ui
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.clickable
@@ -11,6 +12,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -24,7 +27,8 @@ import com.memrepo.dto.NoteCard
 import com.memrepo.ui.theme.MemrepoTheme
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
-
+import kotlin.math.exp
+import androidx.compose.material3.DropdownMenuItem
 class MainActivity : ComponentActivity() {
 
     private val viewModel : MainViewModel by viewModel()
@@ -69,6 +73,8 @@ class MainActivity : ComponentActivity() {
                     Column {
                         // Contents of the Bottom Sheet come from this component
                         AddSnippet(bottomSheetScaffoldState)
+
+
                     }
                 }
             }, sheetPeekHeight = 0.dp
@@ -95,7 +101,7 @@ class MainActivity : ComponentActivity() {
                             }
                         }
                     }) {
-                        /* FAB content */
+                        Text("+")
                     }
                 },
                 floatingActionButtonPosition = FabPosition.Center,
@@ -108,7 +114,8 @@ class MainActivity : ComponentActivity() {
                     ) {
                         item {
                             Row(
-                                modifier = Modifier.fillMaxWidth()
+                                modifier = Modifier
+                                    .fillMaxWidth()
                                     .wrapContentHeight()
                                     .padding(vertical = 25.dp),
                                 horizontalArrangement = Arrangement.Center,
@@ -130,6 +137,26 @@ class MainActivity : ComponentActivity() {
     fun SnippetCard(noteCard: NoteCard) {
         val mContext = LocalContext.current
         val paddingModifier = Modifier.padding(10.dp)
+        var mExpanded by remember { mutableStateOf(false)}
+        var openAlert = remember { mutableStateOf(false) }
+
+        if (openAlert.value) {
+            // if yes button clicked viewModel.deleteNoteCard(noteCard)
+            AlertDialog(
+                onDismissRequest = {openAlert.value = false},
+                text={Text("Are you sure you want to delete this?")},
+                confirmButton = {
+                                Button(onClick = {
+                                    openAlert.value = false
+                                    viewModel.deleteNoteCard(noteCard) }) {
+                                    Text("confirm")
+                                }
+                },
+
+
+                )
+        }
+
         Box(Modifier.fillMaxSize()) {
             Card(
                 shape = RoundedCornerShape(20.dp),
@@ -137,22 +164,50 @@ class MainActivity : ComponentActivity() {
                 modifier = Modifier
                     .padding(10.dp)
                     .clickable {
+                        val intent = Intent(mContext, PracticeActivity::class.java)
+                        intent.putExtra("Title", noteCard.title)
+                        intent.putExtra("Snippet", noteCard.snippet)
                         mContext.startActivity(Intent(mContext, PracticeActivity::class.java))
                     }
             ) {
+
                 Column(paddingModifier) {
                     // Title and Snippet are placeholders for now, eventually these will be injected values from the database
-                    Text(text = noteCard.title, Modifier.fillMaxWidth())
-                    Text(text = noteCard.snippet, Modifier.fillMaxWidth())
+                        Text(text = noteCard.title, Modifier.fillMaxWidth())
+                        Text(text = noteCard.snippet, Modifier.fillMaxWidth())
+
                 }
                 // Button will have the options to Edit or delete the note card
-                Button(modifier = Modifier.align(Alignment.TopEnd), onClick = {}){
-                    Text("...")
-                }
-            }
-        }
-    }
+               IconButton(
+                   onClick = { mExpanded = true },
+                   modifier = Modifier
+                       .fillMaxWidth()
+                       .wrapContentSize(Alignment.TopEnd)
+                   ) {
+                   Icon(
+                       imageVector = Icons.Default.MoreVert,
+                       contentDescription = "Open options"
+                   )
+               }
+                       DropdownMenu(expanded = mExpanded, onDismissRequest = {mExpanded = false}, modifier = Modifier.align(Alignment.TopEnd))
+                       {
+                         DropdownMenuItem(
+                              text = { Text("Edit")},
+                             onClick = { }
 
+                          )
+                           DropdownMenuItem(
+                               text = { Text("Delete")},
+                               onClick = {
+                                   mExpanded = false
+                                   openAlert.value = true }
+                               )
+
+                       }
+               }
+
+               }
+            }
     @OptIn(ExperimentalComposeUiApi::class)
     @ExperimentalMaterialApi
     @Composable
@@ -224,7 +279,7 @@ class MainActivity : ComponentActivity() {
     fun DefaultPreview() {
         MemrepoTheme {
             Column {
-                //MainScreen()
+
             }
         }
     }

@@ -16,6 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.memrepo.dto.NoteCard
 import com.memrepo.ui.MainActivity
 import com.memrepo.ui.theme.MemrepoTheme
 
@@ -62,14 +63,18 @@ fun practiceScreen(){
 
 @Composable
 fun MyContent(){
+    val context = LocalContext.current
+    val intent = (context as PracticeActivity).intent
+    val title = intent.getStringExtra("Title")
+    val snippet = intent.getStringExtra("Snippet")
+
     Box(Modifier.fillMaxSize()){
         Column(Modifier.padding(10.dp)) {
 
-            Text(text = "Name all the Oceans?", Modifier.fillMaxSize(), fontSize = 25.sp)
-
-
+        Text("Title : $title").toString()
+        Text("Snippet : $snippet").toString()
         }
-        Text(text = "filler data in here for now", Modifier.align(Alignment.CenterStart).padding(20.dp))
+
     }
 }
 
