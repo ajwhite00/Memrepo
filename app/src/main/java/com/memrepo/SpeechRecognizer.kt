@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,13 +33,11 @@ import com.memrepo.dto.NoteCard
 import java.util.*
 
 @Composable
-fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: NoteCard) {
+fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: NoteCard, speechRecognizer: SpeechRecognizer) {
 
     if (ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
         ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.RECORD_AUDIO), 1)
     }
-
-    val speechRecognizer = SpeechRecognizer.createSpeechRecognizer(context)
 
     if(!SpeechRecognizer.isRecognitionAvailable(context)){
         Toast.makeText(context, "Speech recognition is not available", Toast.LENGTH_LONG).show()
@@ -57,7 +56,12 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
     var incorrectWord by remember { mutableStateOf("") }
     var partialWords by remember { mutableStateOf(mutableListOf<String>()) }
 
-    fun updateList() = correctWords.add(remainingWords.removeFirst())
+    fun updateList() {
+        Log.d("SpeechRecognizer.updateList()", "Removing '${remainingWords[0]}' from remainingWords")
+        correctWords.add(remainingWords.removeFirst())
+        Log.d("SpeechRecognizer.updateList()", "Correct words $correctWords")
+    }
+
     // Return true or false if word is found in partialWords or all words in partialWords has been iterated through
     fun checkPartialWordsList(word: String, i: Int) : Boolean {
         if (partialWords.size - 1 >= i) {
@@ -84,16 +88,14 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
         override fun onBufferReceived(p0: ByteArray?) {}
 
         override fun onEndOfSpeech() {
-            status = ""
-            isListening = false
-            println("End of Speech Correct: $correctWords")
-            println("End of Speech Remaining: $remainingWords")
+            Log.d("SpeechRecognizer.onEndOfSpeech()","Correct Words: $correctWords")
+            Log.d("SpeechRecognizer.onEndOfSpeech()","Remaining Words: $remainingWords")
         }
 
         override fun onError(p0: Int) {
             status = ""
             isListening = false
-            println("Error: $p0")
+            Log.w("SpeechRecognizer.onError()", "Error: $p0")
         }
 
         override fun onResults(bundle: Bundle?) {
@@ -125,7 +127,7 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
                         }
                         // Add to correct word list and remove remaining list
                         updateList()
-                        println("Results: $correctWords")
+
                     } else {
                         // add to incorrect word list and remove from remaining
                         incorrectWord = word
@@ -134,21 +136,21 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
                 }
             }
 
-            partialWords.clear()
+            Log.d("SpeechRecognizer.onResults", "Results: ${data!![0]}")
             Toast.makeText(context, data!![0], Toast.LENGTH_LONG).show()
             speechRecognizer.stopListening()
+            partialWords.clear()
+            status = ""
+            isListening = false
             println("End of Results")
         }
 
         override fun onPartialResults(partialResults: Bundle?) {
             data = partialResults!!.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
+            Log.d("SpeechRecognizer.onPartialResults","Detected partial words: ${data!![0]}")
 
             fun checkWord(){
                 if (remainingWords.isNotEmpty() && partialWords.last() == (remainingWords[0])) {
-                    // Remove incorrect word
-                    if (incorrectWord.isNotEmpty()) {
-                        incorrectWord = ""
-                    }
                     // Add to correct word list and remove remaining list
                     updateList()
                 } else {
@@ -162,7 +164,7 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
 
             // Update partialWords to add the last word detected as partial result
             fun addResultToPartialWords(data:  ArrayList<String>?) {
-                if(data!![0].split(" ").last() != "") {
+                if(data!![0].split(" ").last().isNotEmpty()) {
                     partialWords.add(data!![0].split(" ").last())
                     checkWord()
                 }
@@ -177,8 +179,7 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
                 addResultToPartialWords(data)
             }
 
-            println(data!![0])
-            println("Partial Words: $partialWords")
+            Log.d("SpeechRecognizer.onPartialResults", "Partial Words: $partialWords")
 
         }
 

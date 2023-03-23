@@ -2,6 +2,7 @@ package com.memrepo
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.speech.SpeechRecognizer
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -21,6 +22,14 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 class MainActivity : ComponentActivity() {
+
+    val speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this)
+
+    override fun onDestroy() {
+        super.onDestroy()
+        speechRecognizer.destroy()
+    }
+
     @ExperimentalMaterialApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +46,8 @@ class MainActivity : ComponentActivity() {
                 }
             }  
     }
+
+
     @ExperimentalMaterialApi
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     @Composable
@@ -200,7 +211,7 @@ class MainActivity : ComponentActivity() {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            SpeechRecognizerComponent(context = context, activity = this@MainActivity, noteCard = noteCard)
+            SpeechRecognizerComponent(context = context, activity = this@MainActivity, noteCard = noteCard, speechRecognizer = speechRecognizer)
         }
 
     }
