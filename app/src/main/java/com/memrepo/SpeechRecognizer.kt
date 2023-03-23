@@ -134,7 +134,7 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
             Button(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 onClick = {
-                     if (!isListening) speechRecognizer.startListening(speechRecognizerIntent) else speechRecognizer.stopListening()
+                     if (!isListening && remainingWords.isNotEmpty()) speechRecognizer.startListening(speechRecognizerIntent) else speechRecognizer.stopListening()
                 },
             ) {
                 Icon(
