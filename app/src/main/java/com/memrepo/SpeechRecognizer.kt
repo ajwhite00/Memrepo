@@ -12,6 +12,7 @@ import android.speech.SpeechRecognizer
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
@@ -37,13 +38,14 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
         ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.RECORD_AUDIO), 1)
     }
 
+    val speechRecognizer = SpeechRecognizer.createSpeechRecognizer(context)
+
     if(!SpeechRecognizer.isRecognitionAvailable(context)){
         Toast.makeText(context, "Speech recognition is not available", Toast.LENGTH_LONG).show()
     }
 
-    val speechRecognizer = SpeechRecognizer.createSpeechRecognizer(context)
-
     val speechRecognizerIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+    speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true)
     speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
     speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
 
@@ -51,15 +53,23 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
     var isListening by remember { mutableStateOf(false) }
 
     var remainingWords by remember { mutableStateOf(noteCard.createSnippetDisplayList()) }
-    var emptyList : MutableList<String> = mutableListOf()
-    var correctWords by remember { mutableStateOf(emptyList) }
+    var correctWords by remember { mutableStateOf(mutableListOf<String>()) }
     var incorrectWord by remember { mutableStateOf("") }
+    var partialWords by remember { mutableStateOf(mutableListOf<String>()) }
 
     fun updateList() = correctWords.add(remainingWords.removeFirst())
+    // Return true or false if word is found in partialWords or all words in partialWords has been iterated through
+    fun checkPartialWordsList(word: String, i: Int) : Boolean {
+        if (partialWords.size - 1 >= i) {
+            return word == partialWords[i]
+        }
+        return false
+    }
 
     var data : ArrayList<String>?
 
     speechRecognizer.setRecognitionListener(object : RecognitionListener {
+
         override fun onReadyForSpeech(p0: Bundle?) {
             isListening = true
             status = "Ready"
@@ -76,37 +86,101 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
         override fun onEndOfSpeech() {
             status = ""
             isListening = false
+            println("End of Speech Correct: $correctWords")
+            println("End of Speech Remaining: $remainingWords")
         }
 
         override fun onError(p0: Int) {
-            Toast.makeText(context, "ERROR $p0", Toast.LENGTH_SHORT).show()
+            status = ""
+            isListening = false
+            println("Error: $p0")
         }
 
         override fun onResults(bundle: Bundle?) {
+
             data = bundle!!.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
+
+            var i = 0
+            var resultsAfterPartialClear : MutableList<String> = mutableListOf()
+
             for (word in data!![0].split(" ")) {
-                if (word == (remainingWords[0])) {
-                    if (incorrectWord.isNotEmpty()) {
-                        incorrectWord = ""
-                    }
-
-                    // Add to correct word list and remove remaining list
-                    updateList()
-
-                    println("Right")
-                } else {
-                    // add to incorrect word list and remove from remaining
-                    incorrectWord = word
-                    
-                    println("Wrong")
+                // Check if remainingWords is empty
+                if (remainingWords.isEmpty() || word == incorrectWord){
                     break
+                }
+
+                // Add word to resultsAfterPartialClear if it is not already in partialWords
+                if(!checkPartialWordsList(word, i)){
+                    resultsAfterPartialClear.add(word)
+                }
+
+                i++
+            }
+
+            if (resultsAfterPartialClear.isNotEmpty()){
+                for (word in resultsAfterPartialClear) {
+                    if (word == (remainingWords[0])) {
+                        if (incorrectWord.isNotEmpty()) {
+                            incorrectWord = ""
+                        }
+                        // Add to correct word list and remove remaining list
+                        updateList()
+                        println("Results: $correctWords")
+                    } else {
+                        // add to incorrect word list and remove from remaining
+                        incorrectWord = word
+                        break
+                    }
                 }
             }
 
+            partialWords.clear()
             Toast.makeText(context, data!![0], Toast.LENGTH_LONG).show()
+            speechRecognizer.stopListening()
+            println("End of Results")
         }
 
-        override fun onPartialResults(bundle: Bundle?) {}
+        override fun onPartialResults(partialResults: Bundle?) {
+            data = partialResults!!.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
+
+            fun checkWord(){
+                if (remainingWords.isNotEmpty() && partialWords.last() == (remainingWords[0])) {
+                    // Remove incorrect word
+                    if (incorrectWord.isNotEmpty()) {
+                        incorrectWord = ""
+                    }
+                    // Add to correct word list and remove remaining list
+                    updateList()
+                } else {
+                    // add to incorrect word list and remove from remaining
+                    incorrectWord = partialWords.last()
+                    speechRecognizer.stopListening()
+                    status = ""
+                    isListening = false
+                }
+            }
+
+            // Update partialWords to add the last word detected as partial result
+            fun addResultToPartialWords(data:  ArrayList<String>?) {
+                if(data!![0].split(" ").last() != "") {
+                    partialWords.add(data!![0].split(" ").last())
+                    checkWord()
+                }
+            }
+
+            // partialWords is initially empty we need to add the first partial result or else an exception will be thrown with partialWords.last()
+            if(partialWords.isEmpty()){
+                addResultToPartialWords(data)
+            }
+            // Add the most recent partial result to partialWords
+            else if (data!![0].split(" ").last() != partialWords.last()){
+                addResultToPartialWords(data)
+            }
+
+            println(data!![0])
+            println("Partial Words: $partialWords")
+
+        }
 
         override fun onEvent(p0: Int, p1: Bundle?) {}
 
@@ -114,25 +188,29 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
 
     Box(modifier = Modifier.fillMaxWidth()) {
         Column(modifier = Modifier.align(Alignment.Center)) {
-            Text(
-                text = buildAnnotatedString {
-                    withStyle(style = SpanStyle(color = Color.Green)) {
-                        append(correctWords.toString().replace("[,\\[\\]]".toRegex(), ""))
+            Row(modifier = Modifier.align(Alignment.CenterHorizontally)){
+                Text(
+                    text = buildAnnotatedString {
+                        withStyle(style = SpanStyle(color = Color.Green)) {
+                            append(correctWords.toString().replace("[,\\[\\]]".toRegex(), ""))
+                        }
+                        withStyle(style = SpanStyle(color = Color.Red)) {
+                            append(" $incorrectWord ")
+                        }
+                        remainingWords.forEach { word ->
+                            withStyle(style = SpanStyle(color = Color.Gray, background = Color.Gray)) {
+                                append(word)
+                            }
+                            append(" ")
+                        }
                     }
-                    withStyle(style = SpanStyle(color = Color.Red)) {
-                        append(" $incorrectWord")
-                    }
-                    withStyle(style = SpanStyle(color = Color.Gray)) {
-                        append(" ${remainingWords.toString().replace("[,\\[\\]]".toRegex(), "")}")
-                    }
-                },
-                modifier = Modifier.align(Alignment.CenterHorizontally)
-            )
+                )
+            }
             Button(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 onClick = {
-                     if (!isListening) speechRecognizer.startListening(speechRecognizerIntent) else speechRecognizer.stopListening()
-                },
+                     if (!isListening) speechRecognizer.startListening(speechRecognizerIntent)
+                          },
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_microphone_foreground),
@@ -147,22 +225,34 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
+    var words = arrayListOf("This", "is", "a", "test")
     Box(modifier = Modifier.fillMaxWidth()) {
         Column( modifier = Modifier.align(Alignment.Center) ) {
-            Text(
-                text = buildAnnotatedString {
-                    withStyle(style = SpanStyle(color = Color.Green)) {
-                        append("This is a test")
+            Row( modifier = Modifier.align(Alignment.CenterHorizontally)) {
+                Text(
+                    text = buildAnnotatedString {
+                        withStyle(style = SpanStyle(color = Color.Green)) {
+                            append("This is a test")
+                        }
+                        withStyle(style = SpanStyle(color = Color.Red)) {
+                            append(" This is a test")
+                        }
+                        words.forEach { word ->
+                            append(" ")
+                            withStyle(
+                                style = SpanStyle(
+                                    color = Color.Gray,
+                                    background = Color.Gray
+                                )
+                            ) {
+                                append(word)
+                            }
+                        }
+
                     }
-                    withStyle(style = SpanStyle(color = Color.Red)) {
-                        append(" This is a test")
-                    }
-                    withStyle(style = SpanStyle(color = Color.Gray)) {
-                        append(" This is a test")
-                    }
-                },
-                modifier = Modifier.align(Alignment.CenterHorizontally)
-            )
+                )
+            }
+
             Button(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 onClick = {},

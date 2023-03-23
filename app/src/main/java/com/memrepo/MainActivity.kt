@@ -193,7 +193,7 @@ class MainActivity : ComponentActivity() {
     fun SpeechToText() {
 
         val context = LocalContext.current
-        val noteCard = NoteCard(cardID = 0, title = "Test", snippet = "This is a test")
+        val noteCard = NoteCard(cardID = 0, title = "Test", snippet = "This is a longer test")
 
         Column(
             modifier = Modifier.fillMaxSize(),
