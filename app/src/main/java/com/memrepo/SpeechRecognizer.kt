@@ -43,8 +43,6 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
         Toast.makeText(context, "Speech recognition is not available", Toast.LENGTH_LONG).show()
     }
 
-    val speechRecognizer = SpeechRecognizer.createSpeechRecognizer(context)
-
     val speechRecognizerIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
     speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true)
     speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
@@ -78,6 +76,9 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
         override fun onReadyForSpeech(p0: Bundle?) {
             isListening = true
             status = "Ready"
+            if(incorrectWord.isNotEmpty()){
+                incorrectWord = ""
+            }
         }
 
         override fun onBeginningOfSpeech() {
