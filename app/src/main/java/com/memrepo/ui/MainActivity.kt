@@ -4,6 +4,12 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -17,11 +23,17 @@ import androidx.compose.ui.unit.dp
 import com.memrepo.ui.theme.MemrepoTheme
 import kotlinx.coroutines.launch
 
+
 class MainActivity : ComponentActivity() {
     @ExperimentalMaterialApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+<<<<<<<<< Temporary merge branch 1
+        setContentView(R.layout.activity_main)
+
         setContent {
+=========
+>>>>>>>>> Temporary merge branch 2
             setContent {
                 MemrepoTheme {
                     // A surface container using the 'background' color from the theme
@@ -32,14 +44,15 @@ class MainActivity : ComponentActivity() {
                         MainScreen()
                     }
                 }
-            }
-        }
+            }  
     }
     @ExperimentalMaterialApi
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     @Composable
     fun MainScreen() {
 
+
+=======
         // Bottom Sheet is used to create a 'Modal' but for android apps
         val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
             bottomSheetState = BottomSheetState(BottomSheetValue.Collapsed)
