@@ -56,6 +56,7 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
     var incorrectWord by remember { mutableStateOf("") }
     var partialWords by remember { mutableStateOf(mutableListOf<String>()) }
 
+    // Callback functions can't change values of correctWords or remainingWords within their scope so this function is declared outside their scope
     fun updateList() {
         Log.d("SpeechRecognizer.updateList()", "Removing '${remainingWords[0]}' from remainingWords")
         correctWords.add(remainingWords.removeFirst())
@@ -137,9 +138,9 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
                 }
             }
 
-            Log.d("SpeechRecognizer.onResults", "Results: ${data!![0]}")
+            Log.d("SpeechRecognizer.onResults()", "Results: ${data!![0]}")
             Toast.makeText(context, data!![0], Toast.LENGTH_LONG).show()
-            speechRecognizer.stopListening()
+            speechRecognizer.destroy()
             partialWords.clear()
             status = ""
             isListening = false
@@ -148,7 +149,7 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
 
         override fun onPartialResults(partialResults: Bundle?) {
             data = partialResults!!.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
-            Log.d("SpeechRecognizer.onPartialResults","Detected partial words: ${data!![0]}")
+            Log.d("SpeechRecognizer.onPartialResults()","Detected partial words: ${data!![0]}")
 
             fun checkWord(){
                 if (remainingWords.isNotEmpty() && partialWords.last() == (remainingWords[0])) {
@@ -157,7 +158,8 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
                 } else {
                     // add to incorrect word list and remove from remaining
                     incorrectWord = partialWords.last()
-                    speechRecognizer.stopListening()
+                    Log.d("SpeechRecognizer.onPartialResults()", "Incorrect word: '${partialWords.last()}'")
+                    speechRecognizer.cancel()
                     status = ""
                     isListening = false
                 }
@@ -180,7 +182,7 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
                 addResultToPartialWords(data)
             }
 
-            Log.d("SpeechRecognizer.onPartialResults", "Partial Words: $partialWords")
+            Log.d("SpeechRecognizer.onPartialResults()", "Partial Words: $partialWords")
 
         }
 
@@ -194,6 +196,7 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
                 Text(
                     text = buildAnnotatedString {
                         withStyle(style = SpanStyle(color = Color.Green)) {
+                            Log.d("SpeechRecognizer", "Drawing correctWords: $correctWords")
                             append(correctWords.toString().replace("[,\\[\\]]".toRegex(), ""))
                         }
                         withStyle(style = SpanStyle(color = Color.Red)) {
