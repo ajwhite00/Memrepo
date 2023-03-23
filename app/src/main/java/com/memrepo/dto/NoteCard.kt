@@ -4,18 +4,22 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity
+/**
+ * @constructor creates a dto for what values should be stored in a NoteCard.
+ *
+ * cardId is a primary key that autogenerates for every newly created NoteCard.
+ * title and snippet are both components of a NoteCard that is a stored string for the User.
+ */
+@Entity(tableName = "NoteCards")
 data class NoteCard(@PrimaryKey(autoGenerate = true) val cardID : Int,@ColumnInfo("title") val title : String,@ColumnInfo("snippet") val snippet : String){
 
-        var snippetDisplay = this.snippet //has three rounds of replacement
-                .replace("-".toRegex(), " ") //replace hyphens with space because of two cases: split words with hyphen in between and remove hyphen in the middle of a sentence
-                .replace("  ".toRegex(), " ") //replace any double spaces caused by hyphen replacement with a single space
-                .replace("[!\"#$%&'()*+,-./:;<=>?@\\[\\]^_`{|}~]".toRegex(), "") //remove punctuation and other non-letter chars
-
-        //var snippetDisplayList = snippetDisplay.split(" ").toList() create a list by splitting string on space
-        //var snippetDisplayList : List<String> = listOf<String>(this.snippetDisplay.split(" ").toString())
-
-        override fun toString(): String {
-                return snippetDisplay
+        fun createSnippetDisplayList(): List<String> {
+                return this.snippet //has three rounds of replacement
+                        .replace("-".toRegex(), " ") //replace hyphens with space because of two cases: split words with hyphen in between and remove hyphen in the middle of a sentence
+                        .replace("  ".toRegex(), " ") //replace any double spaces caused by hyphen replacement with a single space
+                        .replace("[!\"#$%&'()*+,-./:;<=>?@\\[\\]^_`{|}~]".toRegex(), "") //remove punctuation and other non-letter chars
+                        .lowercase() //change everything to lowercase to be used later for mic input comparison
+                        .split(" ") //separates words as space
+                        .toList() //creates a list individual words to be used later for mic input comparison
         }
 }

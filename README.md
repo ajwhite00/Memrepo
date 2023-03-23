@@ -129,23 +129,30 @@ The snippet text matches user’s default language.
 
 ## Class Diagram Description
 
-**Main**: The main screen that the user sees when entering the app. Allows user to create, delete, and update a memory snippet.<br>
+**MemrepoApplication**: Koin dependency injection is used. Uses the app modules which specifies what viewModel to use. 
 
-**SpeechRecognizer**: External API that will be used for speech recognition. The API will be integrated to recognize the user's input to check if an answer matches with the memory snippet.<br>
+**MainActivity**: The main screen that the user sees when entering the app. Allows user to create, delete, and update a memory snippet.<br>
+
+**PracticeActivity**: The second screen that the user sees when entering the practice mode. User uses microphone to practice the particular memory snippet they selected.<br>
+
+**SpeechRecognizer**: Component class that uses the [SpeechReconizer](https://developer.android.com/reference/android/speech/SpeechRecognizer) class.<br>
 
 **Notecard**: Object class that represents all data for a specific memory snippet for a user. Includes title for question, description for memory snippet, and an ID to accurately track in the database.<br>
 
-**ICardDAO**: Interface for the ICardService to fetch correct data by searching by ID.<br>
+**INoteCardService**: Interface for the INoteCardService to fetch the NoteCardDAO.<br>
+
+**NoteCardDatabase**: Uses Room database to store user made memory snippets locally on device. The NoteCardService uses the NoteCardDAO to make CRUD operation calls to the database.
 
 ## Responsibilities
 
 ### Roles
 
-Product Owner / Scrum Master - Aj White<br>
+Product Owner / Scrum Master / Developer - Aj White<br>
 Frontend Developer - Javohir Jalolitdinov<br>
 Integration Developer / PM Support - Nicholas Lawson<br>
 Developer Support - Pruthvi Patel<br>
 Developer Support - Ravi Patel<br>
+Developer Support - Monil Patel<br>
 
 ### Weekly Meetings
 
