@@ -20,6 +20,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.memrepo.SpeechRecognizerComponent
 import com.memrepo.dto.NoteCard
 import com.memrepo.ui.theme.MemrepoTheme
 import kotlinx.coroutines.launch
@@ -243,7 +244,7 @@ class MainActivity : ComponentActivity() {
     fun DefaultPreview() {
         MemrepoTheme {
             Column {
-                MainScreen()
+                //MainScreen()
             }
         }
     }
