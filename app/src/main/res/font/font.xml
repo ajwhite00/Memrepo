@@ -12,17 +12,17 @@
       900 Ultra Bold -->
 
     <font
-        android:font="@font/LatoBlack"
+        android:font="@font/lato_black"
         android:fontStyle="normal"
         android:fontWeight="100" />
 
     <font
-        android:font="@font/RobotoRegular"
+        android:font="@font/lato_bold"
         android:fontStyle="normal"
         android:fontWeight="400" />
 
     <font
-        android:font="@font/RobotoCondensedRegular"
+        android:font="@font/lato_bold_italic"
         android:fontStyle="normal"
         android:fontWeight="700" />
 
