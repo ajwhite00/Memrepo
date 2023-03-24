@@ -51,15 +51,17 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
     var status by remember { mutableStateOf("") }
     var isListening by remember { mutableStateOf(false) }
 
+    var correctWordList : List<String> = mutableListOf()
+
     var remainingWords by remember { mutableStateOf(noteCard.createSnippetDisplayList()) }
-    var correctWords by remember { mutableStateOf(mutableListOf<String>()) }
+    var correctWords by remember { mutableStateOf(correctWordList) }
     var incorrectWord by remember { mutableStateOf("") }
     var partialWords by remember { mutableStateOf(mutableListOf<String>()) }
 
     // Callback functions can't change values of correctWords or remainingWords within their scope so this function is declared outside their scope
     fun updateList() {
         Log.d("SpeechRecognizer.updateList()", "Removing '${remainingWords[0]}' from remainingWords")
-        correctWords.add(remainingWords.removeFirst())
+        correctWords = correctWords + remainingWords.removeFirst()
         Log.d("SpeechRecognizer.updateList()", "Correct words $correctWords")
     }
 
