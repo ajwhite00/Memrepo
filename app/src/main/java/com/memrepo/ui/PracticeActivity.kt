@@ -84,7 +84,7 @@ class PracticeActivity : ComponentActivity() {
             Column(Modifier.padding(10.dp).fillMaxWidth()) {
                 Text(
                     text = title!!,
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
                     fontSize = 25.sp
                 )
             }
