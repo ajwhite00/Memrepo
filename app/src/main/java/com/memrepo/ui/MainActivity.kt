@@ -196,8 +196,8 @@ class MainActivity : ComponentActivity() {
                     },
                     modifier = Modifier.align(Alignment.Center)
                 ) {
-                    Text("Save")
-                }
+                    Icon (painter = painterResource(id = R.drawable.ic_save_foreground),
+                        contentDescription = "Save") }
             }
         }
 
