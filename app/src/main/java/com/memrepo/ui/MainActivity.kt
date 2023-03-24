@@ -1,6 +1,7 @@
-package com.memrepo
+package com.memrepo.ui
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.speech.SpeechRecognizer
 import androidx.activity.ComponentActivity
@@ -22,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.memrepo.SpeechRecognizerComponent
 import com.memrepo.dto.NoteCard
+import com.memrepo.ui.PracticeActivity
 import com.memrepo.ui.theme.MemrepoTheme
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -30,7 +32,6 @@ import java.util.*
 class MainActivity : ComponentActivity() {
 
     private val viewModel : MainViewModel by viewModel()
-
 
     private val speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this)
 
@@ -167,9 +168,9 @@ class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalComposeUiApi::class)
     @ExperimentalMaterialApi
     @Composable
-    fun AddSnippet(bottomSheetScaffoldState: BottomSheetScaffoldState) {
-        var title by remember { mutableStateOf("") }
-        var snippetText by remember { mutableStateOf("") }
+    fun AddSnippet(bottomSheetScaffoldState: BottomSheetScaffoldState, noteCard: NoteCard = NoteCard(0,"","")) {
+        var title by remember { mutableStateOf(noteCard.title) }
+        var snippetText by remember { mutableStateOf(noteCard.snippet) }
         val coroutineScope = rememberCoroutineScope()
         val keyBoardController = LocalSoftwareKeyboardController.current
         Box (modifier = Modifier.fillMaxWidth()) {
@@ -234,7 +235,7 @@ class MainActivity : ComponentActivity() {
     fun SpeechToText() {
 
         val context = LocalContext.current
-        val noteCard = NoteCard(cardID = 0, title = "Test", snippet = "This is a longer test")
+        val noteCard = NoteCard(cardID = 0, title = "Test", snippet = "This is a longer test to check if everything is working")
 
         Column(
             modifier = Modifier.fillMaxSize(),
