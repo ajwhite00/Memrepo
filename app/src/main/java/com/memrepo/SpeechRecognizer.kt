@@ -68,7 +68,7 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
     // Return true or false if word is found in partialWords or all words in partialWords has been iterated through
     fun checkPartialWordsList(word: String, i: Int) : Boolean {
         if (partialWords.size - 1 >= i) {
-            return word == partialWords[i]
+            return word.lowercase() == partialWords[i]
         }
         return false
     }
@@ -134,6 +134,7 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
 
                     } else {
                         // add to incorrect word list and remove from remaining
+                        Log.d("SpeechRecognizer.onResults", "Incorrect word: '$word'")
                         incorrectWord = word
                         break
                     }
@@ -180,7 +181,7 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
                 addResultToPartialWords(data)
             }
             // Add the most recent partial result to partialWords
-            else if (data!![0].split(" ").last() != partialWords.last()){
+            else if (data!![0].split(" ").last().lowercase() != partialWords.last()){
                 addResultToPartialWords(data)
             }
 
