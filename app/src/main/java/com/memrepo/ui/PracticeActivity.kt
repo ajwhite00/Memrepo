@@ -19,7 +19,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.memrepo.SpeechRecognizerComponent
 import com.memrepo.dto.NoteCard
-import com.memrepo.ui.MainActivity
 import com.memrepo.ui.theme.MemrepoTheme
 
 class PracticeActivity : ComponentActivity() {
@@ -34,6 +33,7 @@ class PracticeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+
             MemrepoTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
@@ -66,7 +66,8 @@ class PracticeActivity : ComponentActivity() {
                 )
             },
             content = {
-                MyContent()
+                MyContent(
+                )
 
             }
         )
@@ -80,14 +81,14 @@ class PracticeActivity : ComponentActivity() {
         val snippet = intent.getStringExtra("Snippet")
 
         Box(Modifier.fillMaxSize()) {
-            Column(Modifier.padding(10.dp)) {
-
-                Text("Title : $title").toString()
-                Text("Snippet : $snippet").toString()
+            Column(Modifier.padding(10.dp).fillMaxWidth()) {
+                Text(
+                    text = title!!,
+                    modifier = Modifier.fillMaxWidth(),
+                    fontSize = 25.sp
+                )
             }
-
         }
-
         // You can't create a noteCard without title and snippet so these values won't be null
         SpeechToText(title!!, snippet!!)
     }
