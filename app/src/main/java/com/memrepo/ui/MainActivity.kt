@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
@@ -23,7 +24,6 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,6 +33,8 @@ import com.memrepo.ui.theme.MemrepoTheme
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.ui.platform.LocalContext
+import com.memrepo.dto.NoteCard
 import java.util.*
 
 class MainActivity : ComponentActivity() {
@@ -279,22 +281,6 @@ class MainActivity : ComponentActivity() {
                     contentDescription = "Save")
             }
         }
-    }
-
-    @Composable
-    fun SpeechToText() {
-
-        val context = LocalContext.current
-        val noteCard = NoteCard(cardID = 0, title = "Test", snippet = "This is a test")
-
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            SpeechRecognizerComponent(context = context, activity = this@MainActivity, noteCard = noteCard)
-        }
-
     }
 
     @ExperimentalMaterialApi
