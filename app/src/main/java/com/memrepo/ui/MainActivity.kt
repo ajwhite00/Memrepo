@@ -24,11 +24,14 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.memrepo.dto.NoteCard
+import com.memrepo.ui.PracticeActivity
 import com.memrepo.ui.theme.MemrepoTheme
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.math.exp
 import androidx.compose.material3.DropdownMenuItem
+import java.util.*
+
 class MainActivity : ComponentActivity() {
 
     private val viewModel : MainViewModel by viewModel()
@@ -73,8 +76,6 @@ class MainActivity : ComponentActivity() {
                     Column {
                         // Contents of the Bottom Sheet come from this component
                         AddSnippet(bottomSheetScaffoldState)
-
-
                     }
                 }
             }, sheetPeekHeight = 0.dp
@@ -279,7 +280,7 @@ class MainActivity : ComponentActivity() {
     fun DefaultPreview() {
         MemrepoTheme {
             Column {
-
+                //MainScreen()
             }
         }
     }
