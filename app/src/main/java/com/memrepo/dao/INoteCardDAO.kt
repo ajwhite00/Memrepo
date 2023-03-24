@@ -29,5 +29,5 @@ interface INoteCardDAO {
      * delete removes selected NoteCard from the database.
      */
     @Delete
-    suspend fun delete(noteCard: NoteCard)
+    suspend fun deleteNoteCard(noteCard: NoteCard)
 }

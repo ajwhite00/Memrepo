@@ -51,7 +51,7 @@ class NoteCardService(val application: Application) : INoteCardService {
         try {
             noteCard?.let {
                 val noteCardDao = getNoteCardDAO()
-                noteCardDao.delete(noteCard = noteCard)
+                noteCardDao.deleteNoteCard(noteCard = noteCard)
             }
             Log.d(TAG, "Successfully deleted note card!")
         } catch (e: Exception) {
