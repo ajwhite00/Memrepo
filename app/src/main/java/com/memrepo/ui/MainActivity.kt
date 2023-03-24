@@ -3,7 +3,6 @@ package com.memrepo.ui
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.clickable
@@ -24,11 +23,9 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.memrepo.dto.NoteCard
-import com.memrepo.ui.PracticeActivity
 import com.memrepo.ui.theme.MemrepoTheme
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import kotlin.math.exp
 import androidx.compose.material3.DropdownMenuItem
 import java.util.*
 
@@ -168,7 +165,7 @@ class MainActivity : ComponentActivity() {
                         val intent = Intent(mContext, PracticeActivity::class.java)
                         intent.putExtra("Title", noteCard.title)
                         intent.putExtra("Snippet", noteCard.snippet)
-                        mContext.startActivity(Intent(mContext, PracticeActivity::class.java))
+                        mContext.startActivity(intent)
                     }
             ) {
 

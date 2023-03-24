@@ -117,7 +117,7 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
 
                 // Add word to resultsAfterPartialClear if it is not already in partialWords
                 if(!checkPartialWordsList(word, i)){
-                    resultsAfterPartialClear.add(word)
+                    resultsAfterPartialClear.add(word.lowercase())
                 }
 
                 i++
@@ -170,7 +170,7 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
             // Update partialWords to add the last word detected as partial result
             fun addResultToPartialWords(data:  ArrayList<String>?) {
                 if(data!![0].split(" ").last().isNotEmpty()) {
-                    partialWords.add(data!![0].split(" ").last())
+                    partialWords.add(data!![0].split(" ").last().lowercase())
                     checkWord()
                 }
             }
