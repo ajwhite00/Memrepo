@@ -133,7 +133,7 @@ class MainActivity : ComponentActivity() {
                     }
                     // Button will have the options to Edit or delete the note card
                     Button(modifier = Modifier.align(Alignment.TopEnd), onClick = {}) {
-                        Text("...")
+                        Text("Edit")
                     }
                 }
             }
