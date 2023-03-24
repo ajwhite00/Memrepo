@@ -104,7 +104,8 @@ class MainActivity : ComponentActivity() {
                                         .fillMaxWidth()
                                         .fillMaxHeight()
                                 ) {
-                                    (Text(text = "Add"))
+                                    Icon (painter = painterResource(id = R.drawable.ic_add_foreground),
+                                    contentDescription = "Add")
                                 }
                             }
                         }
