@@ -14,13 +14,13 @@ interface INoteCardService {
 
 class NoteCardService(val application: Application) : INoteCardService {
 
-    lateinit var db: NoteCardDatabase
+    lateinit var database: NoteCardDatabase
 
     override fun getNoteCardDAO() : INoteCardDAO {
-        if (!this::db.isInitialized) {
-            db = Room.databaseBuilder(application, NoteCardDatabase::class.java, "Memrepo").build()
+        if (!this::database.isInitialized) {
+            database = Room.databaseBuilder(application, NoteCardDatabase::class.java, "Memrepo").build()
         }
-        return db.noteCardDAO()
+        return database.noteCardDAO()
     }
 
     suspend fun saveNoteCard(noteCard: NoteCard) {
