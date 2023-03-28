@@ -58,14 +58,12 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
     var incorrectWord by remember { mutableStateOf("") }
     var partialWords by remember { mutableStateOf(mutableListOf<String>()) }
 
-    // Callback functions can't change values of correctWords or remainingWords within their scope so this function is declared outside their scope
     fun updateList() {
         Log.d("SpeechRecognizer.updateList()", "Removing '${remainingWords[0]}' from remainingWords")
         correctWords = correctWords + remainingWords.removeFirst()
         Log.d("SpeechRecognizer.updateList()", "Correct words $correctWords")
     }
 
-    // Return true or false if word is found in partialWords or all words in partialWords has been iterated through
     fun checkPartialWordsList(word: String, i: Int) : Boolean {
         if (partialWords.size - 1 >= i) {
             return word.lowercase() == partialWords[i]
@@ -115,7 +113,6 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
                     break
                 }
 
-                // Add word to resultsAfterPartialClear if it is not already in partialWords
                 if(!checkPartialWordsList(word, i)){
                     resultsAfterPartialClear.add(word.lowercase())
                 }
@@ -129,11 +126,9 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
                         if (incorrectWord.isNotEmpty()) {
                             incorrectWord = ""
                         }
-                        // Add to correct word list and remove remaining list
                         updateList()
 
                     } else {
-                        // add to incorrect word list and remove from remaining
                         Log.d("SpeechRecognizer.onResults", "Incorrect word: '$word'")
                         incorrectWord = word
                         break
@@ -156,10 +151,8 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
 
             fun checkWord(){
                 if (remainingWords.isNotEmpty() && partialWords.last() == (remainingWords[0])) {
-                    // Add to correct word list and remove remaining list
                     updateList()
                 } else {
-                    // add to incorrect word list and remove from remaining
                     incorrectWord = partialWords.last()
                     Log.d("SpeechRecognizer.onPartialResults()", "Incorrect word: '${partialWords.last()}'")
                     speechRecognizer.cancel()
@@ -168,7 +161,6 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
                 }
             }
 
-            // Update partialWords to add the last word detected as partial result
             fun addResultToPartialWords(data:  ArrayList<String>?) {
                 if(data!![0].split(" ").last().isNotEmpty()) {
                     partialWords.add(data!![0].split(" ").last().lowercase())
@@ -176,11 +168,9 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
                 }
             }
 
-            // partialWords is initially empty we need to add the first partial result or else an exception will be thrown with partialWords.last()
             if(partialWords.isEmpty()){
                 addResultToPartialWords(data)
             }
-            // Add the most recent partial result to partialWords
             else if (data!![0].split(" ").last().lowercase() != partialWords.last()){
                 addResultToPartialWords(data)
             }
