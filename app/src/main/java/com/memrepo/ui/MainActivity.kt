@@ -140,7 +140,11 @@ class MainActivity : ComponentActivity() {
         var mExpanded by remember { mutableStateOf(false)}
         var openAlert = remember { mutableStateOf(false) }
 
-        if (openAlert.value) {
+
+
+
+
+            if (openAlert.value) {
             // if yes button clicked viewModel.deleteNoteCard(noteCard)
             AlertDialog(
                 onDismissRequest = {openAlert.value = false},
@@ -149,9 +153,12 @@ class MainActivity : ComponentActivity() {
                                 Button(onClick = {
                                     openAlert.value = false
                                     viewModel.deleteNoteCard(noteCard) }) {
-                                    Text("confirm")
-                                }
+                                    Text("Confirm")
+                                }; Button(onClick = {openAlert.value = false}){
+                                    Text("No")
+                }
                 },
+
 
 
                 )
