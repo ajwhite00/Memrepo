@@ -11,10 +11,7 @@ import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
 import android.util.Log
 import android.widget.Toast
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -27,6 +24,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.memrepo.dto.NoteCard
@@ -50,6 +48,7 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
 
     var status by remember { mutableStateOf("") }
     var isListening by remember { mutableStateOf(false) }
+    var revealed by remember { mutableStateOf(false) }
 
     var correctWordList : List<String> = mutableListOf()
 
@@ -57,6 +56,7 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
     var correctWords by remember { mutableStateOf(correctWordList) }
     var incorrectWord by remember { mutableStateOf("") }
     var partialWords by remember { mutableStateOf(mutableListOf<String>()) }
+    var blur by remember { mutableStateOf(Color.Gray) }
 
     // Callback functions can't change values of correctWords or remainingWords within their scope so this function is declared outside their scope
     fun updateList() {
@@ -193,7 +193,7 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
 
     })
 
-    Box(modifier = Modifier.fillMaxWidth()) {
+    Box(modifier = Modifier.fillMaxWidth().fillMaxHeight()) {
         Column(modifier = Modifier.align(Alignment.Center)) {
             Row(modifier = Modifier.align(Alignment.CenterHorizontally)){
                 Text(
@@ -206,7 +206,7 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
                             append(" $incorrectWord ")
                         }
                         remainingWords.forEach { word ->
-                            withStyle(style = SpanStyle(color = Color.Gray, background = Color.Gray)) {
+                            withStyle(style = SpanStyle(color = Color.Gray, background = blur)) {
                                 append(word)
                             }
                             append(" ")
@@ -214,6 +214,7 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
                     }
                 )
             }
+            Spacer(modifier = Modifier.height(30.dp))
             Button(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 onClick = {
@@ -227,6 +228,31 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
             }
             Text(text = status, modifier = Modifier.align(Alignment.CenterHorizontally))
         }
+        // Show the remaining text
+        Button(modifier = Modifier.align(Alignment.BottomStart).padding(10.dp), onClick = {
+            if(!revealed){
+                blur = Color.Transparent
+                revealed = true
+            } else {
+                blur = Color.Gray
+                revealed = false
+            }
+        }) {
+            if(!revealed){
+                Text(text = "Reveal")
+            }
+            else {
+                Text(text = "Hide")
+            }
+        }
+        // Rest all of the progress
+        Button(modifier = Modifier.align(Alignment.BottomEnd).padding(10.dp), onClick = {
+            incorrectWord = ""
+            correctWords = emptyList()
+            remainingWords = noteCard.createSnippetDisplayList()
+        }) {
+            Text(text = "Reset")
+        }
     }
 }
 
@@ -234,8 +260,8 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
 @Composable
 fun DefaultPreview() {
     var words = arrayListOf("This", "is", "a", "test")
-    Box(modifier = Modifier.fillMaxWidth()) {
-        Column( modifier = Modifier.align(Alignment.Center) ) {
+    Box(modifier = Modifier.fillMaxWidth().fillMaxHeight()) {
+        Column( modifier = Modifier.align(Alignment.Center)) {
             Row( modifier = Modifier.align(Alignment.CenterHorizontally)) {
                 Text(
                     text = buildAnnotatedString {
@@ -268,6 +294,12 @@ fun DefaultPreview() {
                 Icon(painter = painterResource(id = R.drawable.ic_microphone_foreground), contentDescription = "Microphone")
             }
             Text(text = "Text", modifier = Modifier.align(Alignment.CenterHorizontally))
+        }
+        Button(modifier = Modifier.align(Alignment.BottomStart).padding(10.dp), onClick = {/*TODO*/ }) {
+            Text(text = "Reveal")
+        }
+        Button(modifier = Modifier.align(Alignment.BottomEnd).padding(10.dp), onClick = { /*TODO*/ }) {
+            Text(text = "Reset")
         }
     }
 }
