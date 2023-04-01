@@ -11,8 +11,11 @@ import androidx.room.PrimaryKey
  * title and snippet are both components of a NoteCard that is a stored string for the User.
  */
 @Entity(tableName = "NoteCards")
-data class NoteCard(@PrimaryKey(autoGenerate = true) val cardID : Int,@ColumnInfo("title") val title : String,@ColumnInfo("snippet") val snippet : String){
-
+data class NoteCard(
+        @PrimaryKey(autoGenerate = true) val cardID: Int,
+        @ColumnInfo("title") val title: String,
+        @ColumnInfo("snippet") val snippet: String
+){
         fun createSnippetDisplayList(): MutableList<String> {
                 return this.snippet //has three rounds of replacement
                         .replace("-".toRegex(), " ") //replace hyphens with space because of two cases: split words with hyphen in between and remove hyphen in the middle of a sentence
