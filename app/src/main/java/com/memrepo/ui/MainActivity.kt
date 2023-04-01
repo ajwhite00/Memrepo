@@ -97,7 +97,9 @@ class MainActivity : ComponentActivity() {
                     )
                 },
                 floatingActionButton = {
-                    FloatingActionButton(onClick =
+                    FloatingActionButton(
+                        backgroundColor = MaterialTheme.colors.primaryVariant,
+                        onClick =
                     {
                         coroutineScope.launch {
                             if (bottomSheetScaffoldState.bottomSheetState.isCollapsed) {
