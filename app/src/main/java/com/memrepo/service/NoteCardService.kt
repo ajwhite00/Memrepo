@@ -25,7 +25,7 @@ class NoteCardService(val application: Application) : INoteCardService {
 
     suspend fun saveNoteCard(noteCard: NoteCard) {
         try {
-            noteCard?.let {
+            noteCard.let {
                 val noteCardDao = getNoteCardDAO()
                 noteCardDao.saveNoteCard(noteCard = noteCard)
             }
@@ -37,7 +37,7 @@ class NoteCardService(val application: Application) : INoteCardService {
 
     suspend fun updateNoteCard(noteCard: NoteCard) {
         try {
-            noteCard?.let {
+            noteCard.let {
                 val noteCardDao = getNoteCardDAO()
                 noteCardDao.updateNoteCard(noteCard = noteCard)
             }
@@ -49,7 +49,7 @@ class NoteCardService(val application: Application) : INoteCardService {
 
     suspend fun deleteNoteCard(noteCard: NoteCard) {
         try {
-            noteCard?.let {
+            noteCard.let {
                 val noteCardDao = getNoteCardDAO()
                 noteCardDao.deleteNoteCard(noteCard = noteCard)
             }
