@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.speech.SpeechRecognizer
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -27,8 +28,13 @@ class PracticeActivity : ComponentActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        speechRecognizer.destroy()
+        try {
+            speechRecognizer?.destroy()
+        } catch (e: Exception) {
+            Log.e("PracticeActivity", "Error destroying speech recognizer: ${e.message}")
+        }
     }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,9 +72,7 @@ class PracticeActivity : ComponentActivity() {
                 )
             },
             content = {
-                MyContent(
-                )
-
+                MyContent()
             }
         )
     }
