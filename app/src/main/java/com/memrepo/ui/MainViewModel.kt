@@ -4,11 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.memrepo.dto.NoteCard
 import com.memrepo.service.NoteCardService
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MainViewModel(var noteCardService: NoteCardService) : ViewModel() {
 
-  val noteCards: LiveData<List<NoteCard>> = noteCardService.getNoteCardDAO().getAllNoteCards()
+  val noteCards = noteCardService.getNoteCardDAO().getAllNoteCards()
 
   fun saveNoteCard(noteCard: NoteCard) {
     viewModelScope.launch(Dispatchers.IO) {
