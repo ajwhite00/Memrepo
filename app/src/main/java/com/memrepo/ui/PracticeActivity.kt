@@ -97,7 +97,7 @@ class PracticeActivity : ComponentActivity() {
     fun SpeechToText(title: String, snippet: String) {
 
         val context = LocalContext.current
-        val noteCard = NoteCard(cardID = 0, title = title, snippet = snippet)
+        val noteCard = NoteCard(cardId = 0, title = title, snippet = snippet)
 
         Column(
             modifier = Modifier.fillMaxSize(),
