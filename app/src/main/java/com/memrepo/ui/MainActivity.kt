@@ -45,7 +45,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val noteCards = remember(viewModel.noteCards) { viewModel.noteCards }
+            val noteCards by viewModel.noteCards.observeAsState(initial = emptyList())
 
             MemrepoTheme {
                 // A surface container using the 'background' color from the theme
