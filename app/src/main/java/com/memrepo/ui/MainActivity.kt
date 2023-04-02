@@ -46,7 +46,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
             setContent {
 
-                val noteCards by viewModel.noteCards.observeAsState(initial = emptyList())
+                val listOfNoteCards by viewModel.noteCards.observeAsState(initial = emptyList())
 
                 MemrepoTheme {
                     // A surface container using the 'background' color from the theme
@@ -54,7 +54,7 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.fillMaxSize(),
                         color = MaterialTheme.colors.background
                     ) {
-                        MainScreen(noteCards)
+                        MainScreen(listOfNoteCards)
                     }
                 }
             }  
@@ -62,7 +62,7 @@ class MainActivity : ComponentActivity() {
     @ExperimentalMaterialApi
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     @Composable
-    fun MainScreen(noteCards: List<NoteCard>) {
+    fun MainScreen(listOfNoteCards: List<NoteCard>) {
 
         // Bottom Sheet is used to create a 'Modal' but for android apps
         val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
@@ -115,13 +115,13 @@ class MainActivity : ComponentActivity() {
 
                 // The content in between the top bar and bottom bar
                 content = {
-                    NoteCardsList(noteCards)
+                    NoteCardsList(listOfNoteCards)
                 }
             )
         }
     }
     @Composable
-    fun NoteCardsList(noteCards: List<NoteCard>) {
+    fun NoteCardsList(listOfNoteCards: List<NoteCard>) {
         LazyColumn(
             Modifier.fillMaxWidth(),
             contentPadding = PaddingValues(16.dp)
@@ -140,7 +140,7 @@ class MainActivity : ComponentActivity() {
                     )
                 }
             }
-            items(noteCards){ noteCard -> SnippetCard(noteCard) }
+            items(listOfNoteCards){ noteCard -> SnippetCard(noteCard) }
         }
     }
 
@@ -148,7 +148,7 @@ class MainActivity : ComponentActivity() {
     fun SnippetCard(noteCard: NoteCard) {
         val mContext = LocalContext.current
         val paddingModifier = Modifier.padding(10.dp)
-        var mExpanded by remember { mutableStateOf(false)}
+        var isMenuExpanded by remember { mutableStateOf(false)}
         var openAlert = remember { mutableStateOf(false) }
 
         if (openAlert.value) {
@@ -190,7 +190,7 @@ class MainActivity : ComponentActivity() {
                 }
                 // Button will have the options to Edit or delete the note card
                IconButton(
-                   onClick = { mExpanded = true },
+                   onClick = { isMenuExpanded = true },
                    modifier = Modifier
                        .fillMaxWidth()
                        .wrapContentSize(Alignment.TopEnd)
@@ -200,7 +200,7 @@ class MainActivity : ComponentActivity() {
                        contentDescription = "Open options"
                    )
                }
-                       DropdownMenu(expanded = mExpanded, onDismissRequest = {mExpanded = false}, modifier = Modifier.align(Alignment.TopEnd))
+                       DropdownMenu(expanded = isMenuExpanded, onDismissRequest = {isMenuExpanded = false}, modifier = Modifier.align(Alignment.TopEnd))
                        {
                          DropdownMenuItem(
                               text = { Text("Edit")},
@@ -210,7 +210,7 @@ class MainActivity : ComponentActivity() {
                            DropdownMenuItem(
                                text = { Text("Delete")},
                                onClick = {
-                                   mExpanded = false
+                                   isMenuExpanded = false
                                    openAlert.value = true }
                                )
 
