@@ -233,7 +233,7 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    var words = arrayListOf("This", "is", "a", "test")
+    var words = listOf("This", "is", "a", "test")
     Box(modifier = Modifier.fillMaxWidth()) {
         Column( modifier = Modifier.align(Alignment.Center) ) {
             Row( modifier = Modifier.align(Alignment.CenterHorizontally)) {
