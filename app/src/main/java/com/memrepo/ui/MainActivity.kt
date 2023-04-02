@@ -39,25 +39,24 @@ import java.util.*
 
 class MainActivity : ComponentActivity() {
 
-    private val viewModel : MainViewModel by viewModel()
+  private val viewModel: MainViewModel by viewModel()
 
     @ExperimentalMaterialApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-            setContent {
+        setContent {
+            val noteCards = remember(viewModel.noteCards) { viewModel.noteCards }
 
-                val noteCards by viewModel.noteCards.observeAsState(initial = emptyList())
-
-                MemrepoTheme {
-                    // A surface container using the 'background' color from the theme
-                    Surface(
-                        modifier = Modifier.fillMaxSize(),
-                        color = MaterialTheme.colors.background
-                    ) {
-                        MainScreen(noteCards)
-                    }
+            MemrepoTheme {
+                // A surface container using the 'background' color from the theme
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colors.background
+                ) {
+                    MainScreen(noteCards)
                 }
-            }  
+            }
+        }
     }
     @ExperimentalMaterialApi
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
