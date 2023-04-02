@@ -39,7 +39,7 @@ import java.util.*
 
 class MainActivity : ComponentActivity() {
 
-  private val viewModel: MainViewModel by viewModel()
+    private val viewModel: MainViewModel by viewModel()
 
     @ExperimentalMaterialApi
     override fun onCreate(savedInstanceState: Bundle?) {
