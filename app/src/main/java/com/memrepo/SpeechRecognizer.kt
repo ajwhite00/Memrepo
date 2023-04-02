@@ -2,6 +2,7 @@ package com.memrepo
 
 import android.Manifest
 import android.app.Activity
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -39,9 +40,16 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
         ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.RECORD_AUDIO), 1)
     }
 
-    if(!SpeechRecognizer.isRecognitionAvailable(context)){
-        Toast.makeText(context, "Speech recognition is not available", Toast.LENGTH_LONG).show()
+    try {
+        if (!SpeechRecognizer.isRecognitionAvailable(context)) {
+            throw Exception("Speech recognition is not available")
+        }
+    } catch (e: Exception) {
+        Log.e(TAG, "Error checking speech recognition availability", e)
+        Toast.makeText(context, "Error checking speech recognition availability", Toast.LENGTH_LONG).show()
     }
+
+
 
     val speechRecognizerIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
     speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true)
