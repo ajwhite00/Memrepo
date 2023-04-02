@@ -8,22 +8,22 @@ import kotlinx.coroutines.launch
 
 class MainViewModel(var noteCardService: NoteCardService) : ViewModel() {
 
-  var noteCards = noteCardService.getNoteCardDAO().getAllNoteCards()
+  val noteCards: LiveData<List<NoteCard>> = noteCardService.getNoteCardDAO().getAllNoteCards()
 
   fun saveNoteCard(noteCard: NoteCard) {
-    viewModelScope.launch {
+    viewModelScope.launch(Dispatchers.IO) {
       noteCardService.saveNoteCard(noteCard = noteCard)
     }
   }
 
   fun updateNoteCard(noteCard: NoteCard) {
-    viewModelScope.launch {
+    viewModelScope.launch(Dispatchers.IO) {
       noteCardService.updateNoteCard(noteCard = noteCard)
     }
   }
 
   fun deleteNoteCard(noteCard: NoteCard) {
-    viewModelScope.launch {
+    viewModelScope.launch(Dispatchers.IO) {
       noteCardService.deleteNoteCard(noteCard = noteCard)
     }
   }
