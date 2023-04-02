@@ -115,31 +115,35 @@ class MainActivity : ComponentActivity() {
 
                 // The content in between the top bar and bottom bar
                 content = {
-                    LazyColumn(
-                        Modifier.fillMaxWidth(),
-                        contentPadding = PaddingValues(16.dp)
-                    ) {
-                        item {
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .wrapContentHeight()
-                                    .padding(vertical = 25.dp),
-                                horizontalArrangement = Arrangement.Center,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Text(
-                                    text = "My List"
-                                )
-                            }
-                        }
-                        items(noteCards){ noteCard -> SnippetCard(noteCard) }
-                    }
-
+                    NoteCardsList(noteCards)
                 }
             )
         }
     }
+    @Composable
+    fun NoteCardsList(noteCards: List<NoteCard>) {
+        LazyColumn(
+            Modifier.fillMaxWidth(),
+            contentPadding = PaddingValues(16.dp)
+        ) {
+            item {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                        .padding(vertical = 25.dp),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "My List"
+                    )
+                }
+            }
+            items(noteCards){ noteCard -> SnippetCard(noteCard) }
+        }
+    }
+
     @Composable
     fun SnippetCard(noteCard: NoteCard) {
         val mContext = LocalContext.current
