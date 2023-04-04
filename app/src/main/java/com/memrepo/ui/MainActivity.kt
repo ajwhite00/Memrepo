@@ -99,6 +99,7 @@ class MainActivity : ComponentActivity() {
                 floatingActionButton = {
                     FloatingActionButton(onClick =
                     {
+                        viewModel.selectedNoteCard = NoteCard(0, "", "")
                         coroutineScope.launch {
                             if (bottomSheetScaffoldState.bottomSheetState.isCollapsed) {
                                 bottomSheetScaffoldState.bottomSheetState.expand()
@@ -133,19 +134,21 @@ class MainActivity : ComponentActivity() {
                                 )
                             }
                         }
-                        items(noteCards){ noteCard -> SnippetCard(noteCard) }
+                        items(noteCards){ noteCard -> SnippetCard(noteCard, bottomSheetScaffoldState) }
                     }
 
                 }
             )
         }
     }
+    @OptIn(ExperimentalMaterialApi::class)
     @Composable
-    fun SnippetCard(noteCard: NoteCard) {
+    fun SnippetCard(noteCard: NoteCard, bottomSheetScaffoldState: BottomSheetScaffoldState) {
         val mContext = LocalContext.current
         val paddingModifier = Modifier.padding(10.dp)
         var mExpanded by remember { mutableStateOf(false)}
         var openAlert = remember { mutableStateOf(false) }
+        val coroutineScope = rememberCoroutineScope()
 
         if (openAlert.value) {
             // if yes button clicked viewModel.deleteNoteCard(noteCard)
@@ -200,7 +203,16 @@ class MainActivity : ComponentActivity() {
                        {
                          DropdownMenuItem(
                               text = { Text("Edit")},
-                             onClick = { }
+                             onClick = {
+                                 viewModel.getNoteCardById(noteCard = noteCard)
+                                 coroutineScope.launch {
+                                     if (bottomSheetScaffoldState.bottomSheetState.isCollapsed) {
+                                         bottomSheetScaffoldState.bottomSheetState.expand()
+                                     } else {
+                                         bottomSheetScaffoldState.bottomSheetState.collapse()
+                                     }
+                                 }
+                             }
 
                           )
                            DropdownMenuItem(
@@ -219,8 +231,9 @@ class MainActivity : ComponentActivity() {
     @ExperimentalMaterialApi
     @Composable
     fun AddSnippet(bottomSheetScaffoldState: BottomSheetScaffoldState) {
-        var title by remember { mutableStateOf("") }
-        var snippetText by remember { mutableStateOf("") }
+        var id by remember(viewModel.selectedNoteCard.cardID) { mutableStateOf(viewModel.selectedNoteCard.cardID) }
+        var title by remember(viewModel.selectedNoteCard.cardID) { mutableStateOf(viewModel.selectedNoteCard.title) }
+        var snippetText by remember(viewModel.selectedNoteCard.cardID) { mutableStateOf(viewModel.selectedNoteCard.snippet) }
         val coroutineScope = rememberCoroutineScope()
         val keyBoardController = LocalSoftwareKeyboardController.current
         Box (modifier = Modifier.fillMaxWidth()) {
@@ -268,7 +281,7 @@ class MainActivity : ComponentActivity() {
                 /* TODO */
                 onClick = {
                     if (title.isNotEmpty() && snippetText.isNotEmpty()){
-                        viewModel.saveNoteCard(NoteCard(0, title, snippetText))
+                        viewModel.saveNoteCard(NoteCard(id, title, snippetText))
                     }
                     coroutineScope.launch { bottomSheetScaffoldState.bottomSheetState.collapse() }
                     keyBoardController?.hide()
