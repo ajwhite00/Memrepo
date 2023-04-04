@@ -61,7 +61,7 @@ class ICardDAOTest {
         val result = iCardDAO.getAllNoteCards().getOrAwaitValue()
 
         Assert.assertEquals(1, result.size)
-        Assert.assertNotEquals(result[0], updatedNoteCard)
+        Assert.assertEquals(result[0], updatedNoteCard)
     }
 
     @Test
