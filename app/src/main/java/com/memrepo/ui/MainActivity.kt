@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -164,7 +165,7 @@ class MainActivity : ComponentActivity() {
                 )
         }
 
-        Box(Modifier.fillMaxSize()) {
+        Box(modifier = Modifier.fillMaxSize()) {
             Card(
                 shape = RoundedCornerShape(20.dp),
                 elevation = 10.dp,
@@ -178,42 +179,43 @@ class MainActivity : ComponentActivity() {
                     }
             ) {
 
-                Column(paddingModifier) {
+                Column(paddingModifier, verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.End) {
                     // Title and Snippet are placeholders for now, eventually these will be injected values from the database
-                        Text(text = noteCard.title, Modifier.fillMaxWidth())
-                        Text(text = noteCard.snippet, Modifier.fillMaxWidth())
+                    Text(text = noteCard.title, Modifier.fillMaxWidth())
+                    Text(text = noteCard.snippet, Modifier.fillMaxWidth())
 
                 }
                 // Button will have the options to Edit or delete the note card
-               IconButton(
-                   onClick = { mExpanded = true },
-                   modifier = Modifier
-                       .fillMaxWidth()
-                       .wrapContentSize(Alignment.TopEnd)
-                   ) {
-                   Icon(
-                       imageVector = Icons.Default.MoreVert,
-                       contentDescription = "Open options"
-                   )
-               }
-                       DropdownMenu(expanded = mExpanded, onDismissRequest = {mExpanded = false}, modifier = Modifier.align(Alignment.TopEnd))
-                       {
-                         DropdownMenuItem(
-                              text = { Text("Edit")},
-                             onClick = { }
+                Box(){
+                    IconButton(
+                            onClick = { mExpanded = true },
+                            modifier = Modifier
+                                    .fillMaxWidth()
+                                    .wrapContentSize(Alignment.BottomEnd)
+                    ) {
+                        Icon(
+                                imageVector = Icons.Default.MoreVert,
+                                contentDescription = "Open options"
+                        )
+                        DropdownMenu(expanded = mExpanded, onDismissRequest = { mExpanded = false }, modifier = Modifier.align(Alignment.CenterEnd)) {
+                            DropdownMenuItem(
+                                    text = { Text("Edit") },
+                                    onClick = { }
 
-                          )
-                           DropdownMenuItem(
-                               text = { Text("Delete")},
-                               onClick = {
-                                   mExpanded = false
-                                   openAlert.value = true }
-                               )
+                            )
+                            DropdownMenuItem(
+                                    text = { Text("Delete") },
+                                    onClick = {
+                                        mExpanded = false
+                                        openAlert.value = true
+                                    }
+                            )
+                        }
+                    }
 
-                       }
-               }
-
-               }
+                }
+                }
+            }
             }
     @OptIn(ExperimentalComposeUiApi::class)
     @ExperimentalMaterialApi
@@ -281,12 +283,12 @@ class MainActivity : ComponentActivity() {
         }
     }
     @ExperimentalMaterialApi
-    @Preview(showBackground = false)
+    @Preview(showBackground = true)
     @Composable
     fun DefaultPreview() {
         MemrepoTheme {
             Column {
-
+                SnippetCard(noteCard = NoteCard(0, "test", "test"))
             }
         }
     }
