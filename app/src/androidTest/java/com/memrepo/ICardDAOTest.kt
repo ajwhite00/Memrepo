@@ -9,11 +9,7 @@ import com.memrepo.dao.ICardDAO
 import com.memrepo.dao.NoteCardDatabase
 import com.memrepo.dto.NoteCard
 import kotlinx.coroutines.*
-import org.junit.After
-import org.junit.Assert
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
+import org.junit.*
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
@@ -51,6 +47,31 @@ class ICardDAOTest {
 
         Assert.assertEquals(1, result.size)
         Assert.assertEquals("Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune", result[0].snippet)
-
     }
+
+    @Test
+    fun updateNoteCard() = runBlocking{
+        val noteCard = NoteCard(1,"Planet", "Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune")
+        iCardDAO.saveNoteCard(noteCard)
+
+        val updatedNoteCard = NoteCard(1, "Test", "This is a test to see if the NoteCard updates")
+
+        iCardDAO.updateNoteCard(updatedNoteCard)
+
+        val result = iCardDAO.getAllNoteCards().getOrAwaitValue()
+
+        Assert.assertEquals(1, result.size)
+        Assert.assertNotEquals(result[0], updatedNoteCard)
+    }
+
+    @Test
+    fun deleteNoteCard() = runBlocking{
+        val noteCard = NoteCard(1,"Planet", "Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune")
+        iCardDAO.delete(noteCard)
+
+        val result = iCardDAO.getAllNoteCards().getOrAwaitValue()
+
+        Assert.assertEquals(0, result.size)
+    }
+
 }
