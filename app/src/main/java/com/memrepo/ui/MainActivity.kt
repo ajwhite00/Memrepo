@@ -127,7 +127,7 @@ class MainActivity : ComponentActivity() {
                                 )
                             }
                         }
-                        items(noteCards){ noteCard -> SnippetCard(noteCard) }
+                        items(noteCards){ noteCard -> SnippetCard(noteCard ) }
                     }
 
                 }
