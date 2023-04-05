@@ -16,12 +16,6 @@ class MainViewModel(var noteCardService: NoteCardService) : ViewModel() {
     }
   }
 
-  fun updateNoteCard(noteCard: NoteCard) {
-    viewModelScope.launch {
-      noteCardService.updateNoteCard(noteCard = noteCard)
-    }
-  }
-
   fun deleteNoteCard(noteCard: NoteCard) {
     viewModelScope.launch {
       noteCardService.deleteNoteCard(noteCard = noteCard)

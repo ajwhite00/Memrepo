@@ -17,13 +17,10 @@ interface INoteCardDAO {
     fun getAllNoteCards() : LiveData<List<NoteCard>>
 
     /**
-     * saveNoteCard inserts all note-card data into the database.
+     * saveNoteCard inserts all note-card data into the database or updates an existing note-card.
      */
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Upsert
     suspend fun saveNoteCard(noteCard: NoteCard)
-
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun updateNoteCard(noteCard: NoteCard)
 
     /**
      * delete removes selected NoteCard from the database.
