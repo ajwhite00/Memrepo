@@ -1,10 +1,9 @@
-package com.memrepo.ui
-
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
@@ -23,7 +22,6 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,6 +31,10 @@ import com.memrepo.ui.theme.MemrepoTheme
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.ui.platform.LocalContext
+import com.memrepo.dto.NoteCard
+import com.memrepo.ui.MainViewModel
+import com.memrepo.ui.PracticeActivity
 import java.util.*
 
 class MainActivity : ComponentActivity() {
@@ -42,20 +44,20 @@ class MainActivity : ComponentActivity() {
     @ExperimentalMaterialApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-            setContent {
+        setContent {
 
-                val noteCards by viewModel.noteCards.observeAsState(initial = emptyList())
+            val noteCards by viewModel.noteCards.observeAsState(initial = emptyList())
 
-                MemrepoTheme {
-                    // A surface container using the 'background' color from the theme
-                    Surface(
-                        modifier = Modifier.fillMaxSize(),
-                        color = MaterialTheme.colors.background
-                    ) {
-                        MainScreen(noteCards)
-                    }
+            MemrepoTheme {
+                // A surface container using the 'background' color from the theme
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colors.background
+                ) {
+                    MainScreen(noteCards)
                 }
-            }  
+            }
+        }
     }
     @ExperimentalMaterialApi
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -143,7 +145,7 @@ class MainActivity : ComponentActivity() {
         val mContext = LocalContext.current
         val paddingModifier = Modifier.padding(10.dp)
         var mExpanded by remember { mutableStateOf(false)}
-        var openAlert = remember { mutableStateOf(false) }
+        var openAlert = remember { mutableStateOf(false)}
 
         if (openAlert.value) {
             // if yes button clicked viewModel.deleteNoteCard(noteCard)
@@ -151,11 +153,11 @@ class MainActivity : ComponentActivity() {
                 onDismissRequest = {openAlert.value = false},
                 text={Text("Are you sure you want to delete this?")},
                 confirmButton = {
-                                Button(onClick = {
-                                    openAlert.value = false
-                                    viewModel.deleteNoteCard(noteCard) }) {
-                                    Text("confirm")
-                                }
+                    Button(onClick = {
+                        openAlert.value = false
+                        viewModel.deleteNoteCard(noteCard) }) {
+                        Text("confirm")
+                    }
                 },
 
 
@@ -178,41 +180,41 @@ class MainActivity : ComponentActivity() {
 
                 Column(paddingModifier) {
                     // Title and Snippet are placeholders for now, eventually these will be injected values from the database
-                        Text(text = noteCard.title, Modifier.fillMaxWidth())
-                        Text(text = noteCard.snippet, Modifier.fillMaxWidth())
+                    Text(text = noteCard.title, Modifier.fillMaxWidth())
+                    Text(text = noteCard.snippet, Modifier.fillMaxWidth())
 
                 }
                 // Button will have the options to Edit or delete the note card
-               IconButton(
-                   onClick = { mExpanded = true },
-                   modifier = Modifier
-                       .fillMaxWidth()
-                       .wrapContentSize(Alignment.TopEnd)
-                   ) {
-                   Icon(
-                       imageVector = Icons.Default.MoreVert,
-                       contentDescription = "Open options"
-                   )
-               }
-                       DropdownMenu(expanded = mExpanded, onDismissRequest = {mExpanded = false}, modifier = Modifier.align(Alignment.TopEnd))
-                       {
-                         DropdownMenuItem(
-                              text = { Text("Edit")},
-                             onClick = { }
+                IconButton(
+                    onClick = { mExpanded = true },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentSize(Alignment.TopEnd)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.MoreVert,
+                        contentDescription = "Open options"
+                    )
+                }
+                DropdownMenu(expanded = mExpanded, onDismissRequest = {mExpanded = false}, modifier = Modifier.align(Alignment.TopEnd))
+                {
+                    DropdownMenuItem(
+                        text = { Text("Edit")},
+                        onClick = { }
 
-                          )
-                           DropdownMenuItem(
-                               text = { Text("Delete")},
-                               onClick = {
-                                   mExpanded = false
-                                   openAlert.value = true }
-                               )
+                    )
+                    DropdownMenuItem(
+                        text = { Text("Delete")},
+                        onClick = {
+                            mExpanded = false
+                            openAlert.value = true }
+                    )
 
-                       }
-               }
-
-               }
+                }
             }
+
+        }
+    }
     @OptIn(ExperimentalComposeUiApi::class)
     @ExperimentalMaterialApi
     @Composable
@@ -279,29 +281,26 @@ class MainActivity : ComponentActivity() {
                     contentDescription = "Save")
             }
         }
-    }
+        Box ( modifier = Modifier.fillMaxWidth() ){
+            // When the Save button is clicked collapse the bottom sheet, hide the keyboard, save the fields to database
+            Button (
 
-    @Composable
-    fun SpeechToText() {
+                onClick = {
 
-        val context = LocalContext.current
-        val noteCard = NoteCard(cardID = 0, title = "Test", snippet = "This is a test")
-
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            SpeechRecognizerComponent(context = context, activity = this@MainActivity, noteCard = noteCard)
+                },
+                modifier = Modifier.align(Alignment.BottomStart)
+            ) {
+                Icon (painter = painterResource(id = R.drawable.ic_reveal_foreground),
+                    contentDescription = "Reveal")
+            }
         }
-
     }
 
     @ExperimentalMaterialApi
     @Preview(showBackground = true)
     @Composable
     fun DefaultPreview() {
-       MemrepoTheme {
+        MemrepoTheme {
             Column {
                 //MainScreen()
             }
