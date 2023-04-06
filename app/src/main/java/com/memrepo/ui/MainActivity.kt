@@ -31,7 +31,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.math.exp
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.ui.platform.LocalContext
-import com.memrepo.dto.NoteCard
+import com.memrepo.R
 import java.util.*
 
 class MainActivity : ComponentActivity() {
