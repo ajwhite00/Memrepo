@@ -1,3 +1,5 @@
+package com.memrepo.ui
+
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
@@ -33,8 +35,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.ui.platform.LocalContext
 import com.memrepo.dto.NoteCard
-import com.memrepo.ui.MainViewModel
-import com.memrepo.ui.PracticeActivity
 import java.util.*
 
 class MainActivity : ComponentActivity() {
@@ -145,7 +145,7 @@ class MainActivity : ComponentActivity() {
         val mContext = LocalContext.current
         val paddingModifier = Modifier.padding(10.dp)
         var mExpanded by remember { mutableStateOf(false)}
-        var openAlert = remember { mutableStateOf(false)}
+        val openAlert = remember { mutableStateOf(false)}
 
         if (openAlert.value) {
             // if yes button clicked viewModel.deleteNoteCard(noteCard)
@@ -292,6 +292,22 @@ class MainActivity : ComponentActivity() {
             ) {
                 Icon (painter = painterResource(id = R.drawable.ic_reveal_foreground),
                     contentDescription = "Reveal")
+            }
+
+        }
+
+        Box ( modifier = Modifier.fillMaxWidth() ) {
+            Button(
+
+                onClick = {
+
+                },
+                modifier = Modifier.align(Alignment.BottomEnd)
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_reset_foreground),
+                    contentDescription = "Reset"
+                )
             }
         }
     }
