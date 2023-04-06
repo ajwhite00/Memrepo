@@ -17,17 +17,21 @@ interface INoteCardDAO {
     fun getAllNoteCards() : LiveData<List<NoteCard>>
 
     /**
+     * getNoteCardById selects a NoteCard by the given id
+     */
+    @Query("SELECT * FROM NoteCards WHERE cardID=:id ")
+    suspend fun getNoteCardById(id: Int): NoteCard
+
+    /**
      * saveNoteCard inserts all note-card data into the database.
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveNoteCard(noteCard: NoteCard)
-
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun updateNoteCard(noteCard: NoteCard)
 
     /**
      * delete removes selected NoteCard from the database.
      */
     @Delete
     suspend fun deleteNoteCard(noteCard: NoteCard)
+
 }
