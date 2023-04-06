@@ -1,6 +1,5 @@
 package com.memrepo.ui
 
-import MainActivity
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
@@ -17,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.memrepo.SpeechRecognizerComponent
 import com.memrepo.dto.NoteCard
 
