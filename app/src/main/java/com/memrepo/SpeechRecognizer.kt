@@ -222,8 +222,16 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
                           },
             ) {
                 Icon(
+                    painter = painterResource(id = R.drawable.ic_reset_foreground),
+                    contentDescription = "Reset"
+                )
+                Icon(
                     painter = painterResource(id = R.drawable.ic_microphone_foreground),
                     contentDescription = "Microphone"
+                )
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_reveal_foreground),
+                    contentDescription = "Reveal"
                 )
             }
             Text(text = status, modifier = Modifier.align(Alignment.CenterHorizontally))
@@ -302,4 +310,5 @@ fun DefaultPreview() {
             Text(text = "Reset")
         }
     }
+
 }

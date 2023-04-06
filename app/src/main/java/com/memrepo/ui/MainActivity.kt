@@ -281,35 +281,7 @@ class MainActivity : ComponentActivity() {
                     contentDescription = "Save")
             }
         }
-        Box ( modifier = Modifier.fillMaxWidth() ){
-            // When the Save button is clicked collapse the bottom sheet, hide the keyboard, save the fields to database
-            Button (
 
-                onClick = {
-
-                },
-                modifier = Modifier.align(Alignment.BottomStart)
-            ) {
-                Icon (painter = painterResource(id = R.drawable.ic_reveal_foreground),
-                    contentDescription = "Reveal")
-            }
-
-        }
-
-        Box ( modifier = Modifier.fillMaxWidth() ) {
-            Button(
-
-                onClick = {
-
-                },
-                modifier = Modifier.align(Alignment.BottomEnd)
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_reset_foreground),
-                    contentDescription = "Reset"
-                )
-            }
-        }
     }
 
     @ExperimentalMaterialApi
