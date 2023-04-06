@@ -7,7 +7,6 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -22,6 +21,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.memrepo.dto.NoteCard
@@ -30,6 +30,10 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.math.exp
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.ui.platform.LocalContext
+import com.memrepo.dto.NoteCard
+import java.util.*
+
 class MainActivity : ComponentActivity() {
 
     private val viewModel : MainViewModel by viewModel()
@@ -102,7 +106,8 @@ class MainActivity : ComponentActivity() {
                             }
                         }
                     }) {
-                        Text("+")
+                        Icon (painter = painterResource(id = R.drawable.ic_add_foreground),
+                            contentDescription = "Add")
                     }
                 },
                 floatingActionButtonPosition = FabPosition.Center,
@@ -141,11 +146,7 @@ class MainActivity : ComponentActivity() {
         var mExpanded by remember { mutableStateOf(false)}
         var openAlert = remember { mutableStateOf(false) }
 
-
-
-
-
-            if (openAlert.value) {
+        if (openAlert.value) {
             // if yes button clicked viewModel.deleteNoteCard(noteCard)
             AlertDialog(
                 onDismissRequest = {openAlert.value = false},
@@ -161,11 +162,10 @@ class MainActivity : ComponentActivity() {
                 },
 
 
-
                 )
         }
 
-        Box(modifier = Modifier.fillMaxSize()) {
+        Box(Modifier.fillMaxSize()) {
             Card(
                 shape = RoundedCornerShape(20.dp),
                 elevation = 10.dp,
@@ -175,14 +175,14 @@ class MainActivity : ComponentActivity() {
                         val intent = Intent(mContext, PracticeActivity::class.java)
                         intent.putExtra("Title", noteCard.title)
                         intent.putExtra("Snippet", noteCard.snippet)
-                        mContext.startActivity(Intent(mContext, PracticeActivity::class.java))
+                        mContext.startActivity(intent)
                     }
             ) {
 
-                Column(paddingModifier, verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.End) {
+                Column(paddingModifier) {
                     // Title and Snippet are placeholders for now, eventually these will be injected values from the database
-                    Text(text = noteCard.title, Modifier.fillMaxWidth())
-                    Text(text = noteCard.snippet, Modifier.fillMaxWidth())
+                        Text(text = noteCard.title, Modifier.fillMaxWidth())
+                        Text(text = noteCard.snippet, Modifier.fillMaxWidth())
 
                 }
                 // Button will have the options to Edit or delete the note card
@@ -238,7 +238,8 @@ class MainActivity : ComponentActivity() {
                     .align(Alignment.TopEnd)
                     .padding(end = 10.dp)
             ) {
-                Text("Exit")
+                Icon(painter = painterResource(id = R.drawable.ic_close_foreground),
+                    contentDescription = "Close")
             }
         }
         Box (modifier = Modifier.fillMaxWidth()) {
@@ -278,17 +279,19 @@ class MainActivity : ComponentActivity() {
                 },
                 modifier = Modifier.align(Alignment.Center)
             ) {
-                Text("Save")
+                Icon (painter = painterResource(id = R.drawable.ic_save_foreground),
+                    contentDescription = "Save")
             }
         }
     }
+
     @ExperimentalMaterialApi
     @Preview(showBackground = true)
     @Composable
     fun DefaultPreview() {
-        MemrepoTheme {
+       MemrepoTheme {
             Column {
-                SnippetCard(noteCard = NoteCard(0, "test", "test"))
+
             }
         }
     }
