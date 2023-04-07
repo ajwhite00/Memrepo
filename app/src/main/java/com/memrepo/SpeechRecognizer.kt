@@ -221,18 +221,12 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
                      if (!isListening && remainingWords.isNotEmpty()) speechRecognizer.startListening(speechRecognizerIntent)
                           },
             ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_reset_foreground),
-                    contentDescription = "Reset"
-                )
+
                 Icon(
                     painter = painterResource(id = R.drawable.ic_microphone_foreground),
                     contentDescription = "Microphone"
                 )
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_reveal_foreground),
-                    contentDescription = "Reveal"
-                )
+
             }
             Text(text = status, modifier = Modifier.align(Alignment.CenterHorizontally))
         }
@@ -247,10 +241,16 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
             }
         }) {
             if(!revealed){
-                Text(text = "Reveal")
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_reveal_foreground),
+                    contentDescription = "Reveal"
+                )
             }
             else {
-                Text(text = "Hide")
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_visibility_foreground),
+                    contentDescription = "Reveal"
+                )
             }
         }
         // Rest all of the progress
@@ -259,7 +259,10 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
             correctWords = emptyList()
             remainingWords = noteCard.createSnippetDisplayList()
         }) {
-            Text(text = "Reset")
+            Icon(
+                painter = painterResource(id = R.drawable.ic_reset_foreground),
+                contentDescription = "Reset"
+            )
         }
     }
 }

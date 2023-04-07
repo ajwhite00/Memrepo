@@ -1,4 +1,4 @@
-package com.memrepo
+package com.memrepo.ui
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -35,8 +35,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.ui.platform.LocalContext
 import com.memrepo.dto.NoteCard
-import com.memrepo.ui.MainViewModel
-import com.memrepo.ui.PracticeActivity
 import java.util.*
 
 class MainActivity : ComponentActivity() {
