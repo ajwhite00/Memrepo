@@ -22,9 +22,6 @@ interface INoteCardDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveNoteCard(noteCard: NoteCard)
 
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun updateNoteCard(noteCard: NoteCard)
-
     /**
      * delete removes selected NoteCard from the database.
      */

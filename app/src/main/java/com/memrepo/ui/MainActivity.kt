@@ -144,7 +144,7 @@ class MainActivity : ComponentActivity() {
     fun SnippetCard(noteCard: NoteCard) {
         val mContext = LocalContext.current
         val paddingModifier = Modifier.padding(10.dp)
-        var mExpanded by remember { mutableStateOf(false)}
+        var isMenuExpanded by remember { mutableStateOf(false)}
         var openAlert = remember { mutableStateOf(false) }
 
         if (openAlert.value) {
@@ -186,7 +186,7 @@ class MainActivity : ComponentActivity() {
                 }
                 // Button will have the options to Edit or delete the note card
                IconButton(
-                   onClick = { mExpanded = true },
+                   onClick = { isMenuExpanded = true },
                    modifier = Modifier
                        .fillMaxWidth()
                        .wrapContentSize(Alignment.TopEnd)
@@ -196,7 +196,7 @@ class MainActivity : ComponentActivity() {
                        contentDescription = "Open options"
                    )
                }
-                       DropdownMenu(expanded = mExpanded, onDismissRequest = {mExpanded = false}, modifier = Modifier.align(Alignment.TopEnd))
+                       DropdownMenu(expanded = isMenuExpanded, onDismissRequest = {isMenuExpanded = false}, modifier = Modifier.align(Alignment.TopEnd))
                        {
                          DropdownMenuItem(
                               text = { Text("Edit")},
@@ -206,7 +206,7 @@ class MainActivity : ComponentActivity() {
                            DropdownMenuItem(
                                text = { Text("Delete")},
                                onClick = {
-                                   mExpanded = false
+                                   isMenuExpanded = false
                                    openAlert.value = true }
                                )
 

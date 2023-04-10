@@ -51,29 +51,33 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
     var status by remember { mutableStateOf("") }
     var isListening by remember { mutableStateOf(false) }
 
-    var correctWordList : List<String> = mutableListOf()
+    val correctWordList : List<String> = mutableListOf()
 
     var remainingWords by remember { mutableStateOf(noteCard.createSnippetDisplayList()) }
     var correctWords by remember { mutableStateOf(correctWordList) }
     var incorrectWord by remember { mutableStateOf("") }
-    var partialWords by remember { mutableStateOf(mutableListOf<String>()) }
+    val partialWords by remember { mutableStateOf(mutableListOf<String>()) }
 
-    // Callback functions can't change values of correctWords or remainingWords within their scope so this function is declared outside their scope
+    /**
+     * Callback functions can't change values of correctWords or remainingWords within their scope so this function is declared outside their scope
+     */
     fun updateList() {
         Log.d("SpeechRecognizer.updateList()", "Removing '${remainingWords[0]}' from remainingWords")
-        correctWords = correctWords + remainingWords.removeFirst()
+        correctWords += remainingWords.removeFirst()
         Log.d("SpeechRecognizer.updateList()", "Correct words $correctWords")
     }
 
-    // Return true or false if word is found in partialWords or all words in partialWords has been iterated through
-    fun checkPartialWordsList(word: String, i: Int) : Boolean {
+    /**
+     *  Return true or false if word is found in partialWords or all words in partialWords has been iterated through
+     */
+    fun isWordInPartialList(word: String, i: Int) : Boolean {
         if (partialWords.size - 1 >= i) {
             return word.lowercase() == partialWords[i]
         }
         return false
     }
 
-    var data : ArrayList<String>?
+    var recognizedWords : ArrayList<String>?
 
     speechRecognizer.setRecognitionListener(object : RecognitionListener {
         override fun onReadyForSpeech(p0: Bundle?) {
@@ -104,19 +108,19 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
         }
 
         override fun onResults(bundle: Bundle?) {
-            data = bundle!!.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
+            recognizedWords = bundle!!.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
 
             var i = 0
             var resultsAfterPartialClear : MutableList<String> = mutableListOf()
 
-            for (word in data!![0].split(" ")) {
+            for (word in recognizedWords!![0].split(" ")) {
                 // Check if remainingWords is empty
                 if (remainingWords.isEmpty() || word == incorrectWord){
                     break
                 }
 
                 // Add word to resultsAfterPartialClear if it is not already in partialWords
-                if(!checkPartialWordsList(word, i)){
+                if(!isWordInPartialList(word, i)){
                     resultsAfterPartialClear.add(word.lowercase())
                 }
 
@@ -141,8 +145,8 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
                 }
             }
 
-            Log.d("SpeechRecognizer.onResults()", "Results: ${data!![0]}")
-            Toast.makeText(context, data!![0], Toast.LENGTH_LONG).show()
+            Log.d("SpeechRecognizer.onResults()", "Results: ${recognizedWords!![0]}")
+            Toast.makeText(context, recognizedWords!![0], Toast.LENGTH_LONG).show()
             speechRecognizer.destroy()
             partialWords.clear()
             status = ""
@@ -151,8 +155,8 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
         }
 
         override fun onPartialResults(partialResults: Bundle?) {
-            data = partialResults!!.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
-            Log.d("SpeechRecognizer.onPartialResults()","Detected partial words: ${data!![0]}")
+            recognizedWords = partialResults!!.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
+            Log.d("SpeechRecognizer.onPartialResults()","Detected partial words: ${recognizedWords!![0]}")
 
             fun checkWord(){
                 if (remainingWords.isNotEmpty() && partialWords.last() == (remainingWords[0])) {
@@ -168,21 +172,23 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
                 }
             }
 
-            // Update partialWords to add the last word detected as partial result
-            fun addResultToPartialWords(data:  ArrayList<String>?) {
-                if(data!![0].split(" ").last().isNotEmpty()) {
-                    partialWords.add(data!![0].split(" ").last().lowercase())
+            /**
+             * Update partialWords to add the last word detected as partial result
+             */
+            fun addResultToPartialWords(recognizedWords:  ArrayList<String>?) {
+                if(recognizedWords!![0].split(" ").last().isNotEmpty()) {
+                    partialWords.add(recognizedWords!![0].split(" ").last().lowercase())
                     checkWord()
                 }
             }
 
             // partialWords is initially empty we need to add the first partial result or else an exception will be thrown with partialWords.last()
             if(partialWords.isEmpty()){
-                addResultToPartialWords(data)
+                addResultToPartialWords(recognizedWords)
             }
             // Add the most recent partial result to partialWords
-            else if (data!![0].split(" ").last().lowercase() != partialWords.last()){
-                addResultToPartialWords(data)
+            else if (recognizedWords!![0].split(" ").last().lowercase() != partialWords.last()){
+                addResultToPartialWords(recognizedWords)
             }
 
             Log.d("SpeechRecognizer.onPartialResults()", "Partial Words: $partialWords")
