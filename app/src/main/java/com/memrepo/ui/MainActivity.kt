@@ -156,17 +156,15 @@ class MainActivity : ComponentActivity() {
                 onDismissRequest = {openAlert.value = false},
                 text={Text("Are you sure you want to delete this?")},
                 confirmButton = {
-                                Button(onClick = {
-                                    openAlert.value = false
-                                    viewModel.deleteNoteCard(noteCard) }) {
-                                    Text("Confirm")
-                                }; Button(onClick = {openAlert.value = false}){
-                                    Text("No")
-                }
+                    Button(onClick = {
+                        openAlert.value = false
+                        viewModel.deleteNoteCard(noteCard) }) {
+                        Text("Yes")
+                    }; Button(onClick = {openAlert.value = false}){
+                    Text("No")
+                    }
                 },
-
-
-                )
+            )
         }
 
         Box(Modifier.fillMaxSize()) {
@@ -205,6 +203,7 @@ class MainActivity : ComponentActivity() {
                             DropdownMenuItem(
                                     text = { Text("Edit") },
                                     onClick = {
+                                        isMenuExpanded = false
                                         viewModel.getNoteCardById(noteCard = noteCard)
                                         coroutineScope.launch {
                                             if (bottomSheetScaffoldState.bottomSheetState.isCollapsed) {
@@ -244,8 +243,6 @@ class MainActivity : ComponentActivity() {
                 onClick = {
                     coroutineScope.launch { bottomSheetScaffoldState.bottomSheetState.collapse() }
                     keyBoardController?.hide()
-                    title = ""
-                    snippetText = ""
                 },
                 modifier = Modifier
                     .align(Alignment.TopEnd)
@@ -287,8 +284,6 @@ class MainActivity : ComponentActivity() {
                     }
                     coroutineScope.launch { bottomSheetScaffoldState.bottomSheetState.collapse() }
                     keyBoardController?.hide()
-                    title = ""
-                    snippetText = ""
                 },
                 modifier = Modifier.align(Alignment.Center)
             ) {
