@@ -46,4 +46,15 @@ class NoteCardService(val application: Application) : INoteCardService {
             Log.e(TAG, "error saving note card ${(e.message)}")
         }
     }
+
+    suspend fun getNoteCardById(noteCard: NoteCard) {
+        try {
+            noteCard?.let{
+                val noteCardDao = getNoteCardDAO()
+                noteCardDao.getNoteCardById(noteCard.cardID)
+            }
+        } catch (e: java.lang.Exception){
+
+        }
+    }
 }
