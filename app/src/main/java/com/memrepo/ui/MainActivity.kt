@@ -198,7 +198,7 @@ class MainActivity : ComponentActivity() {
                                 imageVector = Icons.Default.MoreVert,
                                 contentDescription = "Open options"
                         )
-                        DropdownMenu(expanded = isMenuExpanded, onDismissRequest = { mExpanded = false }, modifier = Modifier.align(Alignment.CenterEnd)) {
+                        DropdownMenu(expanded = isMenuExpanded, onDismissRequest = { isMenuExpanded = false }, modifier = Modifier.align(Alignment.CenterEnd)) {
                             DropdownMenuItem(
                                     text = { Text("Edit") },
                                     onClick = { }
