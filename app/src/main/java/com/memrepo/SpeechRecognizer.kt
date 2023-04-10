@@ -102,6 +102,7 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
         }
 
         override fun onError(p0: Int) {
+            partialWords.clear()
             status = ""
             isListening = false
             Log.w("SpeechRecognizer.onError()", "Error: $p0")
@@ -140,6 +141,7 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
                         // add to incorrect word list and remove from remaining
                         Log.d("SpeechRecognizer.onResults", "Incorrect word: '$word'")
                         incorrectWord = word
+                        speechRecognizer.destroy()
                         break
                     }
                 }
@@ -147,7 +149,6 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
 
             Log.d("SpeechRecognizer.onResults()", "Results: ${recognizedWords!![0]}")
             Toast.makeText(context, recognizedWords!![0], Toast.LENGTH_LONG).show()
-            speechRecognizer.destroy()
             partialWords.clear()
             status = ""
             isListening = false
