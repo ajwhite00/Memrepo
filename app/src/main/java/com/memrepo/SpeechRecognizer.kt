@@ -204,6 +204,7 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
         Column(modifier = Modifier.align(Alignment.Center)) {
             Row(modifier = Modifier.align(Alignment.CenterHorizontally)){
                 Text(
+                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 0.dp),
                     text = buildAnnotatedString {
                         withStyle(style = SpanStyle(color = Color.Green)) {
                             Log.d("SpeechRecognizer", "Drawing correctWords: $correctWords")
