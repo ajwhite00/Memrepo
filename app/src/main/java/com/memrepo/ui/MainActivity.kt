@@ -3,10 +3,15 @@ package com.memrepo.ui
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -28,9 +33,7 @@ import com.memrepo.dto.NoteCard
 import com.memrepo.ui.theme.MemrepoTheme
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import kotlin.math.exp
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.ui.platform.LocalContext
 import com.memrepo.R
 import java.util.*
 
@@ -78,8 +81,6 @@ class MainActivity : ComponentActivity() {
                     Column {
                         // Contents of the Bottom Sheet come from this component
                         AddSnippet(bottomSheetScaffoldState)
-
-
                     }
                 }
             }, sheetPeekHeight = 0.dp
@@ -143,7 +144,7 @@ class MainActivity : ComponentActivity() {
     fun SnippetCard(noteCard: NoteCard) {
         val mContext = LocalContext.current
         val paddingModifier = Modifier.padding(10.dp)
-        var mExpanded by remember { mutableStateOf(false)}
+        var isMenuExpanded by remember { mutableStateOf(false)}
         var openAlert = remember { mutableStateOf(false) }
 
         if (openAlert.value) {
@@ -188,7 +189,7 @@ class MainActivity : ComponentActivity() {
                 // Button will have the options to Edit or delete the note card
                 Box(){
                     IconButton(
-                            onClick = { mExpanded = true },
+                            onClick = { isMenuExpanded = true },
                             modifier = Modifier
                                     .fillMaxWidth()
                                     .wrapContentSize(Alignment.BottomEnd)
@@ -197,7 +198,7 @@ class MainActivity : ComponentActivity() {
                                 imageVector = Icons.Default.MoreVert,
                                 contentDescription = "Open options"
                         )
-                        DropdownMenu(expanded = mExpanded, onDismissRequest = { mExpanded = false }, modifier = Modifier.align(Alignment.CenterEnd)) {
+                        DropdownMenu(expanded = isMenuExpanded, onDismissRequest = { mExpanded = false }, modifier = Modifier.align(Alignment.CenterEnd)) {
                             DropdownMenuItem(
                                     text = { Text("Edit") },
                                     onClick = { }
@@ -206,7 +207,7 @@ class MainActivity : ComponentActivity() {
                             DropdownMenuItem(
                                     text = { Text("Delete") },
                                     onClick = {
-                                        mExpanded = false
+                                        isMenuExpanded = false
                                         openAlert.value = true
                                     }
                             )
