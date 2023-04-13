@@ -147,7 +147,7 @@ class MainActivity : ComponentActivity() {
         val mContext = LocalContext.current
         val paddingModifier = Modifier.padding(10.dp)
         var isMenuExpanded by remember { mutableStateOf(false)}
-        var openAlert = remember { mutableStateOf(false) }
+        val openAlert = remember { mutableStateOf(false) }
         val coroutineScope = rememberCoroutineScope()
 
         if (openAlert.value) {
@@ -232,7 +232,7 @@ class MainActivity : ComponentActivity() {
     @ExperimentalMaterialApi
     @Composable
     fun AddSnippet(bottomSheetScaffoldState: BottomSheetScaffoldState) {
-        var id by remember(viewModel.selectedNoteCard.cardID) { mutableStateOf(viewModel.selectedNoteCard.cardID) }
+        val id by remember(viewModel.selectedNoteCard.cardID) { mutableStateOf(viewModel.selectedNoteCard.cardID) }
         var title by remember(viewModel.selectedNoteCard.cardID) { mutableStateOf(viewModel.selectedNoteCard.title) }
         var snippetText by remember(viewModel.selectedNoteCard.cardID) { mutableStateOf(viewModel.selectedNoteCard.snippet) }
         val coroutineScope = rememberCoroutineScope()

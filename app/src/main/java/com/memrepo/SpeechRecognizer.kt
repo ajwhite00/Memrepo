@@ -1,6 +1,7 @@
 package com.memrepo
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -31,6 +32,7 @@ import androidx.core.content.ContextCompat
 import com.memrepo.dto.NoteCard
 import java.util.*
 
+@SuppressLint("MutableCollectionMutableState")
 @Composable
 fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: NoteCard, speechRecognizer: SpeechRecognizer) {
 
@@ -64,7 +66,7 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
      */
     fun updateList() {
         Log.d("SpeechRecognizer.updateList()", "Removing '${remainingWords[0]}' from remainingWords")
-        correctWords += remainingWords.removeFirst()
+        correctWords = correctWords + remainingWords.removeFirst()
         Log.d("SpeechRecognizer.updateList()", "Correct words $correctWords")
     }
 
@@ -113,7 +115,7 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
             recognizedWords = bundle!!.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
 
             var i = 0
-            var resultsAfterPartialClear : MutableList<String> = mutableListOf()
+            val resultsAfterPartialClear : MutableList<String> = mutableListOf()
 
             for (word in recognizedWords!![0].split(" ")) {
                 // Check if remainingWords is empty
@@ -179,7 +181,7 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
              */
             fun addResultToPartialWords(recognizedWords:  ArrayList<String>?) {
                 if(recognizedWords!![0].split(" ").last().isNotEmpty()) {
-                    partialWords.add(recognizedWords!![0].split(" ").last().lowercase())
+                    partialWords.add(recognizedWords[0].split(" ").last().lowercase())
                     checkWord()
                 }
             }
@@ -279,7 +281,7 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    var words = arrayListOf("This", "is", "a", "test")
+    val words = arrayListOf("This", "is", "a", "test")
     Box(modifier = Modifier.fillMaxWidth().fillMaxHeight()) {
         Column( modifier = Modifier.align(Alignment.Center)) {
             Row( modifier = Modifier.align(Alignment.CenterHorizontally)) {
