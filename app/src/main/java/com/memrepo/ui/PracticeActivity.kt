@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.memrepo.SpeechRecognizerComponent
 import com.memrepo.dto.NoteCard
 
@@ -80,10 +81,12 @@ class PracticeActivity : ComponentActivity() {
         val snippet = intent.getStringExtra("Snippet")
 
         Box(Modifier.fillMaxSize()) {
-            Column(Modifier.padding(10.dp)) {
-
-                Text("Title : $title").toString()
-                Text("Snippet : $snippet").toString()
+            Column(Modifier.padding(10.dp).fillMaxWidth()){
+                Text(
+                    text = title!!,
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    fontSize = 25.sp
+                )
             }
 
         }
