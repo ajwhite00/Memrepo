@@ -20,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.memrepo.SpeechRecognizerComponent
 import com.memrepo.dto.NoteCard
-
 import com.memrepo.ui.theme.MemrepoTheme
 
 class PracticeActivity : ComponentActivity() {

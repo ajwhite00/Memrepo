@@ -63,7 +63,7 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
      */
     fun updateList() {
         Log.d("SpeechRecognizer.updateList()", "Removing '${remainingWords[0]}' from remainingWords")
-        correctWords += remainingWords.removeFirst()
+        correctWords = correctWords + remainingWords.removeFirst()
         Log.d("SpeechRecognizer.updateList()", "Correct words $correctWords")
     }
 
@@ -105,7 +105,28 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
             partialWords.clear()
             status = ""
             isListening = false
-            Log.w("SpeechRecognizer.onError()", "Error: $p0")
+            var errorMessage : String
+
+            when (p0) {
+                SpeechRecognizer.ERROR_AUDIO -> errorMessage = "Audio Recording Error"
+                SpeechRecognizer.ERROR_CLIENT -> errorMessage = "Incorrect speech input"
+                SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS -> errorMessage = "Insufficient Permissions"
+                SpeechRecognizer.ERROR_LANGUAGE_NOT_SUPPORTED -> errorMessage = "Requested language is not available to be used with the current recognizer."
+                SpeechRecognizer.ERROR_LANGUAGE_UNAVAILABLE -> errorMessage = "Requested language is supported, but not available currently"
+                SpeechRecognizer.ERROR_NETWORK -> errorMessage = "Network Error"
+                SpeechRecognizer.ERROR_NETWORK_TIMEOUT -> errorMessage = "Network operation timed out"
+                SpeechRecognizer.ERROR_NO_MATCH -> errorMessage = "No recognition result found"
+                SpeechRecognizer.ERROR_RECOGNIZER_BUSY -> errorMessage = "RecognitionService is busy"
+                SpeechRecognizer.ERROR_SERVER -> errorMessage = "Server sends error status"
+                SpeechRecognizer.ERROR_SERVER_DISCONNECTED -> errorMessage = "Server has been disconnected"
+                SpeechRecognizer.ERROR_SPEECH_TIMEOUT -> errorMessage = "No speech input"
+                SpeechRecognizer.ERROR_TOO_MANY_REQUESTS -> errorMessage = "Too many request made"
+                else -> {
+                    errorMessage = "Error"
+                }
+            }
+            Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+            Log.w("SpeechRecognizer.onError()", "Error: $errorMessage")
         }
 
         override fun onResults(bundle: Bundle?) {

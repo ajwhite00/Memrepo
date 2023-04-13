@@ -34,6 +34,7 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextOverflow
 import com.memrepo.dto.NoteCard
 import java.util.*
 
@@ -147,7 +148,7 @@ class MainActivity : ComponentActivity() {
         val mContext = LocalContext.current
         val paddingModifier = Modifier.padding(10.dp)
         var isMenuExpanded by remember { mutableStateOf(false)}
-        var openAlert = remember { mutableStateOf(false) }
+        val openAlert = remember { mutableStateOf(false) }
         val coroutineScope = rememberCoroutineScope()
 
         if (openAlert.value) {
@@ -184,16 +185,17 @@ class MainActivity : ComponentActivity() {
                 Column(paddingModifier) {
                     // Title and Snippet are placeholders for now, eventually these will be injected values from the database
                         Text(text = noteCard.title, Modifier.fillMaxWidth())
-                        Text(text = noteCard.snippet, Modifier.fillMaxWidth())
+                        Spacer(modifier = Modifier.height(5.dp))
+                        Text(text = noteCard.snippet, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.padding(end=5.dp))
 
                 }
                 // Button will have the options to Edit or delete the note card
-                Box(){
+                Box{
                     IconButton(
                             onClick = { isMenuExpanded = true },
                             modifier = Modifier
-                                    .fillMaxWidth()
-                                    .wrapContentSize(Alignment.BottomEnd)
+                                .fillMaxWidth()
+                                .wrapContentSize(Alignment.BottomEnd)
                     ) {
                         Icon(
                                 imageVector = Icons.Default.MoreVert,
@@ -232,7 +234,7 @@ class MainActivity : ComponentActivity() {
     @ExperimentalMaterialApi
     @Composable
     fun AddSnippet(bottomSheetScaffoldState: BottomSheetScaffoldState) {
-        var id by remember(viewModel.selectedNoteCard.cardID) { mutableStateOf(viewModel.selectedNoteCard.cardID) }
+        val id by remember(viewModel.selectedNoteCard.cardID) { mutableStateOf(viewModel.selectedNoteCard.cardID) }
         var title by remember(viewModel.selectedNoteCard.cardID) { mutableStateOf(viewModel.selectedNoteCard.title) }
         var snippetText by remember(viewModel.selectedNoteCard.cardID) { mutableStateOf(viewModel.selectedNoteCard.snippet) }
         val coroutineScope = rememberCoroutineScope()
@@ -300,7 +302,6 @@ class MainActivity : ComponentActivity() {
     fun DefaultPreview() {
        MemrepoTheme {
             Column {
-
             }
         }
     }
