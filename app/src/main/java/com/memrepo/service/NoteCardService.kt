@@ -14,18 +14,18 @@ interface INoteCardService {
 
 class NoteCardService(val application: Application) : INoteCardService {
 
-    lateinit var db: NoteCardDatabase
+    lateinit var database: NoteCardDatabase
 
     override fun getNoteCardDAO() : INoteCardDAO {
-        if (!this::db.isInitialized) {
-            db = Room.databaseBuilder(application, NoteCardDatabase::class.java, "Memrepo").build()
+        if (!this::database.isInitialized) {
+            database = Room.databaseBuilder(application, NoteCardDatabase::class.java, "Memrepo").build()
         }
-        return db.noteCardDAO()
+        return database.noteCardDAO()
     }
 
     suspend fun saveNoteCard(noteCard: NoteCard) {
         try {
-            noteCard?.let {
+            noteCard.let {
                 val noteCardDao = getNoteCardDAO()
                 noteCardDao.saveNoteCard(noteCard = noteCard)
             }
@@ -37,7 +37,7 @@ class NoteCardService(val application: Application) : INoteCardService {
 
     suspend fun deleteNoteCard(noteCard: NoteCard) {
         try {
-            noteCard?.let {
+            noteCard.let {
                 val noteCardDao = getNoteCardDAO()
                 noteCardDao.deleteNoteCard(noteCard = noteCard)
             }
