@@ -25,6 +25,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.memrepo.dto.NoteCard
@@ -204,17 +205,17 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
         Column(modifier = Modifier.align(Alignment.Center)) {
             Row(modifier = Modifier.align(Alignment.CenterHorizontally)){
                 Text(
-                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 0.dp),
+                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 1.dp),
                     text = buildAnnotatedString {
-                        withStyle(style = SpanStyle(color = Color.Green)) {
+                        withStyle(style = SpanStyle(color = Color.Green, fontSize = 40.sp)) {
                             Log.d("SpeechRecognizer", "Drawing correctWords: $correctWords")
                             append(correctWords.toString().replace("[,\\[\\]]".toRegex(), ""))
                         }
-                        withStyle(style = SpanStyle(color = Color.Red)) {
+                        withStyle(style = SpanStyle(color = Color.Red, fontSize = 30.sp)) {
                             append(" $incorrectWord ")
                         }
                         remainingWords.forEach { word ->
-                            withStyle(style = SpanStyle(color = Color.Gray, background = blur)) {
+                            withStyle(style = SpanStyle(color = Color.Gray, fontSize = 30.sp, background = blur)) {
                                 append(word)
                             }
                             append(" ")
