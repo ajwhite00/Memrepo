@@ -169,7 +169,6 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
             }
 
             Log.d("SpeechRecognizer.onResults()", "Results: ${recognizedWords!![0]}")
-            Toast.makeText(context, recognizedWords!![0], Toast.LENGTH_LONG).show()
             partialWords.clear()
             status = ""
             isListening = false
@@ -188,7 +187,8 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
                     // add to incorrect word list and remove from remaining
                     incorrectWord = partialWords.last()
                     Log.d("SpeechRecognizer.onPartialResults()", "Incorrect word: '${partialWords.last()}'")
-                    speechRecognizer.cancel()
+                    partialWords.clear()
+                    speechRecognizer.destroy()
                     status = ""
                     isListening = false
                 }
@@ -227,19 +227,28 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
                 Text(
                     modifier = Modifier.padding(horizontal = 10.dp, vertical = 0.dp),
                     text = buildAnnotatedString {
-                        withStyle(style = SpanStyle(color = Color.Green)) {
-                            Log.d("SpeechRecognizer", "Drawing correctWords: $correctWords")
-                            append(correctWords.toString().replace("[,\\[\\]]".toRegex(), ""))
-                        }
-                        withStyle(style = SpanStyle(color = Color.Red)) {
-                            append(" $incorrectWord ")
-                        }
-                        remainingWords.forEach { word ->
-                            withStyle(style = SpanStyle(color = Color.Gray, background = blur)) {
-                                append(word)
+                            withStyle(style = SpanStyle(color = Color.Green)) {
+                                Log.d("SpeechRecognizer", "Drawing correctWords: $correctWords")
+                                if (correctWords.isNotEmpty()) {
+                                    append("${correctWords.toString().replace("[,\\[\\]]".toRegex(), "")} ")
+                                }
                             }
-                            append(" ")
-                        }
+                            withStyle(style = SpanStyle(color = Color.Red)) {
+                                if (incorrectWord.isNotEmpty()) {
+                                    append("$incorrectWord ")
+                                }
+                            }
+                            remainingWords.forEach { word ->
+                                withStyle(
+                                    style = SpanStyle(
+                                        color = Color.Gray,
+                                        background = blur
+                                    )
+                                ) {
+                                    append(word)
+                                }
+                                append("  ")
+                            }
                     }
                 )
             }

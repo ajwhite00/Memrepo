@@ -33,6 +33,7 @@ import com.memrepo.ui.theme.MemrepoTheme
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import com.memrepo.dto.NoteCard
@@ -186,7 +187,7 @@ class MainActivity : ComponentActivity() {
                     // Title and Snippet are placeholders for now, eventually these will be injected values from the database
                         Text(text = noteCard.title, Modifier.fillMaxWidth())
                         Spacer(modifier = Modifier.height(5.dp))
-                        Text(text = noteCard.snippet, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.padding(end=5.dp))
+                        Text(text = noteCard.snippet, maxLines = 1, color = Color.Gray, overflow = TextOverflow.Ellipsis, modifier = Modifier.padding(end=5.dp))
 
                 }
                 // Button will have the options to Edit or delete the note card
