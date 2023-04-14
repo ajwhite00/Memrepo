@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
@@ -99,7 +100,7 @@ class MainActivity : ComponentActivity() {
                     )
                 },
                 floatingActionButton = {
-                    FloatingActionButton(onClick =
+                    FloatingActionButton(backgroundColor = MaterialTheme.colors.primary, onClick =
                     {
                         viewModel.selectedNoteCard = NoteCard(0, "", "")
                         coroutineScope.launch {
@@ -288,10 +289,9 @@ class MainActivity : ComponentActivity() {
                     coroutineScope.launch { bottomSheetScaffoldState.bottomSheetState.collapse() }
                     keyBoardController?.hide()
                 },
-                modifier = Modifier.align(Alignment.Center)
+                modifier = Modifier.align(Alignment.Center).padding(top = 10.dp),
             ) {
-                Icon (painter = painterResource(id = R.drawable.ic_save_foreground),
-                    contentDescription = "Save")
+                Icon(imageVector = Icons.Filled.Check, contentDescription = "save")
             }
         }
 
