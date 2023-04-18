@@ -1,6 +1,7 @@
 package com.memrepo
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -12,6 +13,7 @@ import android.speech.SpeechRecognizer
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -25,11 +27,13 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.memrepo.dto.NoteCard
 import java.util.*
 
+@SuppressLint("MutableCollectionMutableState")
 @Composable
 fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: NoteCard, speechRecognizer: SpeechRecognizer) {
 
@@ -133,7 +137,7 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
             recognizedWords = bundle!!.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
 
             var i = 0
-            var resultsAfterPartialClear : MutableList<String> = mutableListOf()
+            val resultsAfterPartialClear : MutableList<String> = mutableListOf()
 
             for (word in recognizedWords!![0].split(" ")) {
                 // Check if remainingWords is empty
@@ -169,6 +173,7 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
             }
 
             Log.d("SpeechRecognizer.onResults()", "Results: ${recognizedWords!![0]}")
+            Toast.makeText(context, recognizedWords!![0], Toast.LENGTH_LONG).show()
             partialWords.clear()
             status = ""
             isListening = false
@@ -199,7 +204,7 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
              */
             fun addResultToPartialWords(recognizedWords:  ArrayList<String>?) {
                 if(recognizedWords!![0].split(" ").last().isNotEmpty()) {
-                    partialWords.add(recognizedWords!![0].split(" ").last().lowercase())
+                    partialWords.add(recognizedWords[0].split(" ").last().lowercase())
                     checkWord()
                 }
             }
@@ -225,15 +230,15 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
         Column(modifier = Modifier.align(Alignment.Center)) {
             Row(modifier = Modifier.align(Alignment.CenterHorizontally)){
                 Text(
-                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 0.dp),
+                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 1.dp),
                     text = buildAnnotatedString {
-                            withStyle(style = SpanStyle(color = Color.Green)) {
+                            withStyle(style = SpanStyle(color = Color.Green, fontSize = 20.sp)) {
                                 Log.d("SpeechRecognizer", "Drawing correctWords: $correctWords")
                                 if (correctWords.isNotEmpty()) {
                                     append("${correctWords.toString().replace("[,\\[\\]]".toRegex(), "")} ")
                                 }
                             }
-                            withStyle(style = SpanStyle(color = Color.Red)) {
+                            withStyle(style = SpanStyle(color = Color.Red, fontSize = 20.sp)) {
                                 if (incorrectWord.isNotEmpty()) {
                                     append("$incorrectWord ")
                                 }
@@ -242,7 +247,7 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
                                 withStyle(
                                     style = SpanStyle(
                                         color = Color.Gray,
-                                        background = blur
+                                        background = blur, fontSize = 20.sp
                                     )
                                 ) {
                                     append(word)
@@ -255,11 +260,11 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
             Spacer(modifier = Modifier.height(30.dp))
             Button(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
+                shape = CircleShape,
                 onClick = {
-                     if (!isListening && remainingWords.isNotEmpty()) speechRecognizer.startListening(speechRecognizerIntent)
-                          },
+                    if (!isListening && remainingWords.isNotEmpty()) speechRecognizer.startListening(speechRecognizerIntent)
+                },
             ) {
-
                 Icon(
                     painter = painterResource(id = R.drawable.ic_microphone_foreground),
                     contentDescription = "Microphone"
@@ -269,7 +274,7 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
             Text(text = status, modifier = Modifier.align(Alignment.CenterHorizontally))
         }
         // Show the remaining text
-        Button(modifier = Modifier.align(Alignment.BottomStart).padding(10.dp), onClick = {
+        Button(modifier = Modifier.align(Alignment.BottomStart).padding(10.dp),shape = CircleShape, onClick = {
             if(!revealed){
                 blur = Color.Transparent
                 revealed = true
@@ -292,7 +297,7 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
             }
         }
         // Rest all of the progress
-        Button(modifier = Modifier.align(Alignment.BottomEnd).padding(10.dp), onClick = {
+        Button(modifier = Modifier.align(Alignment.BottomEnd).padding(10.dp),shape = CircleShape,  onClick = {
             incorrectWord = ""
             correctWords = emptyList()
             remainingWords = noteCard.createSnippetDisplayList()
@@ -308,7 +313,7 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    var words = arrayListOf("This", "is", "a", "test")
+    val words = arrayListOf("This", "is", "a", "test")
     Box(modifier = Modifier.fillMaxWidth().fillMaxHeight()) {
         Column( modifier = Modifier.align(Alignment.Center)) {
             Row( modifier = Modifier.align(Alignment.CenterHorizontally)) {

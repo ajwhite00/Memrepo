@@ -40,7 +40,7 @@ class PracticeActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    practiceScreen()
+                    PracticeScreen()
                 }
             }
         }
@@ -48,7 +48,7 @@ class PracticeActivity : ComponentActivity() {
 
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     @Composable
-    fun practiceScreen() {
+    fun PracticeScreen() {
         val mContext = LocalContext.current
         Scaffold(
             // Bar across top of screen
@@ -119,7 +119,7 @@ class PracticeActivity : ComponentActivity() {
     @Composable
     fun DefaultPreview() {
         MemrepoTheme {
-            practiceScreen()
+            PracticeScreen()
         }
     }
 }
