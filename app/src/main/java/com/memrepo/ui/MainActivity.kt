@@ -287,6 +287,7 @@ class MainActivity : ComponentActivity() {
                     if (title.isNotEmpty() && snippetText.isNotEmpty()){
                         viewModel.saveNoteCard(NoteCard(id, title, snippetText))
                         coroutineScope.launch { bottomSheetScaffoldState.bottomSheetState.collapse()}
+                        viewModel.selectedNoteCard = NoteCard(-1,"","")
                     }
 
                     keyBoardController?.hide()
