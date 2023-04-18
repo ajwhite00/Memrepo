@@ -210,15 +210,15 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
                 Text(
                     modifier = Modifier.padding(horizontal = 10.dp, vertical = 1.dp),
                     text = buildAnnotatedString {
-                        withStyle(style = SpanStyle(color = Color.Green, fontSize = 40.sp)) {
+                        withStyle(style = SpanStyle(color = Color.Green, fontSize = 20.sp)) {
                             Log.d("SpeechRecognizer", "Drawing correctWords: $correctWords")
                             append(correctWords.toString().replace("[,\\[\\]]".toRegex(), ""))
                         }
-                        withStyle(style = SpanStyle(color = Color.Red, fontSize = 30.sp)) {
+                        withStyle(style = SpanStyle(color = Color.Red, fontSize = 20.sp)) {
                             append(" $incorrectWord ")
                         }
                         remainingWords.forEach { word ->
-                            withStyle(style = SpanStyle(color = Color.Gray, fontSize = 30.sp, background = blur)) {
+                            withStyle(style = SpanStyle(color = Color.Gray, fontSize = 20.sp, background = blur)) {
                                 append(word)
                             }
                             append(" ")
@@ -234,8 +234,6 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
                     if (!isListening && remainingWords.isNotEmpty()) speechRecognizer.startListening(speechRecognizerIntent)
                 },
             ) {
-
-
                 Icon(
                     painter = painterResource(id = R.drawable.ic_microphone_foreground),
                     contentDescription = "Microphone"
@@ -245,7 +243,7 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
             Text(text = status, modifier = Modifier.align(Alignment.CenterHorizontally))
         }
         // Show the remaining text
-        Button(modifier = Modifier.align(Alignment.BottomStart).padding(10.dp).offset(y = (-76).dp),shape = CircleShape, onClick = {
+        Button(modifier = Modifier.align(Alignment.BottomStart).padding(10.dp),shape = CircleShape, onClick = {
             if(!revealed){
                 blur = Color.Transparent
                 revealed = true
@@ -268,7 +266,7 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
             }
         }
         // Rest all of the progress
-        Button(modifier = Modifier.align(Alignment.BottomEnd).padding(10.dp) .offset(y = (-76).dp),shape = CircleShape,  onClick = {
+        Button(modifier = Modifier.align(Alignment.BottomEnd).padding(10.dp),shape = CircleShape,  onClick = {
             incorrectWord = ""
             correctWords = emptyList()
             remainingWords = noteCard.createSnippetDisplayList()
