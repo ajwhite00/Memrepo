@@ -63,7 +63,7 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
      */
     fun updateList() {
         Log.d("SpeechRecognizer.updateList()", "Removing '${remainingWords[0]}' from remainingWords")
-        correctWords += remainingWords.removeFirst()
+        correctWords = correctWords + remainingWords.removeFirst()
         Log.d("SpeechRecognizer.updateList()", "Correct words $correctWords")
     }
 
@@ -105,7 +105,28 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
             partialWords.clear()
             status = ""
             isListening = false
-            Log.w("SpeechRecognizer.onError()", "Error: $p0")
+            var errorMessage : String
+
+            when (p0) {
+                SpeechRecognizer.ERROR_AUDIO -> errorMessage = "Audio Recording Error"
+                SpeechRecognizer.ERROR_CLIENT -> errorMessage = "Incorrect speech input"
+                SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS -> errorMessage = "Insufficient Permissions"
+                SpeechRecognizer.ERROR_LANGUAGE_NOT_SUPPORTED -> errorMessage = "Requested language is not available to be used with the current recognizer."
+                SpeechRecognizer.ERROR_LANGUAGE_UNAVAILABLE -> errorMessage = "Requested language is supported, but not available currently"
+                SpeechRecognizer.ERROR_NETWORK -> errorMessage = "Network Error"
+                SpeechRecognizer.ERROR_NETWORK_TIMEOUT -> errorMessage = "Network operation timed out"
+                SpeechRecognizer.ERROR_NO_MATCH -> errorMessage = "No recognition result found"
+                SpeechRecognizer.ERROR_RECOGNIZER_BUSY -> errorMessage = "RecognitionService is busy"
+                SpeechRecognizer.ERROR_SERVER -> errorMessage = "Server sends error status"
+                SpeechRecognizer.ERROR_SERVER_DISCONNECTED -> errorMessage = "Server has been disconnected"
+                SpeechRecognizer.ERROR_SPEECH_TIMEOUT -> errorMessage = "No speech input"
+                SpeechRecognizer.ERROR_TOO_MANY_REQUESTS -> errorMessage = "Too many request made"
+                else -> {
+                    errorMessage = "Error"
+                }
+            }
+            Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+            Log.w("SpeechRecognizer.onError()", "Error: $errorMessage")
         }
 
         override fun onResults(bundle: Bundle?) {
@@ -148,7 +169,6 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
             }
 
             Log.d("SpeechRecognizer.onResults()", "Results: ${recognizedWords!![0]}")
-            Toast.makeText(context, recognizedWords!![0], Toast.LENGTH_LONG).show()
             partialWords.clear()
             status = ""
             isListening = false
@@ -167,7 +187,8 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
                     // add to incorrect word list and remove from remaining
                     incorrectWord = partialWords.last()
                     Log.d("SpeechRecognizer.onPartialResults()", "Incorrect word: '${partialWords.last()}'")
-                    speechRecognizer.cancel()
+                    partialWords.clear()
+                    speechRecognizer.destroy()
                     status = ""
                     isListening = false
                 }
@@ -206,19 +227,28 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
                 Text(
                     modifier = Modifier.padding(horizontal = 10.dp, vertical = 0.dp),
                     text = buildAnnotatedString {
-                        withStyle(style = SpanStyle(color = Color.Green)) {
-                            Log.d("SpeechRecognizer", "Drawing correctWords: $correctWords")
-                            append(correctWords.toString().replace("[,\\[\\]]".toRegex(), ""))
-                        }
-                        withStyle(style = SpanStyle(color = Color.Red)) {
-                            append(" $incorrectWord ")
-                        }
-                        remainingWords.forEach { word ->
-                            withStyle(style = SpanStyle(color = Color.Gray, background = blur)) {
-                                append(word)
+                            withStyle(style = SpanStyle(color = Color.Green)) {
+                                Log.d("SpeechRecognizer", "Drawing correctWords: $correctWords")
+                                if (correctWords.isNotEmpty()) {
+                                    append("${correctWords.toString().replace("[,\\[\\]]".toRegex(), "")} ")
+                                }
                             }
-                            append(" ")
-                        }
+                            withStyle(style = SpanStyle(color = Color.Red)) {
+                                if (incorrectWord.isNotEmpty()) {
+                                    append("$incorrectWord ")
+                                }
+                            }
+                            remainingWords.forEach { word ->
+                                withStyle(
+                                    style = SpanStyle(
+                                        color = Color.Gray,
+                                        background = blur
+                                    )
+                                ) {
+                                    append(word)
+                                }
+                                append("  ")
+                            }
                     }
                 )
             }
@@ -229,10 +259,12 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
                      if (!isListening && remainingWords.isNotEmpty()) speechRecognizer.startListening(speechRecognizerIntent)
                           },
             ) {
+
                 Icon(
                     painter = painterResource(id = R.drawable.ic_microphone_foreground),
                     contentDescription = "Microphone"
                 )
+
             }
             Text(text = status, modifier = Modifier.align(Alignment.CenterHorizontally))
         }
@@ -247,10 +279,16 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
             }
         }) {
             if(!revealed){
-                Text(text = "Reveal")
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_reveal_foreground),
+                    contentDescription = "Reveal"
+                )
             }
             else {
-                Text(text = "Hide")
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_visibility_foreground),
+                    contentDescription = "Reveal"
+                )
             }
         }
         // Rest all of the progress
@@ -259,7 +297,10 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
             correctWords = emptyList()
             remainingWords = noteCard.createSnippetDisplayList()
         }) {
-            Text(text = "Reset")
+            Icon(
+                painter = painterResource(id = R.drawable.ic_reset_foreground),
+                contentDescription = "Reset"
+            )
         }
     }
 }
@@ -310,4 +351,5 @@ fun DefaultPreview() {
             Text(text = "Reset")
         }
     }
+
 }

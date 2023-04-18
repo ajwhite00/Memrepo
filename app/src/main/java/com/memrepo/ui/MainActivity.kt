@@ -19,6 +19,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
@@ -34,7 +35,9 @@ import com.memrepo.ui.theme.MemrepoTheme
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextOverflow
 import com.memrepo.dto.NoteCard
 import java.util.*
 
@@ -98,7 +101,7 @@ class MainActivity : ComponentActivity() {
                     )
                 },
                 floatingActionButton = {
-                    FloatingActionButton(onClick =
+                    FloatingActionButton(backgroundColor = MaterialTheme.colors.primary, onClick =
                     {
                         viewModel.selectedNoteCard = NoteCard(0, "", "")
                         coroutineScope.launch {
@@ -148,7 +151,7 @@ class MainActivity : ComponentActivity() {
         val mContext = LocalContext.current
         val paddingModifier = Modifier.padding(10.dp)
         var isMenuExpanded by remember { mutableStateOf(false)}
-        var openAlert = remember { mutableStateOf(false) }
+        val openAlert = remember { mutableStateOf(false) }
         val coroutineScope = rememberCoroutineScope()
 
         if (openAlert.value) {
@@ -185,11 +188,12 @@ class MainActivity : ComponentActivity() {
                 Column(paddingModifier) {
                     // Title and Snippet are placeholders for now, eventually these will be injected values from the database
                         Text(text = noteCard.title, Modifier.fillMaxWidth())
-                        Text(text = noteCard.snippet, Modifier.fillMaxWidth())
+                        Spacer(modifier = Modifier.height(5.dp))
+                        Text(text = noteCard.snippet, maxLines = 1, color = Color.Gray, overflow = TextOverflow.Ellipsis, modifier = Modifier.padding(end=5.dp))
 
                 }
                 // Button will have the options to Edit or delete the note card
-                Box(){
+                Box{
                     IconButton(
                             onClick = { isMenuExpanded = true },
                             modifier = Modifier
@@ -233,7 +237,7 @@ class MainActivity : ComponentActivity() {
     @ExperimentalMaterialApi
     @Composable
     fun AddSnippet(bottomSheetScaffoldState: BottomSheetScaffoldState) {
-        var id by remember(viewModel.selectedNoteCard.cardID) { mutableStateOf(viewModel.selectedNoteCard.cardID) }
+        val id by remember(viewModel.selectedNoteCard.cardID) { mutableStateOf(viewModel.selectedNoteCard.cardID) }
         var title by remember(viewModel.selectedNoteCard.cardID) { mutableStateOf(viewModel.selectedNoteCard.title) }
         var snippetText by remember(viewModel.selectedNoteCard.cardID) { mutableStateOf(viewModel.selectedNoteCard.snippet) }
         val coroutineScope = rememberCoroutineScope()
@@ -287,12 +291,12 @@ class MainActivity : ComponentActivity() {
 
                     keyBoardController?.hide()
                 },
-                modifier = Modifier.align(Alignment.Center)
+                modifier = Modifier.align(Alignment.Center).padding(top = 10.dp),
             ) {
-                Icon (painter = painterResource(id = R.drawable.ic_save_foreground),
-                    contentDescription = "Save")
+                Icon(imageVector = Icons.Filled.Check, contentDescription = "save")
             }
         }
+
     }
 
     @ExperimentalMaterialApi
@@ -301,7 +305,6 @@ class MainActivity : ComponentActivity() {
     fun DefaultPreview() {
        MemrepoTheme {
             Column {
-
             }
         }
     }
