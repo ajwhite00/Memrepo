@@ -23,12 +23,6 @@ interface INoteCardDAO {
     suspend fun getNoteCardById(id: Int): NoteCard
 
     /**
-     * saveNoteCard inserts all note-card data into the database.
-     */
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun saveNoteCard(noteCard: NoteCard)
-
-    /**
      * delete removes selected NoteCard from the database.
      */
     @Delete

@@ -13,16 +13,12 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "NoteCards")
 data class NoteCard(@PrimaryKey(autoGenerate = true) val cardID : Int,@ColumnInfo("title") val title : String,@ColumnInfo("snippet") val snippet : String){
 
-        /**
-         * Takes the snippet String and removes all punctuation and spacings, sets the String to lowercase, and adds each word to a list.
-         */
         fun createSnippetDisplayList(): MutableList<String> {
-                return this.snippet
-                        .replace("-".toRegex(), " ")
-                        .replace("  ".toRegex(), " ")
-                        .replace("[!\"#$%&'()*+,-./:;<=>?@\\[\\]^_`{|}~]".toRegex(), "")
-                        .lowercase()
-                        .split(" ")
-                        .toMutableList()
+                return this.snippet //has two rounds of replacement
+                        .replace("-".toRegex(), " ") //replace hyphens with space because of two cases: split words with hyphen in between and remove hyphen in the middle of a sentence
+                        .replace("[!\"#$%&'()*+,-./:;<=>?@\\[\\]^_`{|}~]".toRegex(), "") //remove punctuation and other non-letter chars
+                        .lowercase() //change everything to lowercase to be used later for mic input comparison
+                        .split("\\r?\\n?\\s+".toRegex()) //separates words by spaces and newlines
+                        .toMutableList() //creates a list individual words to be used later for mic input comparison
         }
 }
