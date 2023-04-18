@@ -13,6 +13,7 @@ import android.speech.SpeechRecognizer
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -228,10 +229,12 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
             Spacer(modifier = Modifier.height(30.dp))
             Button(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
+                shape = CircleShape,
                 onClick = {
-                     if (!isListening && remainingWords.isNotEmpty()) speechRecognizer.startListening(speechRecognizerIntent)
-                          },
+                    if (!isListening && remainingWords.isNotEmpty()) speechRecognizer.startListening(speechRecognizerIntent)
+                },
             ) {
+
 
                 Icon(
                     painter = painterResource(id = R.drawable.ic_microphone_foreground),
@@ -242,7 +245,7 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
             Text(text = status, modifier = Modifier.align(Alignment.CenterHorizontally))
         }
         // Show the remaining text
-        Button(modifier = Modifier.align(Alignment.BottomStart).padding(10.dp), onClick = {
+        Button(modifier = Modifier.align(Alignment.BottomStart).padding(10.dp).offset(y = (-76).dp),shape = CircleShape, onClick = {
             if(!revealed){
                 blur = Color.Transparent
                 revealed = true
@@ -265,7 +268,7 @@ fun SpeechRecognizerComponent(context: Context, activity: Activity, noteCard: No
             }
         }
         // Rest all of the progress
-        Button(modifier = Modifier.align(Alignment.BottomEnd).padding(10.dp), onClick = {
+        Button(modifier = Modifier.align(Alignment.BottomEnd).padding(10.dp) .offset(y = (-76).dp),shape = CircleShape,  onClick = {
             incorrectWord = ""
             correctWords = emptyList()
             remainingWords = noteCard.createSnippetDisplayList()
