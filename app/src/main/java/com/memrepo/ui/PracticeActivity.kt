@@ -1,5 +1,6 @@
 package com.memrepo.ui
 
+
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
@@ -33,14 +34,13 @@ class PracticeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-
             MemrepoTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    practiceScreen()
+                    PracticeScreen()
                 }
             }
         }
@@ -48,7 +48,7 @@ class PracticeActivity : ComponentActivity() {
 
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     @Composable
-    fun practiceScreen() {
+    fun PracticeScreen() {
         val mContext = LocalContext.current
         Scaffold(
             // Bar across top of screen
@@ -66,8 +66,7 @@ class PracticeActivity : ComponentActivity() {
                 )
             },
             content = {
-                MyContent(
-                )
+                MyContent()
 
             }
         )
@@ -81,14 +80,16 @@ class PracticeActivity : ComponentActivity() {
         val snippet = intent.getStringExtra("Snippet")
 
         Box(Modifier.fillMaxSize()) {
-            Column(Modifier.padding(10.dp).fillMaxWidth()) {
+            Column(Modifier.padding(10.dp).fillMaxWidth()){
                 Text(
                     text = title!!,
                     modifier = Modifier.align(Alignment.CenterHorizontally),
                     fontSize = 25.sp
                 )
             }
+
         }
+
         // You can't create a noteCard without title and snippet so these values won't be null
         SpeechToText(title!!, snippet!!)
     }
@@ -118,7 +119,7 @@ class PracticeActivity : ComponentActivity() {
     @Composable
     fun DefaultPreview() {
         MemrepoTheme {
-            practiceScreen()
+            PracticeScreen()
         }
     }
 }

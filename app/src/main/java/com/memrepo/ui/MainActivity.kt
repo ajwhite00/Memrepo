@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
@@ -32,8 +33,9 @@ import com.memrepo.R
 import com.memrepo.ui.theme.MemrepoTheme
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextOverflow
 import com.memrepo.dto.NoteCard
 import java.util.*
 
@@ -97,8 +99,9 @@ class MainActivity : ComponentActivity() {
                     )
                 },
                 floatingActionButton = {
-                    FloatingActionButton(onClick =
+                    FloatingActionButton(backgroundColor = MaterialTheme.colors.primary, onClick =
                     {
+                        viewModel.selectedNoteCard = NoteCard(0, "", "")
                         coroutineScope.launch {
                             if (bottomSheetScaffoldState.bottomSheetState.isCollapsed) {
                                 bottomSheetScaffoldState.bottomSheetState.expand()
@@ -133,19 +136,21 @@ class MainActivity : ComponentActivity() {
                                 )
                             }
                         }
-                        items(noteCards){ noteCard -> SnippetCard(noteCard) }
+                        items(noteCards){ noteCard -> SnippetCard(noteCard, bottomSheetScaffoldState) }
                     }
 
                 }
             )
         }
     }
+    @OptIn(ExperimentalMaterialApi::class)
     @Composable
-    fun SnippetCard(noteCard: NoteCard) {
+    fun SnippetCard(noteCard: NoteCard, bottomSheetScaffoldState: BottomSheetScaffoldState) {
         val mContext = LocalContext.current
         val paddingModifier = Modifier.padding(10.dp)
         var isMenuExpanded by remember { mutableStateOf(false)}
-        var openAlert = remember { mutableStateOf(false) }
+        val openAlert = remember { mutableStateOf(false) }
+        val coroutineScope = rememberCoroutineScope()
 
         if (openAlert.value) {
             // if yes button clicked viewModel.deleteNoteCard(noteCard)
@@ -153,15 +158,15 @@ class MainActivity : ComponentActivity() {
                 onDismissRequest = {openAlert.value = false},
                 text={Text("Are you sure you want to delete this?")},
                 confirmButton = {
-                                Button(onClick = {
-                                    openAlert.value = false
-                                    viewModel.deleteNoteCard(noteCard) }) {
-                                    Text("confirm")
-                                }
+                    Button(onClick = {
+                        openAlert.value = false
+                        viewModel.deleteNoteCard(noteCard) }) {
+                        Text("Yes")
+                    }; Button(onClick = {openAlert.value = false}){
+                    Text("No")
+                    }
                 },
-
-
-                )
+            )
         }
 
         Box(Modifier.fillMaxSize()) {
@@ -181,46 +186,58 @@ class MainActivity : ComponentActivity() {
                 Column(paddingModifier) {
                     // Title and Snippet are placeholders for now, eventually these will be injected values from the database
                         Text(text = noteCard.title, Modifier.fillMaxWidth())
-                        Text(text = noteCard.snippet, Modifier.fillMaxWidth())
+                        Spacer(modifier = Modifier.height(5.dp))
+                        Text(text = noteCard.snippet, maxLines = 1, color = Color.Gray, overflow = TextOverflow.Ellipsis, modifier = Modifier.padding(end=5.dp))
 
                 }
                 // Button will have the options to Edit or delete the note card
-               IconButton(
-                   onClick = { isMenuExpanded = true },
-                   modifier = Modifier
-                       .fillMaxWidth()
-                       .wrapContentSize(Alignment.TopEnd)
-                   ) {
-                   Icon(
-                       imageVector = Icons.Default.MoreVert,
-                       contentDescription = "Open options"
-                   )
-               }
-                       DropdownMenu(expanded = isMenuExpanded, onDismissRequest = {isMenuExpanded = false}, modifier = Modifier.align(Alignment.TopEnd))
-                       {
-                         DropdownMenuItem(
-                              text = { Text("Edit")},
-                             onClick = { }
+                Box{
+                    IconButton(
+                            onClick = { isMenuExpanded = true },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentSize(Alignment.BottomEnd)
+                    ) {
+                        Icon(
+                                imageVector = Icons.Default.MoreVert,
+                                contentDescription = "Open options"
+                        )
+                        DropdownMenu(expanded = isMenuExpanded, onDismissRequest = { isMenuExpanded = false }, modifier = Modifier.align(Alignment.CenterEnd)) {
+                            DropdownMenuItem(
+                                    content = { Text("Edit") },
+                                    onClick = {
+                                        isMenuExpanded = false
+                                        viewModel.getNoteCardById(noteCard = noteCard)
+                                        coroutineScope.launch {
+                                            if (bottomSheetScaffoldState.bottomSheetState.isCollapsed) {
+                                                bottomSheetScaffoldState.bottomSheetState.expand()
+                                            } else {
+                                                bottomSheetScaffoldState.bottomSheetState.collapse()
+                                            }
+                                        }
+                                    }
+                            )
+                            DropdownMenuItem(
+                                    content = { Text("Delete") },
+                                    onClick = {
+                                        isMenuExpanded = false
+                                        openAlert.value = true
+                                    }
+                            )
+                        }
+                    }
 
-                          )
-                           DropdownMenuItem(
-                               text = { Text("Delete")},
-                               onClick = {
-                                   isMenuExpanded = false
-                                   openAlert.value = true }
-                               )
-
-                       }
-               }
-
-               }
+                }
+                }
+            }
             }
     @OptIn(ExperimentalComposeUiApi::class)
     @ExperimentalMaterialApi
     @Composable
     fun AddSnippet(bottomSheetScaffoldState: BottomSheetScaffoldState) {
-        var title by remember { mutableStateOf("") }
-        var snippetText by remember { mutableStateOf("") }
+        val id by remember(viewModel.selectedNoteCard.cardID) { mutableStateOf(viewModel.selectedNoteCard.cardID) }
+        var title by remember(viewModel.selectedNoteCard.cardID) { mutableStateOf(viewModel.selectedNoteCard.title) }
+        var snippetText by remember(viewModel.selectedNoteCard.cardID) { mutableStateOf(viewModel.selectedNoteCard.snippet) }
         val coroutineScope = rememberCoroutineScope()
         val keyBoardController = LocalSoftwareKeyboardController.current
         Box (modifier = Modifier.fillMaxWidth()) {
@@ -229,8 +246,6 @@ class MainActivity : ComponentActivity() {
                 onClick = {
                     coroutineScope.launch { bottomSheetScaffoldState.bottomSheetState.collapse() }
                     keyBoardController?.hide()
-                    title = ""
-                    snippetText = ""
                 },
                 modifier = Modifier
                     .align(Alignment.TopEnd)
@@ -268,19 +283,19 @@ class MainActivity : ComponentActivity() {
                 /* TODO */
                 onClick = {
                     if (title.isNotEmpty() && snippetText.isNotEmpty()){
-                        viewModel.saveNoteCard(NoteCard(0, title, snippetText))
+                        viewModel.saveNoteCard(NoteCard(id, title, snippetText))
+                        coroutineScope.launch { bottomSheetScaffoldState.bottomSheetState.collapse()}
+                        viewModel.selectedNoteCard = NoteCard(-1,"","")
                     }
-                    coroutineScope.launch { bottomSheetScaffoldState.bottomSheetState.collapse() }
+
                     keyBoardController?.hide()
-                    title = ""
-                    snippetText = ""
                 },
-                modifier = Modifier.align(Alignment.Center)
+                modifier = Modifier.align(Alignment.Center).padding(top = 10.dp),
             ) {
-                Icon (painter = painterResource(id = R.drawable.ic_save_foreground),
-                    contentDescription = "Save")
+                Icon(imageVector = Icons.Filled.Check, contentDescription = "save")
             }
         }
+
     }
 
     @ExperimentalMaterialApi
@@ -289,7 +304,6 @@ class MainActivity : ComponentActivity() {
     fun DefaultPreview() {
        MemrepoTheme {
             Column {
-                //MainScreen()
             }
         }
     }

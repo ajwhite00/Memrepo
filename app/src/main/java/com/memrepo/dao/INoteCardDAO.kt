@@ -17,7 +17,13 @@ interface INoteCardDAO {
     fun getAllNoteCards() : LiveData<List<NoteCard>>
 
     /**
-     * saveNoteCard inserts all note-card data into the database or updates an existing note-card.
+     * getNoteCardById selects a NoteCard by the given id
+     */
+    @Query("SELECT * FROM NoteCards WHERE cardID=:id ")
+    suspend fun getNoteCardById(id: Int): NoteCard
+
+    /**
+     * saveNoteCard inserts all note-card data into the database.
      */
     @Upsert
     suspend fun saveNoteCard(noteCard: NoteCard)
@@ -27,4 +33,5 @@ interface INoteCardDAO {
      */
     @Delete
     suspend fun deleteNoteCard(noteCard: NoteCard)
+
 }
