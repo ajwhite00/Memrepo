@@ -10,7 +10,7 @@ import org.junit.Assert.*
  *
  * See [testing documentation](http://d.android.com/tools/testing).
  */
-class ExampleUnitTest {
+class NoteCardDTOTest {
     @Test
     fun `Given a NoteCard about the order of the planets, When I toString the object, the ID, title, Then snippet attributes should be returned`(){
         val planets = NoteCard(0, "Planets", "Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune")
