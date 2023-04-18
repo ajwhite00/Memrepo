@@ -3,7 +3,6 @@ package com.memrepo.ui
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.clickable
@@ -34,7 +33,6 @@ import com.memrepo.R
 import com.memrepo.ui.theme.MemrepoTheme
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
@@ -206,7 +204,7 @@ class MainActivity : ComponentActivity() {
                         )
                         DropdownMenu(expanded = isMenuExpanded, onDismissRequest = { isMenuExpanded = false }, modifier = Modifier.align(Alignment.CenterEnd)) {
                             DropdownMenuItem(
-                                    text = { Text("Edit") },
+                                    content = { Text("Edit") },
                                     onClick = {
                                         isMenuExpanded = false
                                         viewModel.getNoteCardById(noteCard = noteCard)
@@ -220,7 +218,7 @@ class MainActivity : ComponentActivity() {
                                     }
                             )
                             DropdownMenuItem(
-                                    text = { Text("Delete") },
+                                    content = { Text("Delete") },
                                     onClick = {
                                         isMenuExpanded = false
                                         openAlert.value = true
