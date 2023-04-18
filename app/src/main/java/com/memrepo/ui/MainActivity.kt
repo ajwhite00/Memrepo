@@ -3,6 +3,7 @@ package com.memrepo.ui
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.clickable
@@ -192,8 +193,8 @@ class MainActivity : ComponentActivity() {
                     IconButton(
                             onClick = { isMenuExpanded = true },
                             modifier = Modifier
-                                    .fillMaxWidth()
-                                    .wrapContentSize(Alignment.BottomEnd)
+                                .fillMaxWidth()
+                                .wrapContentSize(Alignment.BottomEnd)
                     ) {
                         Icon(
                                 imageVector = Icons.Default.MoreVert,
@@ -281,8 +282,9 @@ class MainActivity : ComponentActivity() {
                 onClick = {
                     if (title.isNotEmpty() && snippetText.isNotEmpty()){
                         viewModel.saveNoteCard(NoteCard(id, title, snippetText))
+                        coroutineScope.launch { bottomSheetScaffoldState.bottomSheetState.collapse()}
                     }
-                    coroutineScope.launch { bottomSheetScaffoldState.bottomSheetState.collapse() }
+
                     keyBoardController?.hide()
                 },
                 modifier = Modifier.align(Alignment.Center)
